@@ -436,10 +436,12 @@ At 42's computer:
   + the result in the standard output contains the path '/home/akostrik/data/'
 * explain how to login into the database
 * verify that the database is not empty
+* Your volumes will be available in `/home/login/data` folder of the host machine using Docker
 * reboot the VM, once it has restarted, launch compose again
   + everything is functional
   + both WordPress and MariaDB are configured
   + the changes you made previously to the WordPress website should still be here
+* configure akostrik.42.fr point to your local IP address
 * discord
   + остановидлсь на Ton env sera vierge par rapport à docker.
   + Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
