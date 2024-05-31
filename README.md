@@ -475,15 +475,11 @@ zlib
 ![настройка wordpress](media/docker_wordpress/welcome.png)
 
 ## Настройка wordpress
-`https://127.0.0.1` в браузере хостовой машины:  
-Вбиваем нужные нам логин, пароль, имя сайта:  
-![настройка wordpress](media/docker_wordpress/records.png)
-После нажатия кнопки "Установить Wordpress" мы увидим окошко с сообщением об успешной установке и предложением залогиниться:  
-![настройка wordpress](media/docker_wordpress/done.png)  
-Нажимаем кнопку логина, вводим свой логин и пароль:  
-![настройка wordpress](media/docker_wordpress/login.png)
-И попадаем на стартовую страницу нашего чистого wordpress-а!  
-![настройка wordpress](media/docker_wordpress/startpage.png)
+`https://127.0.0.1` в браузере хостовой машины  
+Вбиваем нужные нам логин, пароль, имя сайта (akostrik, 2)  
+"Установить Wordpress"   
+Окошко с сообщением об успешной установке и предложением залогиниться   
+Попадаем на стартовую страницу чистого wordpress
 
 ## Makefile
 `make fclean` Перед сохранением в облако   
@@ -491,90 +487,16 @@ zlib
 `make down` остановка  
 `make` запуск после остановки  
 
-```
-name = myContainer                               # узнать cd ~/ex3/ && cat docker-compose.yml
-
-all:
-  @printf "Запуск конфигурации ${name}...\n"
-  @docker-compose -f ./docker-compose.yml up -d  # запуск контейнера с указанием файла конфигурации 
-
-build:                                           
-  @printf "Сборка конфигурации ${name}...\n"
-  @docker-compose -f ./docker-compose.yml up -d --build
-
-down:
-  @printf "Остановка конфигурации ${name}...\n"
-  @docker-compose -f ./docker-compose.yml down
-
-re:                                              
-  @printf "Пересборка конфигурации ${name}...\n"
-  @docker-compose -f ./docker-compose.yml up -d --build
-
-clean: down                                     
-  @printf "Очистка конфигурации ${name}...\n"
-  @docker system prune -a                        # очистить память, удалить неиспользуемые образы, лишние разделы, сети докера
-
-fclean:                                          # очистить все образы
-  @printf "Полная очистка всех конфигураций docker\n"
-  @docker stop $$(docker ps -qa)                 # остановим все запущенные контейнеры
-  @docker system prune --all --force --volumes   # принудительно удалим всё
-  @docker network prune --force                  # удалим все сети 
-  @docker volume prune --force                   # удалим все подключенные разделы
-
-.PHONY	: all build down re clean fclean
-```
-
-```
-name = inception
-all:
-  @printf "Launch configuration ${name}...\n"
-  @bash srcs/requirements/wordpress/tools/make_dir.sh
-  @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d # система будет искать .env в той же директории, где Makefile => при помощи --env-file указываем для docker-compose путь к ./srcs и к .env
-
-build:
-  @printf "Building configuration ${name}...\n"
-  @bash srcs/requirements/wordpress/tools/make_dir.sh
-  @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
-
-down:
-  @printf "Stopping configuration ${name}...\n"
-  @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
-
-re: down
-  @printf "Rebuild configuration ${name}...\n"
-  @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
-
-clean: down
-  @printf "Cleaning configuration ${name}...\n"
-  @docker system prune -a
-  @sudo rm -rf ~/data/wordpress/*
-  @sudo rm -rf ~/data/mariadb/*
-
-fclean:
-  @printf "Total clean of all configurations docker\n"
-  @docker stop $$(docker ps -qa)
-  @docker system prune --all --force --volumes
-  @docker network prune --force
-  @docker volume prune --force
-  @sudo rm -rf ~/data/wordpress/*
-  @sudo rm -rf ~/data/mariadb/*
-
-.PHONY	: all build down re clean fclean
-```
-## ....
-On the mac:  
-* Apache service is installed by default
-* delete Apache from the computer to avoid any problem with nginx
-
 At 42's computer:  
-* you should stop these services which are running by default:
+* you should stop these services which are running by default (?):
 `sudo service nginx stop`  
 `sudo service mariadb stop`  
 `sudo service apache2 stop`  
 `sudo service mysql stop`  
 
-
 ## Notes 
+* On the mac Apache service is installed by default
+  + delete Apache from the computer to avoid any problem with nginx
 https://github.com/privet100/general-culture/blob/main/docker.md  
 https://www.internetsociety.org/deploy360/tls/basics/  
 https://admin812.ru/razvertyvanie-wordpress-s-nginx-php-fpm-i-mariadb-s-pomoshhyu-docker-compose.html
