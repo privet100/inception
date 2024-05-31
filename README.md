@@ -20,9 +20,9 @@
 * Порты
   + траффик с хостовой на гостевую, по определённым портам с гостевой машины на хостовую
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:  
-![Screenshot from 2024-03-08 18-52-25](https://github.com/akostrik/inception_fork/assets/22834202/bd706db3-84f9-4a0e-96fc-d5ec778e39d8)
-  + `ufw enable` запускаем файерволл
-  + `ufw allow 42` разрешаем порт 42 для ssh, 80 и 443 для сайта 
+![Screenshot from 2024-05-31 21-47-48](https://github.com/privet100/inception/assets/22834202/70b3e159-365a-4f65-83e1-60d70d042cae)
+  + `ufw enable`
+  + `ufw allow 42` 42 для ssh, 443 для сайта (и 80, если будетм тестировать с http) 
   + `ufw status` проверить
 * ssh
   + под суперпользователем `/etc/ssh/sshd_config`:      
