@@ -419,7 +419,8 @@ At 42's computer:
 
 ## Notes 
 * On the mac Apache service is installed by default
-  + delete Apache from the computer to avoid any problem with nginx  
+  + delete Apache from the computer to avoid any problem with nginx
+
 https://github.com/privet100/general-culture/blob/main/docker.md  
 https://www.internetsociety.org/deploy360/tls/basics/  
 https://admin812.ru/razvertyvanie-wordpress-s-nginx-php-fpm-i-mariadb-s-pomoshhyu-docker-compose.html
