@@ -1,18 +1,5 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
-## tmpь
-* убрать .env
-### discord
-* остановидлсь на Ton env sera vierge par rapport à docker.
-* Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
-* Ok mais je comprend pas l'utilité de devoir link ce volume au containeur nginx
-  + Le but c'est de vous simplifier votre config
-* pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp... https://developer.wordpress.org/cli/commands/
-* Il faut automatiser le plus possible via tes containers
-* Tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
-* Du moment que tu ne te retrouves pas à faire du tail -f and co c'est déjà très bien crois moi
-* Ton env sera vierge par rapport à docker.
-
 ## виртуальная машина
 * Создать витртуальную машину (папку в goinfre, оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше, формат VDI или VHD, динамический формат и 8 гигабайт под диск) 
 * скачиваем и устанавливаем [debian](https://www.debian.org/ "скачать debian")
@@ -418,6 +405,17 @@ At 42's computer:
 `sudo service mysql stop`  
 
 ## Notes 
+* **убрать .env**
+* discord
+  + остановидлсь на Ton env sera vierge par rapport à docker.
+  + Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
+  + Ok mais je comprend pas l'utilité de devoir link ce volume au containeur nginx
+    - Le but c'est de vous simplifier votre config
+  + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp... https://developer.wordpress.org/cli/commands/
+  + Il faut automatiser le plus possible via tes containers
+  + Tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
+  + Du moment que tu ne te retrouves pas à faire du tail -f and co c'est déjà très bien crois moi
+  + Ton env sera vierge par rapport à docker.
 * On the mac Apache service is installed by default
   + delete Apache from the computer to avoid any problem with nginx
 
