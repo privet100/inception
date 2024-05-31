@@ -437,7 +437,7 @@ At 42's computer:
   + The benefit of Docker compared to VMs
   + The pertinence of the directory structure required for this project
   + an explanation of docker-network
-* **убрать .env**
+* **убрать .env, test.sh**
 * discord
   + остановидлсь на Ton env sera vierge par rapport à docker.
   + Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
