@@ -424,55 +424,17 @@ networks:
         driver: bridge
 ```
 
-### A docker-network 
-* establishes the connection between your containers
-
 ### Проверка
-`cd ~/root/srcs`  
-`docker-compose up -d --build`  
-![настройка wordpress](media/docker_wordpress/install_all.png)
-`docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php, ожидаем увидеть:
+`cd ~/root/srcs`   
+`docker-compose up -d --build`   
+`docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php, ожидаем:  
 ```
     1 root      0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
     9 nobody    0:00 {php-fpm8} php-fpm: pool www
    10 nobody    0:00 {php-fpm8} php-fpm: pool www
 ```
-`docker exec -it wordpress php -v`  Посмотрим работу php:  
-```
-PHP 8.0.22 (cli) (built: Aug  5 2022 23:54:32) ( NTS )
-Copyright (c) The PHP Group
-Zend Engine v4.0.22, Copyright (c) Zend Technologies
-```
-`docker exec -it wordpress php -m` проверим, все ли модули установились:  
-```
-[PHP Modules]
-Core
-curl
-date
-dom
-exif
-fileinfo
-filter
-hash
-json
-libxml
-mbstring
-mysqli
-mysqlnd
-openssl
-pcre
-readline
-Reflection
-SPL
-standard
-xml
-zip
-zlib
-
-[Zend Modules]
-```
-откроется панель настроек:  
-![настройка wordpress](media/docker_wordpress/welcome.png)
+`docker exec -it wordpress php -v` проверим работу php  
+`docker exec -it wordpress php -m` проверим, все ли модули установились  
 
 ## Настройка wordpress
 `https://127.0.0.1` в браузере хостовой машины  
@@ -496,7 +458,7 @@ At 42's computer:
 
 ## Notes 
 * On the mac Apache service is installed by default
-  + delete Apache from the computer to avoid any problem with nginx
+  + delete Apache from the computer to avoid any problem with nginx  
 https://github.com/privet100/general-culture/blob/main/docker.md  
 https://www.internetsociety.org/deploy360/tls/basics/  
 https://admin812.ru/razvertyvanie-wordpress-s-nginx-php-fpm-i-mariadb-s-pomoshhyu-docker-compose.html
