@@ -407,15 +407,15 @@ At 42's computer:
 `sudo service mysql stop`  
 
 ## Notes 
-* run `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null` **!**
 * configure akostrik.42.fr point to your local IP address
 * open `https://akostrik.42.fr`
-* you shouldn't be able to access `http://login.42.fr` 
-  + no access the service via http (port 80)
+* NGINX is accessed by port 443 only
+* you shouldn't be able to access `http://login.42.fr`, no access ia http (port 80)
 * TLS **v1.2/v1.3** certificate
+* your volumes will be available in `/home/login/data` folder of the host machine using Docker
 * docker-network is used by checking the docker-compose.yml
   + 'docker network ls' to verify the network 
-* 'docker volume ls' then 'docker volume inspect wordpress'
+* 'docker volume ls', 'docker volume inspect wordpress'
   + the result contains '/home/akostrik/data/'
 * add a comment using the available WordPress user
 * WordPress database: 2 users, one of them being the administrator
@@ -427,12 +427,11 @@ At 42's computer:
   + the result contains '/home/akostrik/data/'
 * explain how to login into the database
 * the database is not empty
-* your volumes will be available in `/home/login/data` folder of the host machine using Docker
+* run `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null` **!**
 * reboot the VM and launch compose again
   + everything is functional
   + both WordPress and MariaDB are configured
   + the changes you made previously to the WordPress website should still be here
-* NGINX is accessed by port 443 only
 * explain
   + How Docker and docker compose work
   + The difference between a Docker image used with docker compose and without docker compose
