@@ -408,6 +408,37 @@ At 42's computer:
 * **убрать .env**
 * Before starting the evaluation, run
   + `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null`
+* explain
+  + How Docker and docker compose work
+  + The difference between a Docker image used with docker compose and without docker compose
+  + The benefit of Docker compared to VMs
+  + The pertinence of the directory structure required for this project
+* NGINX can be accessed by port 443 only
+* WordPress website is properly installed and configured
+  + you shouldn't see the WordPress Installation page
+  + open `https://akostrik.42.fr` `https://akostrik.42.fr/`
+  + you shouldn't be able to access `http://login.42.fr` `http://login.42.fr/`
+  + try to access the service via http (port 80) and verify that you cannot connect
+* Makefile sets up all the services via docker compose, the containers are built using docker compose
+* docker-network is used by checking the docker-compose.yml
+  + 'docker network ls' to verify that a network is visible
+  + an **explanation** of docker-network
+* TLS **v1.2/v1.3** certificate is mandatory, must be demonstrated
+* 'docker volume ls' then 'docker volume inspect wordpress'
+  + the result in the standard output contains the path '/home/akostrik/data/'
+* add a comment using the available WordPress user
+* sign in with the administrator account to access the Administration dashboard
+  + the Admin username must not include 'admin' 'Admin' admin administrator Admin-login admin-123, etc
+* from the Administration dashboard, edit a page
+  + verify on the website that the page has been updated
+* 'docker volume inspect mariadb'
+  + the result in the standard output contains the path '/home/akostrik/data/'
+* explain how to login into the database
+* verify that the database is not empty
+* reboot the VM, once it has restarted, launch compose again
+  + everything is functional
+  + both WordPress and MariaDB are configured
+  + the changes you made previously to the WordPress website should still be here
 * discord
   + остановидлсь на Ton env sera vierge par rapport à docker.
   + Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
