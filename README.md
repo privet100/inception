@@ -1,10 +1,8 @@
-NOT FINISHED
-![Screenshot from 2024-05-17 14-23-59](https://github.com/privet100/inception/assets/22834202/517978c8-41d6-4961-9462-5e6aa7ef387b)
+![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
-## не забыть
+## tmpь
 * убрать .env
-
-## discord
+### discord
 * остановидлсь на Ton env sera vierge par rapport à docker.
 * Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
 * Ok mais je comprend pas l'utilité de devoir link ce volume au containeur nginx
@@ -49,44 +47,7 @@ NOT FINISHED
   + `service ssh status` 
   + если на хостовой машине в `~/.ssh/known_hosts` есть локальные записи (начинаются с `[localhost]`) и если есть проблемы со входом, то удалить их  
   + `ssh root@localhost -p 4243` на хостовой
-* создать папки, можно скриптом
-```
-#!/bin/bash
-mkdir root
-mkdir root/srcs
-touch root/Makefile
-mkdir root/srcs/requirements
-touch root/srcs/docker-compose.yml
-touch root/srcs/.env
-echo "DOMAIN_NAME=akostrik.42.fr" > root/srcs/.env # domain name points to your local IP address, akostrik.42.fr redirects to the IP address pointing to the website
-echo "CERT_=./requirements/tools/akostri.42.fr.crt" >> root/srcs/.env
-echo "KEY_=./requirements/tools/akostrik.42.fr.key" >> root/srcs/.env
-echo "DB_NAME=wordpress" >> root/srcs/.env
-echo "DB_ROOT=rootpass" >> root/srcs/.env
-echo "DB_USER=wpuser" >> root/srcs/.env
-echo "DB_PASS=wppass" >> root/srcs/.env
-mkdir root/srcs/requirements/mariadb
-mkdir root/srcs/requirements/mariadb/conf
-touch root/srcs/requirements/mariadb/conf/create_db.sh
-mkdir root/srcs/requirements/mariadb/tools
-touch root/srcs/requirements/mariadb/Dockerfile
-touch root/srcs/requirements/mariadb/.dockerignore
-echo ".git" > root/srcs/requirements/mariadb/.dockerignore
-mkdir root/srcs/requirements/nginx
-mkdir root/srcs/requirements/nginx/conf
-touch root/srcs/requirements/nginx/conf/nginx.conf
-mkdir root/srcs/requirements/nginx/tools
-touch root/srcs/requirements/nginx/Dockerfile
-echo ".git" > root/srcs/requirements/nginx/.dockerignore
-mkdir root/srcs/requirements/tools
-mkdir root/srcs/requirements/wordpress
-mkdir root/srcs/requirements/wordpress/conf
-touch root/srcs/requirements/wordpress/conf/wp-config-create.sh
-mkdir root/srcs/requirements/wordpress/tools
-touch root/srcs/requirements/wordpress/Dockerfile
-touch root/srcs/requirements/wordpress/.dockerignore
-echo ".git" > root/srcs/requirements/wordpress/.dockerignore
-```
+* создать папки, можно скриптом ./make_dirs.sh
 
 ```
 root/
