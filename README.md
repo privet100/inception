@@ -36,6 +36,7 @@
   + `ssh root@localhost -p 4243` на хостовой
 * в `/etc/hosts` добавляем `akostrik.42.fr`
 * создать папки, можно скриптом ./make_dirs.sh
+* для настройки можно пользоваться скриптом https://github.com/tblaase/inception/blob/main/inception_prep.sh 
 
 ```
 root/
@@ -462,3 +463,4 @@ https://www.php.net/manual/en/install.fpm.configuration.php
 [PHP configuration](https://www.php.net/manual/en/install.fpm.configuration.php)  
 https://github.com/codesshaman/inception  
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
+https://www.aquasec.com/cloud-native-academy/docker-container/docker-networking/ (!)  
