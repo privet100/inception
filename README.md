@@ -390,21 +390,20 @@ networks:
 `https://127.0.0.1` в браузере хостовой машины  
 Вбиваем нужные нам логин, пароль, имя сайта (akostrik, 2)  
 "Установить Wordpress"   
-Окошко с сообщением об успешной установке и предложением залогиниться   
-Попадаем на стартовую страницу чистого wordpress
+Сообщение об успешной установке и предложением залогиниться   
+Стартовая страницу чистого wordpress
 
 ## Makefile
-`make fclean` Перед сохранением в облако   
+`make fclean` перед сохранением в облако   
 `make build` развёртывание проекта  
 `make down` остановка  
 `make` запуск после остановки  
 
 At 42's computer:  
-* you should stop these services which are running by default (?):
-`sudo service nginx stop`  
-`sudo service mariadb stop`  
-`sudo service apache2 stop`  
-`sudo service mysql stop`  
+* to stop these services running by default (?):  
+`service nginx stop`  
+`service mariadb stop`  
+`service mysql stop`  
 
 ## Notes 
 * configure akostrik.42.fr point to your local IP address
