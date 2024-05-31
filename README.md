@@ -406,6 +406,8 @@ At 42's computer:
 
 ## Notes 
 * **убрать .env**
+* Before starting the evaluation, run
+  + `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null`
 * discord
   + остановидлсь на Ton env sera vierge par rapport à docker.
   + Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
