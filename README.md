@@ -427,9 +427,10 @@ At 42's computer:
 * 'docker volume ls' then 'docker volume inspect wordpress'
   + the result in the standard output contains the path '/home/akostrik/data/'
 * add a comment using the available WordPress user
-* sign in with the administrator account to access the Administration dashboard
+* WordPress database: 2 users, one of them being the administrator
   + the Admin username must not include 'admin' 'Admin' admin administrator Admin-login admin-123, etc
-* from the Administration dashboard, edit a page
+* sign in with the administrator account to access the Administration dashboard
+  + from the Administration dashboard, edit a page
   + verify on the website that the page has been updated
 * 'docker volume inspect mariadb'
   + the result in the standard output contains the path '/home/akostrik/data/'
