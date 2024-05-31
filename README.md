@@ -405,7 +405,7 @@ At 42's computer:
 `sudo service mysql stop`  
 
 ## Notes 
-* run `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null`
+* run `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null` **!**
 * configure akostrik.42.fr point to your local IP address
 * open `https://akostrik.42.fr` `https://akostrik.42.fr/`
 * you shouldn't be able to access `http://login.42.fr` `http://login.42.fr/`
