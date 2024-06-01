@@ -36,7 +36,8 @@
   + `mkcert akostrik.42.fr`
   + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
-* для настройки можно пользоваться скриптом https://github.com/tblaase/inception/blob/main/inception_prep.sh 
+* настройку можно автоматизировать скриптом https://github.com/tblaase/inception/blob/main/inception_prep.sh
+  + а также через Makefile, Dockerfile, docker-compose.yml? 
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ```
