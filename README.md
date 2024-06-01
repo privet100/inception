@@ -10,24 +10,23 @@
   + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` загружаем бинарник mkcert
   + `mv mkcert-v*-linux-amd64 mkcert` переименовываем 
   + `chmod a+x mkcert`
-  + `mv mkcert /usr/local/bin/` перемещаем mkcert в рабочую директорию
+  + `mv mkcert /usr/local/bin/` перемещаем в рабочую директорию
 * Пользователь
   + `adduser akostrik`
+  + `usermod -aG docker akostrik` добавим в группу docker 
   + `usermod -aG sudo akostrik`
-  + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL` возможность делать запросы под суперпользователем (sudo)
+  + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL` возможность sudo
     - либо то же самое с помощью visudo
-  + `usermod -aG docker akostrik` добавим пользователя в группу docker   
   + `groups akostrik` проверим
 * Порты
-  + траффик с хостовой на гостевую, по определённым портам с гостевой машины на хостовую
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:  
 ![Screenshot from 2024-05-31 21-47-48](https://github.com/privet100/inception/assets/22834202/70b3e159-365a-4f65-83e1-60d70d042cae)
   + `ufw enable`
   + `ufw allow 42` 42 для ssh, 443 для сайта (и 80, если будетм тестировать с http) 
   + `ufw status` проверить
 * ssh
-  + под суперпользователем `/etc/ssh/sshd_config`:      
-    `Port 42                    # меняем порт на 42, на школьном маке 22-й занят ssh хостовой машины`  
+  + `/etc/ssh/sshd_config`:      
+    `Port 42                    # меняем на 42, на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
     `PubkeyAuthentication`  
     `PasswordAuthentication yes # подтверждаем вход по паролю`  
