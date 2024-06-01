@@ -11,9 +11,11 @@
   + `mv mkcert-v*-linux-amd64 mkcert` переименовываем 
   + `chmod a+x mkcert`
   + `mv mkcert /usr/local/bin/` перемещаем mkcert в рабочую директорию
-* Пользователь 
-  + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL` возможность делать запросы под суперпользователем (через sudo)
+* Пользователь
+  + `qdduser akostrik`
+  + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL` возможность делать запросы под суперпользователем (sudo)
     - либо то же самое с помощью visudo
+    - либо то же самое с помощью `usermod -aG sudo akostrik` (?)
   + `usermod -aG docker akostrik` добавим пользователя в группу docker   
   + `groups akostrik` проверим
 * Порты
@@ -36,7 +38,7 @@
 * в `/etc/hosts` добавляем `akostrik.42.fr`
 * создать папки, можно скриптом ./make_dirs.sh
 * для настройки можно пользоваться скриптом https://github.com/tblaase/inception/blob/main/inception_prep.sh 
-* пароли: VM root 2, VM akostrik 22, mariadb akostrik 2 
+* пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ```
 root/
