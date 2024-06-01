@@ -3,7 +3,7 @@
 ## виртуальная машина
 * Создать витртуальную машину (папку в goinfre, оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше, формат VDI или VHD, динамический формат и 8 гигабайт под диск) 
 * скачиваем и устанавливаем [debian](https://www.debian.org/ "скачать debian")
-* под суперпользователем `apt update; apt install -y sudo ufw docker docker-compose make openbox xinit kitty firefox-esr`
+* `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
 * установка mkcert
   + `apt update -y` 
   + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
