@@ -56,7 +56,7 @@ root/
 │   │       └── tools/
 │   ├── .env
 │   └── docker-compose.yml                # calls dockerfiles
-└── Makefile                              # sets up the entire application, calls docker-compose.yml
+└── Makefile                              # sets up the app, calls docker-compose.yml
 ```
 
 ## контейнер Nginx
