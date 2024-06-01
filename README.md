@@ -4,13 +4,6 @@
 * Создать витртуальную машину (папку в goinfre, оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше, формат VDI или VHD, динамический формат и 8 гигабайт под диск) 
 * устанавливаем [debian](https://www.debian.org/ "скачать debian")
 * `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
-* установка mkcert
-  + `apt update -y` 
-  + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
-  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` загружаем бинарник mkcert
-  + `mv mkcert-v*-linux-amd64 mkcert` переименовываем 
-  + `chmod a+x mkcert`
-  + `mv mkcert /usr/local/bin/` перемещаем в рабочую директорию
 * Пользователь
   + `adduser akostrik`
   + `usermod -aG docker akostrik` добавим в группу docker 
@@ -32,6 +25,17 @@
   + `ssh root@localhost -p 4243` на хостовой
 * в `/etc/hosts` добавляем `akostrik.42.fr`
 * создать папки, можно скриптом ./make_dirs.sh
+* установка mkcert и сертификат
+  + `apt update -y` 
+  + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
+  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` загружаем бинарник mkcert
+  + `mv mkcert-v*-linux-amd64 mkcert` переименовываем 
+  + `chmod a+x mkcert`
+  + `mv mkcert /usr/local/bin/` перемещаем в рабочую директорию
+  + `cd ~/project/srcs/requirements/tools/`
+  + `mkcert akostrik.42.fr`
+  + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
+  + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
 * для настройки можно пользоваться скриптом https://github.com/tblaase/inception/blob/main/inception_prep.sh 
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
