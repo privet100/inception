@@ -16,14 +16,12 @@
   + `usermod -aG docker akostrik` добавим в группу docker 
   + `usermod -aG sudo akostrik`
   + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL` возможность sudo
-    - либо то же самое с помощью visudo
   + `groups akostrik` проверим
 * Порты
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:  
 ![Screenshot from 2024-05-31 21-47-48](https://github.com/privet100/inception/assets/22834202/70b3e159-365a-4f65-83e1-60d70d042cae)
   + `ufw enable`
   + `ufw allow 42` 42 для ssh, 443 для сайта (и 80, если будетм тестировать с http) 
-  + `ufw status` проверить
 * ssh
   + `/etc/ssh/sshd_config`:      
     `Port 42                    # меняем на 42, на школьном маке 22-й занят ssh хостовой машины`  
