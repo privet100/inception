@@ -12,10 +12,10 @@
   + `chmod a+x mkcert`
   + `mv mkcert /usr/local/bin/` перемещаем mkcert в рабочую директорию
 * Пользователь
-  + `qdduser akostrik`
+  + `adduser akostrik`
+  + `usermod -aG sudo akostrik`
   + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL` возможность делать запросы под суперпользователем (sudo)
     - либо то же самое с помощью visudo
-    - либо то же самое с помощью `usermod -aG sudo akostrik` (?)
   + `usermod -aG docker akostrik` добавим пользователя в группу docker   
   + `groups akostrik` проверим
 * Порты
