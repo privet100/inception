@@ -32,8 +32,6 @@
     `PubkeyAuthentication`  
     `PasswordAuthentication yes # подтверждаем вход по паролю`  
   + `service ssh restart` 
-  + `service ssh status` 
-  + если на хостовой машине в `~/.ssh/known_hosts` есть локальные записи (начинаются с `[localhost]`) и если есть проблемы со входом, то удалить их  
   + `ssh root@localhost -p 4243` на хостовой
 * в `/etc/hosts` добавляем `akostrik.42.fr`
 * создать папки, можно скриптом ./make_dirs.sh
