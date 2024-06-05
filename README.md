@@ -441,7 +441,6 @@ At 42's computer:
   + an explanation of docker-network
 * **убрать .env, test.sh**
 * discord
-  + остановидлсь на Ton env sera vierge par rapport à docker.
   + Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
   + Ok mais je comprend pas l'utilité de devoir link ce volume au containeur nginx
     - Le but c'est de vous simplifier votre config
@@ -449,7 +448,18 @@ At 42's computer:
   + Il faut automatiser le plus possible via tes containers
   + Tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
   + Du moment que tu ne te retrouves pas à faire du tail -f and co c'est déjà très bien crois moi
-  + Ton env sera vierge par rapport à docker.
+  + Ton env sera vierge par rapport à docker
+  + Le reste tu fais ce que tu veux on va clone ton projet et le lancer si ça fonctionne c'est bien sinon c'est 0
+  + https://nginx.org/en/docs/http/configuring_https_servers.html openssl pour la gen du certif
+  + tu dois forcer TLSv1.{2,3}
+  + je veux pas avoir d'entry point avec une boucle infini genre typiquement les scripts qui utilisent tall -f and co
+  + si le service exit de facon anormale, le container doit pouvoir se restart (d'ou l'interet du PID 1)
+  + t'as le choix de lancer php en daemon puis afficher du vide, ou lancer php puis afficher ses logs, à toi de trouver comment faire ça proprement
+  + Informes toi justement sur le PID 1 et tout ce qui en découle
+  + un moyen de vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 ? `top || ps`
+  + on peux faire docker-compose --env-file
+  + остановилась на: Hello, est ce que vous auriez des tutos ou docs a lire qui sont vraiment en rapport avec le sujet ? Je regarde un peu partout et je me perds completement.. Je voudrais commencer par installer nginx sous alpine dans un premier temps juste en http et ensuite https, j'ai l'impression que le configuration est plus complexe qu'avec debian ?
+
 * On the mac Apache service is installed by default
   + delete Apache from the computer to avoid any problem with nginx
 
