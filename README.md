@@ -508,7 +508,7 @@ At 42's computer:
   + delete Apache from the computer to avoid any problem with nginx
 
 https://github.com/jotavare/inception/blob/main/README.md (!)  
-https://github.com/codesshaman/inception (!) 
+https://github.com/codesshaman/inception (!)  
 https://github.com/rbiodies/Inception?tab=readme-ov-file  
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
 [WordPress NGINX,PHP-FPM MariaDB](https://www.php.net/manual/en/install.fpm.configuration.php)  
