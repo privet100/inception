@@ -522,5 +522,6 @@ https://www.internetsociety.org/deploy360/tls/basics/
 [wordpress](https://make.wordpress.org/hosting/handbook/server-environment)   
 https://www.php.net/manual/en/install.fpm.configuration.php  
 [PHP configuration](https://www.php.net/manual/en/install.fpm.configuration.php)   
-https://admin812.ru/razvertyvanie-wordpress-s-nginx-php-fpm-i-mariadb-s-pomoshhyu-docker-compose.html  
+https://admin812.ru/razvertyvanie-wordpress-s-nginx-php-fpm-i-mariadb-s-pomoshhyu-docker-compose.html   
+https://docs.docker.com/build/building/best-practices/#run  
 
