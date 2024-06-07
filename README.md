@@ -480,8 +480,11 @@ At 42's computer:
     - est-ce que tu vas vraiment gagner quelque chose a pouvoir passer des arguments au scrip
     - pour les parametres de ce que j'ai pu voir la pratique repandue c'est plus avec variables d'env
     -  ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
-  + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose. Comme une fonction en C tu peux faire un programme avec uniquement un main ou faire des fonctions. Ben docker c'est pareil. Tu utilises docker-compose qui permet d'avoir la possibilité de link simplement tes services donc utilise ça. 
-  + остановилась на: Et puis j’y pense ce matin, mais mettons que tu build une image adminer pour un usage générique, tu vas bien devoir servir le fichier php. Quand j’ai build mon image adminer c’était un peu dans cette idée, après c’est vrai qu’en se limitant au scope du projet ben techniquement on en a pas besoin
+  + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose. Comme une fonction en C tu peux faire un programme avec uniquement un main ou faire des fonctions. Ben docker c'est pareil. Tu utilises docker-compose qui permet d'avoir la possibilité de link simplement tes services donc utilise ça.
+  + Tu as pas mal d'image distroless and co. Ici je ne demande pas ça.
+  + le PID 1 sur un systeme c’est systemd si je ne m’abuse par contre dans un container c’est différent il ne peux pas y avoir de systemd je crois
+    - Na mais je ne te demande pas ça à toi spécifiquement (no stress) juste que si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout 
+  + остановилась на:  Na mais je ne te demande pas ça à toi spécifiquement (no stress) juste que si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
 * On the mac Apache service is installed by default
   + delete Apache from the computer to avoid any problem with nginx
 
