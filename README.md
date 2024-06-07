@@ -9,8 +9,7 @@
   + `adduser akostrik`
   + `usermod -aG docker akostrik` добавим в группу docker 
   + `usermod -aG sudo akostrik`
-  + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL` возможность sudo
-  + `groups akostrik` проверим
+  + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL`
 * Порты
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:  
 ![Screenshot from 2024-05-31 21-47-48](https://github.com/privet100/inception/assets/22834202/70b3e159-365a-4f65-83e1-60d70d042cae)
@@ -18,16 +17,15 @@
   + `ufw allow 4242` ssh 
   + `ufw allow 80` если будетм тестировать http 
   + `ufw allow 443` https = port SSL
-  + ouverir comme port d’écoute
+  + ouvrir comme port d’écoute
 * le certificat SSL n’a pas été signé par Trusted Authority
   + le navigateur affiche un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
   + ne pouvons rien y faire quand il s’agit d’un projet en local et encore moins avec un certificat généré par OpenSSL
-* `/etc/hosts`  afin qu’il pointe vers votre adresse IP locale
+* `/etc/hosts`
   + localhost = 127.0.0.1
   + akostrik.42.fr = 127.0.0.1
-  + un fichier très visé par les hackers, il permettrait de rediriger google.fr -> un faux google
-  + **modifier cet IP dans le fichier de conf de NGINX dans la case server_name**
-  +  modifier cet IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
+  + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
+  +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
 * ssh
   + **/etc/ssh/sshd_config**:      
     `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
@@ -36,9 +34,8 @@
     `PasswordAuthentication yes # подтверждаем вход по паролю`  
   + `service ssh restart`
   + `service sshd restart`
-  + `service ssh status`
   + `ssh root@localhost -p 4242` на хостовой
-* ` ./make_dirs.sh` создать папки
+* `./make_dirs.sh` создать папки
 * установка mkcert и сертификат
   + `apt update -y` 
   + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
@@ -50,8 +47,8 @@
   + `mkcert akostrik.42.fr`
   + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
-* настройку можно автоматизировать скриптом https://github.com/tblaase/inception/blob/main/inception_prep.sh
-  + а также через Makefile, Dockerfile, docker-compose.yml? 
+* `https://github.com/tblaase/inception/blob/main/inception_prep.sh` можно автоматизировать настройку
+  + а также через Makefile, Dockerfile, docker-compose.yml ? 
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ```
