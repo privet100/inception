@@ -419,10 +419,7 @@ At 42's computer:
 `service mysql stop`  
 
 ## Notes 
-* configure akostrik.42.fr point to your local IP address
 * open `https://akostrik.42.fr`
-* NGINX is accessed by port 443 only
-* you shouldn't be able to access `http://login.42.fr`, no access ia http (port 80)
 * TLS **v1.2/v1.3** certificate
 * your volumes will be available in `/home/login/data` folder of the host machine using Docker
 * docker-network is used by checking the docker-compose.yml
@@ -437,7 +434,6 @@ At 42's computer:
   + verify on the website that the page has been updated
 * 'docker volume inspect mariadb'
   + the result contains '/home/akostrik/data/'
-* explain how to login into the database
 * the database is not empty
 * run `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null` **!**
 * reboot the VM and launch compose again
@@ -445,6 +441,7 @@ At 42's computer:
   + both WordPress and MariaDB are configured
   + the changes you made previously to the WordPress website should still be here
 * explain
+  + how to login into the database
   + How Docker and docker compose work
   + The difference between a Docker image used with docker compose and without docker compose
   + The benefit of Docker compared to VMs
@@ -452,40 +449,36 @@ At 42's computer:
   + an explanation of docker-network
 * **убрать .env, test.sh**
 * discord
-  + Ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
-  + Ok mais je comprend pas l'utilité de devoir link ce volume au containeur nginx
+  + ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
+  + je comprend pas l'utilité de devoir link ce volume au containeur nginx
     - Le but c'est de vous simplifier votre config
   + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp... https://developer.wordpress.org/cli/commands/
-  + Il faut automatiser le plus possible via tes containers
-  + Tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
-  + Du moment que tu ne te retrouves pas à faire du tail -f and co c'est déjà très bien crois moi
+  + automatiser le plus possible via tes containers
+  + tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
   + Ton env sera vierge par rapport à docker
-  + Le reste tu fais ce que tu veux on va clone ton projet et le lancer si ça fonctionne c'est bien sinon c'est 0
+  + on va clone ton projet et le lancer si ça fonctionne c'est bien, sinon c'est 0
   + https://nginx.org/en/docs/http/configuring_https_servers.html openssl pour la gen du certif
-  + tu dois forcer TLSv1.{2,3}
-  + je veux pas avoir d'entry point avec une boucle infini genre typiquement les scripts qui utilisent tall -f and co
-  + si le service exit de facon anormale, le container doit pouvoir se restart (d'ou l'interet du PID 1)
-  + t'as le choix de lancer php en daemon puis afficher du vide, ou lancer php puis afficher ses logs, à toi de trouver comment faire ça proprement
-  + Informes toi justement sur le PID 1 et tout ce qui en découle
-  + un moyen de vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 ? `top || ps`
-  + on peux faire docker-compose --env-file
-  + quand je lance mes containers (avec debian:buster), il n'ya pas de repertoire var/www/ dedans... mais si je me souviens bien quand j'ai fait ft_server, var/www + var/www/html ont été crée automatiquement je pense 🤔\
-    - /var/www/ tu veux dire ? Au hasard tu as surement mal config un truc. Va dans ton image au pire et regarde ce qu'il se passe.
-  + est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ? Ou bien alors c'est considéré comme étant une commande faisant tourner une boucle inf?
+  + TLSv1.{2,3}
+  + pas d'entry point avec une boucle infini genre typiquement les scripts qui utilisent tall -f and co
+  + si le service exit de facon anormale, le container doit pouvoir se restart (**d'ou l'interet du PID 1**)
+    - informes toi sur le PID 1 et tout ce qui en découle
+    - un moyen de vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 ? `top || ps`
+  + t'as le choix de lancer php en daemon puis afficher du vide, ou lancer php puis afficher ses logs
+  + docker-compose --env-file
+  + est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ?
     - Tu connais ENTRYPOINT ?
-    - Et surtout pour toi c'est quoi la différence entre ENTRYPOINT et CMD ?
-    - 2 links pour comprendre puisque ça peut être tricky
+    - c'est quoi la différence entre ENTRYPOINT et CMD ?
     - https://www.bmc.com/blogs/docker-cmd-vs-entrypoint/ (y'a un truc faux ou pas à jour, contrairement à ce qui est dit l'entrypoint peut bien être modifié au runtime, en cli ou via docker-compose) 
     - surtout https://sysdig.com/blog/dockerfile-best-practices/ même si vous n'utilisez pas d'image distroless
     - https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
-    - Sinon pour les commands infini je pense surtout aux tail -f /dev/random and co ça va de soit.
-    - Dans un premier temps tu es dans la bonne direction
-  + CMD permet de définir une commande par défaut que l'on peut override tandis que ENTRYPOINT permet de définir un exécutable comme point d'entrée que l'on ne peut donc pas override
-    - D'accord et donc dans ce cas à quel moment tu penses il est bien d'utiliser CMD ou ENTRYPOINT ou les deux ?
+    - Sinon pour les commands infini je pense surtout aux tail -f /dev/random and co ça va de soit
+  + CMD = définir une commande par défaut que l'on peut override
     - lorsque tu utilises CMD utilise plutôt CMD ["executable", "params…"] pareil pour les COPY etc c'est plus propre et lisible ! 
-  + on peux utiliser ENTRYPOINT afin de définir un process par défaut
-  + CMD  en tant que paramètre par défaut, par exemple: `CMD ["--help"], ENTRYPOINT ["ping"]`
-  + si je run mon image sans lui donner d'argument c'est ping --help qui va se lancer tandis que si je run mon image en lui donnant par exemple google.fr, c'est ping google.fr qui va se lancer.
+    - CMD en tant que paramètre par défaut, par exemple: `CMD ["--help"], ENTRYPOINT ["ping"]`
+  + ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override
+    - on peux utiliser ENTRYPOINT afin de définir un process par défaut
+  + si je run mon image sans lui donner d'argument c'est ping --help qui va se lancer
+  + si je run mon image en lui donnant google.fr, c'est ping google.fr qui va se lancer
   + Tu peux même avoir des trucs genre : ENTRYPOINT ["echo", "Hello"]CMD ["hehe"]
   + faire un script en entrypoint qui récupère éventuellement les arguments que je pourrais donner avec un docker run, dans lequel je vais pouvoir faire ce dont j'ai besoin au runtime et qui finirait par exemple par un  exec /usr/sbin/php-fpm7.3 --nodaemonize afin de "remplacer" mon script par php-fpm (qui conserverait donc bien le PID 1 et qui pourrais donc catch comme il faut les signaux)
     - est-ce que tu vas vraiment gagner quelque chose a pouvoir passer des arguments au scrip
