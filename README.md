@@ -15,6 +15,19 @@
 ![Screenshot from 2024-05-31 21-47-48](https://github.com/privet100/inception/assets/22834202/70b3e159-365a-4f65-83e1-60d70d042cae)
   + `ufw enable`
   + `ufw allow 42` 42 для ssh, 443 для сайта (и 80, если будетм тестировать с http) 
+  + ouverir comme port d’écoute
+  + 443 = port SSL, nous devons nous y connecter en utilisant `https://`
+  + selon votre navigateur, celui-ci devrait afficher un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
+    - le certificat SSL n’a pas été signé par Trusted Authority
+    - ne pouvons rien y faire quand il s’agit d’un projet en local et encore moins avec un certificat généré par OpenSSL.
+    - nous pouvons entrer sur le site
+  + configurer votre nom de domaine akostrik.42.fr afin qu’il pointe vers votre adresse IP locale
+    - vous pouvez déjà accéder au site depuis localhost, qui (ce mot) redirige en fait sur l’IP 127.0.0.1, sans vous le dire, mais tout cela est en fait écrit dans `/etc/hosts `
+    - `/etc/hosts ` il vous faudra l’éditer avec un  sudo 
+    - un fichier très visé par les hackers, il permettrait de vous rediriger facilement sur un faux google quand vous tapez google.fr
+    - la redirection de 127.0.0.1 sur akostrik.42.fr
+    - n’oubliez pas de modifier cet IP dans le fichier de conf de NGINX dans la case server_name
+    - le mieux serait de le faire aussi dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
 * ssh
   + `/etc/ssh/sshd_config`:      
     `Port 42                    # меняем на 42, на школьном маке 22-й занят ssh хостовой машины`  
