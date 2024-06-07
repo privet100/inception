@@ -454,6 +454,7 @@ At 42's computer:
   + The benefit of Docker compared to VMs
   + The pertinence of the directory structure required for this project
   + an explanation of docker-network
+  + Read about how daemons work and whether it’s a good idea to use them or not
 * **убрать .env, test.sh**
 * discord
   + ca sera a ton container nginx de passer les requetes a php-fpm pour executer le php
