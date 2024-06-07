@@ -3,8 +3,9 @@
 ## виртуальная машина
 * Создать витртуальную машину (папку в goinfre, оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше, формат VDI или VHD, динамический формат и 8 гигабайт под диск) 
 * устанавливаем [debian](https://www.debian.org/ "скачать debian")
-* `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
-* Пользователь
+* `apt update`
+* `apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
+* user
   + `adduser akostrik`
   + `usermod -aG docker akostrik` добавим в группу docker 
   + `usermod -aG sudo akostrik`
@@ -14,27 +15,30 @@
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:  
 ![Screenshot from 2024-05-31 21-47-48](https://github.com/privet100/inception/assets/22834202/70b3e159-365a-4f65-83e1-60d70d042cae)
   + `ufw enable`
-  + `ufw allow 42` 42 для ssh, 443 для сайта (и 80, если будетм тестировать с http) 
+  + `ufw allow 4242` ssh 
+  + `ufw allow 80` если будетм тестировать http 
+  + `ufw allow 443` https = port SSL
   + ouverir comme port d’écoute
-  + 443 = port SSL, nous devons nous y connecter en utilisant `https://`
-* le navigateur affiche un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
-  + le certificat SSL n’a pas été signé par Trusted Authority
-  + ne pouvons rien y faire quand il s’agit d’un projet en local et encore moins avec un certificat généré par OpenSSL.
+* le certificat SSL n’a pas été signé par Trusted Authority
+  + le navigateur affiche un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
+  + ne pouvons rien y faire quand il s’agit d’un projet en local et encore moins avec un certificat généré par OpenSSL
 * `/etc/hosts`  afin qu’il pointe vers votre adresse IP locale
-  + localhost = 127.0.0.1, akostrik.42.fr = 127.0.0.1
+  + localhost = 127.0.0.1
+  + akostrik.42.fr = 127.0.0.1
   + un fichier très visé par les hackers, il permettrait de rediriger google.fr -> un faux google
   + **modifier cet IP dans le fichier de conf de NGINX dans la case server_name**
   +  modifier cet IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
 * ssh
-  + `/etc/ssh/sshd_config`:      
-    `Port 42                    # меняем на 42, на школьном маке 22-й занят ssh хостовой машины`  
+  + **/etc/ssh/sshd_config**:      
+    `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
     `PubkeyAuthentication`  
     `PasswordAuthentication yes # подтверждаем вход по паролю`  
-  + `service ssh restart` 
-  + `ssh root@localhost -p 4243` на хостовой
-* в `/etc/hosts` добавляем `akostrik.42.fr`
-* создать папки, можно скриптом ./make_dirs.sh
+  + `service ssh restart`
+  + `service sshd restart`
+  + `service ssh status`
+  + `ssh root@localhost -p 4242` на хостовой
+* ` ./make_dirs.sh` создать папки
 * установка mkcert и сертификат
   + `apt update -y` 
   + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
