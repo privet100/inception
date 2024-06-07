@@ -38,6 +38,7 @@
   + `service ssh restart`
   + `service sshd restart`
   + `ssh root@localhost -p 4242` на хостовой
+  + `ssh -v akostrik@localhost -p 4243`
 * `./make_dirs.sh` создать папки
 * установка mkcert и сертификат
   + `apt update -y` 
