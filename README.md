@@ -13,11 +13,13 @@
 * Порты
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:  
 ![Screenshot from 2024-05-31 21-47-48](https://github.com/privet100/inception/assets/22834202/70b3e159-365a-4f65-83e1-60d70d042cae)
+
 | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
 | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
 | `ssh`   | `TCP`    | `127.0.0.1` | `4242`       | `10.0.2.15` | `4242`       |
 | `http`  | `TCP`    |             | `80`         |             | `80`         |
 | `https` | `TCP`    |             | `443`        |             | `443`        |
+
   + `ufw enable`
   + `ufw allow 4242` ssh 
   + `ufw allow 80` если будетм тестировать http 
