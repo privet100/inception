@@ -496,8 +496,16 @@ At 42's computer:
   + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose. Comme une fonction en C tu peux faire un programme avec uniquement un main ou faire des fonctions. Ben docker c'est pareil. Tu utilises docker-compose qui permet d'avoir la possibilité de link simplement tes services donc utilise ça.
   + Tu as pas mal d'image distroless and co. Ici je ne demande pas ça.
   + le PID 1 sur un systeme c’est systemd si je ne m’abuse par contre dans un container c’est différent il ne peux pas y avoir de systemd je crois
-    - Na mais je ne te demande pas ça à toi spécifiquement (no stress) juste que si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout 
-  + остановилась на:  Na mais je ne te demande pas ça à toi spécifiquement (no stress) juste que si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
+    - Na mais je ne te demande pas ça à toi spécifiquement (no stress) juste que si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
+  + le PID 1 sur un systeme c’est systemd, dans un container c’est différent, il ne peux pas y avoir de systemd
+  + voir systemctl sur nginx m'a fait du mal
+    - systemctl start nginx dans un container n’est pas possible
+    - possible techniquement mais c'est pas dingue
+  + Les images officielles de nginx, mariadb, etc, sont en effet de très bonnes inspirations
+  + Tu connais les différences entre RUN CMD ENTRYPOINT ?
+  + tu connais le flag init sur docker ?
+  + 'fin faut pas regarder des images docker si tu sais pas définir ce que je viens de demander. Faut manger de la doc avant tout. ça te parle ['sh', 'test.sh'] vs sh /opt/test.sh ? '
+  + остановилась: Faut manger de la doc avant tout
 * On the mac Apache service is installed by default
   + delete Apache from the computer to avoid any problem with nginx
 
@@ -513,4 +521,6 @@ https://www.php.net/manual/en/install.fpm.configuration.php
 [PHP configuration](https://www.php.net/manual/en/install.fpm.configuration.php)  
 https://github.com/codesshaman/inception  
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
-https://www.aquasec.com/cloud-native-academy/docker-container/docker-networking/ (!)  
+https://www.aquasec.com/cloud-native-academy/docker-container/docker-networking/ (!)   
+https://cloud.google.com/architecture/best-practices-for-building-containers  
+
