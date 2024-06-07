@@ -489,6 +489,7 @@ At 42's computer:
   + delete Apache from the computer to avoid any problem with nginx
 
 https://github.com/privet100/general-culture/blob/main/docker.md  
+https://github.com/rbiodies/Inception?tab=readme-ov-file  
 https://www.internetsociety.org/deploy360/tls/basics/  
 https://admin812.ru/razvertyvanie-wordpress-s-nginx-php-fpm-i-mariadb-s-pomoshhyu-docker-compose.html
 [WordPress Deployment with NGINX, PHP-FPM and MariaDB using Docker Compose](https://www.php.net/manual/en/install.fpm.configuration.php)  
