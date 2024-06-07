@@ -428,7 +428,7 @@ At 42's computer:
 ## Notes 
 * open `https://akostrik.42.fr`
 * TLS **v1.2/v1.3** certificate
-* your volumes will be available in `/home/login/data` folder of the host machine using Docker
+* your volumes will be available in `/home/akostrik/data` folder of the host machine using Docker
 * docker-network is used by checking the docker-compose.yml
   + 'docker network ls' to verify the network 
 * 'docker volume ls', 'docker volume inspect wordpress'
