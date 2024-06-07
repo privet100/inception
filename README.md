@@ -458,8 +458,30 @@ At 42's computer:
   + Informes toi justement sur le PID 1 et tout ce qui en découle
   + un moyen de vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 ? `top || ps`
   + on peux faire docker-compose --env-file
-  + остановилась на: Hello, est ce que vous auriez des tutos ou docs a lire qui sont vraiment en rapport avec le sujet ? Je regarde un peu partout et je me perds completement.. Je voudrais commencer par installer nginx sous alpine dans un premier temps juste en http et ensuite https, j'ai l'impression que le configuration est plus complexe qu'avec debian ?
-
+  + quand je lance mes containers (avec debian:buster), il n'ya pas de repertoire var/www/ dedans... mais si je me souviens bien quand j'ai fait ft_server, var/www + var/www/html ont été crée automatiquement je pense 🤔\
+    - /var/www/ tu veux dire ? Au hasard tu as surement mal config un truc. Va dans ton image au pire et regarde ce qu'il se passe.
+  + est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ? Ou bien alors c'est considéré comme étant une commande faisant tourner une boucle inf?
+    - Tu connais ENTRYPOINT ?
+    - Et surtout pour toi c'est quoi la différence entre ENTRYPOINT et CMD ?
+    - 2 links pour comprendre puisque ça peut être tricky
+    - https://www.bmc.com/blogs/docker-cmd-vs-entrypoint/ (y'a un truc faux ou pas à jour, contrairement à ce qui est dit l'entrypoint peut bien être modifié au runtime, en cli ou via docker-compose) 
+    - surtout https://sysdig.com/blog/dockerfile-best-practices/ même si vous n'utilisez pas d'image distroless
+    - https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
+    - Sinon pour les commands infini je pense surtout aux tail -f /dev/random and co ça va de soit.
+    - Dans un premier temps tu es dans la bonne direction
+  + CMD permet de définir une commande par défaut que l'on peut override tandis que ENTRYPOINT permet de définir un exécutable comme point d'entrée que l'on ne peut donc pas override
+    - D'accord et donc dans ce cas à quel moment tu penses il est bien d'utiliser CMD ou ENTRYPOINT ou les deux ?
+    - lorsque tu utilises CMD utilise plutôt CMD ["executable", "params…"] pareil pour les COPY etc c'est plus propre et lisible ! 
+  + on peux utiliser ENTRYPOINT afin de définir un process par défaut
+  + CMD  en tant que paramètre par défaut, par exemple: `CMD ["--help"], ENTRYPOINT ["ping"]`
+  + si je run mon image sans lui donner d'argument c'est ping --help qui va se lancer tandis que si je run mon image en lui donnant par exemple google.fr, c'est ping google.fr qui va se lancer.
+  + Tu peux même avoir des trucs genre : ENTRYPOINT ["echo", "Hello"]CMD ["hehe"]
+  + faire un script en entrypoint qui récupère éventuellement les arguments que je pourrais donner avec un docker run, dans lequel je vais pouvoir faire ce dont j'ai besoin au runtime et qui finirait par exemple par un  exec /usr/sbin/php-fpm7.3 --nodaemonize afin de "remplacer" mon script par php-fpm (qui conserverait donc bien le PID 1 et qui pourrais donc catch comme il faut les signaux)
+    - est-ce que tu vas vraiment gagner quelque chose a pouvoir passer des arguments au scrip
+    - pour les parametres de ce que j'ai pu voir la pratique repandue c'est plus avec variables d'env
+    -  ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
+  + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose. Comme une fonction en C tu peux faire un programme avec uniquement un main ou faire des fonctions. Ben docker c'est pareil. Tu utilises docker-compose qui permet d'avoir la possibilité de link simplement tes services donc utilise ça. 
+  + остановилась на: Et puis j’y pense ce matin, mais mettons que tu build une image adminer pour un usage générique, tu vas bien devoir servir le fichier php. Quand j’ai build mon image adminer c’était un peu dans cette idée, après c’est vrai qu’en se limitant au scope du projet ben techniquement on en a pas besoin
 * On the mac Apache service is installed by default
   + delete Apache from the computer to avoid any problem with nginx
 
