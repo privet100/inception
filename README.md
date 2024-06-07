@@ -507,7 +507,7 @@ At 42's computer:
 * On the mac Apache service is installed by default
   + delete Apache from the computer to avoid any problem with nginx
 
-https://github.com/jotavare/inception/blob/main/README.md (!)  
+https://github.com/jotavare/inception/blob/main/README.md - хорошо описан пробный сайт, с хостовой не работает  
 https://github.com/codesshaman/inception (!)  
 https://github.com/rbiodies/Inception?tab=readme-ov-file  
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
