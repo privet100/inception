@@ -1,7 +1,7 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
-## виртуальная машина
-* Создать витртуальную машину (папку в goinfre, оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше, формат VDI или VHD, динамический формат и 8 гигабайт под диск) 
+## VM
+* создать VM (папку в goinfre, оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше, формат VDI или VHD, динамический формат и 8 гигабайт под диск) 
 * устанавливаем [debian](https://www.debian.org/ "скачать debian")
 * `apt update`
 * `apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
@@ -424,6 +424,15 @@ At 42's computer:
 `service nginx stop`  
 `service mariadb stop`  
 `service mysql stop`  
+
+## VM vs docker
+| Virtual Machine                                  | Docker                                                           |
+| ------------------------------------------------ | ---------------------------------------------------------------- |
+| a lot of memory space                            | a lot less memory space                                          |
+| long time to boot up                             | quick boot up because it uses the running kernel that you using  |
+| difficult to scale up                            | super easy to scale                                              |
+| low efficiency                                   | high efficiency                                                  |
+| volumes storage cannot be shared across the VM’s | volumes storage can be shared across the host and the containers |
 
 ## Notes 
 * open `https://akostrik.42.fr`
