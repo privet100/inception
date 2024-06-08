@@ -504,7 +504,10 @@ At 42's computer:
   + Tu connais les différences entre RUN CMD ENTRYPOINT ?
   + tu connais le flag init sur docker ?
   + 'fin faut pas regarder des images docker si tu sais pas définir ce que je viens de demander. Faut manger de la doc avant tout. ça te parle ['sh', 'test.sh'] vs sh /opt/test.sh ? '
-  + остановилась: Faut manger de la doc avant tout
+  + faut voir docker compose comme un simple wrapper build au dessus de docker 
+  + повтор: les Shared Folders de la VM ou qu'un serveur SSH mal configuré sur la VM peuvent poser problème
+  + повтор: **Est ce qu'il faut avoir accès à login.42.fr sur la machine physique Ou uniquement virtuel?**
+  + остановилась: Pour comprendre la toute base de k8s dans la vie de tout les jours ça se chiffre en mois d'apprentissage intensif.
 * On the mac Apache service is installed by default
   + delete Apache from the computer to avoid any problem with nginx
 
