@@ -12,16 +12,12 @@
   + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL`
 * Порты
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:  
-![Screenshot from 2024-05-31 21-47-48](https://github.com/privet100/inception/assets/22834202/70b3e159-365a-4f65-83e1-60d70d042cae)
-
 | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
 | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-| `ssh`   | `TCP`    | `127.0.0.1` | `4244`       | `10.0.2.15` | `4244`       |
-| `ssh`   | `TCP`    |             | `4244`       |             | `4244`       |
+| `ssh`   | `TCP`    | `127.0.0.1` | `2222`       | `10.0.2.15` | `22`         |
 
-  + `ufw enable`
-  + `ufw allow 4242` ssh 
-  + `ufw allow 80` если будетм тестировать http 
+  + `ufw enable` 
+  + `ufw allow 22` ssh 
   + `ufw allow 443` https = port SSL
 * `/etc/hosts`
   + localhost = 127.0.0.1
@@ -29,15 +25,13 @@
   + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
   +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
 * ssh
-  + **/etc/ssh/sshd_config**:      
+  + **/etc/ssh/sshd_config**:      // без этого пункта работает
     `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
     `PubkeyAuthentication`  
     `PasswordAuthentication yes # подтверждаем вход по паролю`  
-  + `service ssh restart`
-  + `service sshd restart`
-  + `ssh root@localhost -p 4242` на хостовой
-  + `ssh -v akostrik@localhost -p 4243`
+  + `service ssh restart` // без этого пункта работает
+  + `ssh akostrik@localhost -p 2222` на хостовой
 * `./make_dirs.sh` создать папки
 * установка mkcert и сертификат
   + `apt update -y` 
