@@ -513,7 +513,6 @@ At 42's computer:
   + delete Apache from the computer to avoid any problem with nginx
 
 https://github.com/Forstman1/inception-42    
-https://github.com/jotavare/inception  
 https://github.com/codesshaman/inception  
 https://github.com/rbiodies/Inception   
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
