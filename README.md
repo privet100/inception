@@ -40,7 +40,7 @@
   + `mv mkcert-v*-linux-amd64 mkcert` переименовываем 
   + `chmod a+x mkcert`
   + `mv mkcert /usr/local/bin/` перемещаем в рабочую директорию
-  + `cd ~/project/srcs/requirements/tools/`
+  + `cd ~/project/srcs/requirements/nginx/tools/`
   + `mkcert akostrik.42.fr`
   + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
