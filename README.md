@@ -25,7 +25,7 @@
   + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
   +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
 * ssh
-  + **/etc/ssh/sshd_config**:      // без этого пункта работает
+  + **/etc/ssh/sshd_config**:      // без этого пункта работает   
     `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
     `PubkeyAuthentication`  
