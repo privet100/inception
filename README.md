@@ -512,20 +512,18 @@ At 42's computer:
 * On the mac Apache service is installed by default
   + delete Apache from the computer to avoid any problem with nginx
 
-https://github.com/jotavare/inception/blob/main/README.md - хорошо описан пробный сайт, с хостовой не работает  
-https://github.com/codesshaman/inception (!)  
-https://github.com/rbiodies/Inception?tab=readme-ov-file  
+https://github.com/Forstman1/inception-42    
+https://github.com/jotavare/inception  
+https://github.com/codesshaman/inception  
+https://github.com/rbiodies/Inception   
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
 [WordPress NGINX,PHP-FPM MariaDB](https://www.php.net/manual/en/install.fpm.configuration.php)  
 [WordPress NGINX,PHP-FPM MariaDB](https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a)  
 https://tuto.grademe.fr/inception/  
-[docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://cloud.google.com/architecture/best-practices-for-building-containers  
 https://www.aquasec.com/cloud-native-academy/docker-container/docker-networking/ (!)   
 https://www.internetsociety.org/deploy360/tls/basics/   
 [wordpress](https://make.wordpress.org/hosting/handbook/server-environment)   
 https://www.php.net/manual/en/install.fpm.configuration.php  
 [PHP configuration](https://www.php.net/manual/en/install.fpm.configuration.php)   
-https://admin812.ru/razvertyvanie-wordpress-s-nginx-php-fpm-i-mariadb-s-pomoshhyu-docker-compose.html   
-https://docs.docker.com/build/building/best-practices/#run  
-
+https://admin812.ru/razvertyvanie-wordpress-s-nginx-php-fpm-i-mariadb-s-pomoshhyu-docker-compose.html
