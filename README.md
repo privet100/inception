@@ -21,8 +21,7 @@
   + `ufw allow 22` ssh 
   + `ufw allow 443` https = port SSL
 * `/etc/hosts`
-  + localhost = 127.0.0.1
-  + akostrik.42.fr = 127.0.0.1
+  + 127.0.0.1  localhost akostrik.42.fr
   + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
   +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
 * ssh
