@@ -11,7 +11,8 @@
   + `usermod -aG sudo akostrik`
   + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL`
 * Порты
-  + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:  
+  + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
+
 | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
 | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
 | `ssh`   | `TCP`    | `127.0.0.1` | `2222`       | `10.0.2.15` | `22`         |
