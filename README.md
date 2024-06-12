@@ -46,7 +46,6 @@
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
   + le certificat SSL n’a pas été signé par Trusted Authority
     - le navigateur affiche un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
-    - ne pouvons rien y faire quand il s’agit d’un projet en local et encore moins avec un certificat généré par OpenSSL
 * `https://github.com/tblaase/inception/blob/main/inception_prep.sh` можно автоматизировать настройку
   + а также через Makefile, Dockerfile, docker-compose.yml ? 
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
