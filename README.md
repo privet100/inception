@@ -1,7 +1,12 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
 ## VM
-* создать VM (папку в goinfre, оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше, формат VDI или VHD, динамический формат и 8 гигабайт под диск) 
+* создать VM
+  + папку в sgoinfre
+  + оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше
+  + формат VDI или VHD
+  + динамический формат
+  + 8 гигабайт под диск 
 * устанавливаем [debian](https://www.debian.org/ "скачать debian")
 * `apt update`
 * `apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
