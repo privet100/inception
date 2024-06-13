@@ -51,8 +51,10 @@
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
   + le certificat SSL n’a pas été signé par Trusted Authority
     - le navigateur affiche un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
-* `https://github.com/tblaase/inception/blob/main/inception_prep.sh` можно автоматизировать настройку
-  + а также через Makefile, Dockerfile, docker-compose.yml ? 
+* `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I didn't own the unix socket, so I chowned it
+* автоматизировать настройку
+  + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
+  + также через Makefile, Dockerfile, docker-compose.yml ? 
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ```
