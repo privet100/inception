@@ -64,14 +64,14 @@ root/
 │   │   ├── nginx/
 │   │   │   ├── conf/nginx.conf  
 │   │   │   ├── Dockerfile                # builds a Docker image
-│   │   │   └── tools/                    # папка для ключей
+│   │   │   └── tools/                    # ключи
 │   │   ├── mariadb/
 │   │   │   ├── conf/create_db.sh         # скрипт, создающий БД   
 │   │   │   └── Dockerfile                # builds a Docker image
 │   │   └── wordpress/
 │   │       ├── conf/wp-config-create.sh  # конфиг соединит нас с контейнером БД    
 │   │       ├── Dockerfile                # builds a Docker image
-│   │       └── tools/
+│   │       └── tools/make_dir.sh
 │   ├── .env
 │   └── docker-compose.yml                # calls dockerfiles
 └── Makefile                              # sets up the app, calls docker-compose.yml
