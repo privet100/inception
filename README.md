@@ -122,12 +122,12 @@ services:
       context: .
       dockerfile: requirements/nginx/Dockerfile
     container_name: nginx
-    depends_on:  # NEW wordpress не запустится, пока контейнер с базой данных не соберётся
+    depends_on:  
       - wordpress
     ports:
       - "443:443"
-    networks:    # the network line 
-      - inception # все контейнеры в docker-compose или конфигурации которых находятся в одной папке, автоматически объединяются в сеть, но чтобы сеть была доступна по имени, вдобавок к дефолтной собственную сеть
+    networks: # чтобы сеть стала доступна по имени (все контейнеры в docker-compose или конфигурации которых в одной папке, автоматически объединяются в сеть)
+      - inception 
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools:/etc/nginx/ssl/
