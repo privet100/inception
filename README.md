@@ -184,34 +184,68 @@ networks:
 
 ### nginx/Dockerfile  
 ```
-FROM alpine:3.19                                          # смотрим версию https://www.alpinelinux.org/ (нельзя alpine:latest) 
-RUN apk update && apk upgrade && apk add --no-cache nginx # установить софт, --no-cache nginx = не сохраняя исходники в кэше
+FROM alpine:3.19                                          # версия https://www.alpinelinux.org/ (нельзя alpine:latest) 
+RUN apk update && apk upgrade && apk add --no-cache nginx # --no-cache nginx = не сохраняя исходники в кэше
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]                        # для отладки запускаем nginx напрямую (не демон) => логи напрямую в tty контейнера
 ```
 
-nginx.conf:  
+## mariadb/Dockerfile
 ```
-server {
-  listen              443 ssl;                           # 443 поддерживает только https-протокол
-  server_name         akostrik.42.fr www.akostrik.42.fr;
-  root                /var/www/;
-  index               index.php index.html;              # временно html
-  ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
-  ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
-  ssl_protocols       TLSv1.2 TLSv1.3;
-  ssl_session_timeout 10m;
-  keepalive_timeout   70;
-  location / {
-    try_files         $uri /index.php?$args /index.html;
-    add_header        Last-Modified $date_gmt;
-    add_header        Cache-Control 'no-store, no-cache';
-    if_modified_since off;
-    expires           off;
-    etag              off;
-  }
-}
+FROM alpine:3.16
+ARG DB_NAME DB_USER DB_PASS                               # аргументы используются при только сборке образа (build)
+                                                          # альтернативный способ: через environment-секцию внутри сервиса, будут в окружении запущенного контейнера 
+                                    # ARG с параметрами задаёт переменную окружения с переданным параметром
+                                    # ARG без параметров берёт параметр из такой же переменной в docker-compose  
+RUN apk update && apk add --no-cache mariadb mariadb-client
+RUN mkdir /var/run/mysqld; \
+    chmod 777 /var/run/mysqld; \
+    { echo '[mysqld]'; \
+      echo 'skip-host-cache'; \
+      echo 'skip-name-resolve'; \
+      echo 'bind-address=0.0.0.0'; \
+    } | tee  /etc/my.cnf.d/docker.cnf; \                  # отправляет результат вывода echo в файл
+    sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf # заменяет строки в файлах по значению
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # создаём БД из того, что мы сконфигурировали на предыдущем слое
+EXPOSE 3306
+COPY requirements/mariadb/conf/create_db.sh .
+RUN sh create_db.sh && rm create_db.sh
+USER mysql                                                # пользователь, созданный при установке БД
+#? COPY tools/db.sh .
+#? ENTRYPOINT  ["sh", "db.sh"]
+CMD ["/usr/bin/mysqld", "--skip-log-error"]               # под этим пользователем запускаем БД
 ```
+
+### wordpress Dockerfile:  
+```
+FROM alpine:3.16
+ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS # акт версия https://www.php.net/, аргументы из .env
+RUN apk update && apk upgrade && apk add --no-cache \
+    php${PHP_VERSION} \             # wordpress работает на php
+    php${PHP_VERSION}-fpm \         # php-fpm для взаимодействия с nginx 
+    php${PHP_VERSION}-mysqli \      # php-mysqli для взаимодействия с mariadb
+    php${PHP_VERSION}-json \        # обязательные модули
+    php${PHP_VERSION}-curl \
+    php${PHP_VERSION}-dom \
+    php${PHP_VERSION}-exif \
+    php${PHP_VERSION}-fileinfo \
+    php${PHP_VERSION}-mbstring \
+    php${PHP_VERSION}-openssl \
+    php${PHP_VERSION}-xml \
+    php${PHP_VERSION}-zip \
+    wget \                          # для скачивания wordpress
+    unzip                           # для разархивирования wordpress
+    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \  # fastcgi слушает соединения по 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)
+    sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \
+    sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
+    && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
+WORKDIR /var/www                   # рабочий путь
+RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
+COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфигурационный файл
+RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # всем права на wp-conten, чтобы CMS могла скачивать темы, плагины, сохранять файлы
+CMD ["/usr/sbin/php-fpm8", "-F"]  # CMD запускает php-fpm (версия должна соответствовать установленной!)  
+```
+
 
 ### nginx/conf/**nginx.conf**  
 ```
@@ -265,68 +299,10 @@ EOF
 rm -f /tmp/create_db.sql
 ```
 
-## mariadb/Dockerfile
-```
-FROM alpine:3.16
-ARG DB_NAME DB_USER DB_PASS                                   # передача переменных окружения из .env в образ: аргументы используются при только сборке образа (build)
-                                                              # второй способ: через environment-секцию внутри сервиса, будут в окружении запущенного контейнера 
-RUN apk update && apk add --no-cache mariadb mariadb-client   # устанавливаем mariadb и mariadb-client
-RUN mkdir /var/run/mysqld; \
-    chmod 777 /var/run/mysqld; \
-    { echo '[mysqld]'; \
-      echo 'skip-host-cache'; \
-      echo 'skip-name-resolve'; \
-      echo 'bind-address=0.0.0.0'; \
-    } | tee  /etc/my.cnf.d/docker.cnf; \                      # отправляет результат вывода echo в файл
-    sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf # заменяет строки в файлах по значению
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql    # создаём БД из того, что мы сконфигурировали на предыдущем слое
-EXPOSE 3306
-COPY requirements/mariadb/conf/create_db.sh .
-RUN sh create_db.sh && rm create_db.sh
-USER mysql                                                    # переключаемся на пользователя mysql, созданного при установке БД
-#? COPY tools/db.sh .
-#? ENTRYPOINT  ["sh", "db.sh"]
-CMD ["/usr/bin/mysqld", "--skip-log-error"]                   # под этим пользователем запускаем БД
-```
-
 ## wordpress/tools/www.conf  
 * подсунуть в контейнер правильный конфиг fastcgi (`www.conf`)   
 * запустить в контейнере fastcgi через сокет php-fpm   
 * in your WordPress database, there must be two users, one of them being the administrator. The administrator’s username can’t contain admin/Admin or administrator/Administrator (e.g., admin, administrator, Administrator, admin-123, and so forth).
-wordpress Dockerfile:  
-```
-FROM alpine:3.16
-ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS # актуальная версию php https://www.php.net/ , три аргумента из .env
-                                          # ARG с параметрами задаёт переменную окружения с переданным параметром
-                                          # ARG без параметров берёт параметр из такой же переменной в docker-compose  
-RUN apk update && apk upgrade && apk add --no-cache \
-    php${PHP_VERSION} \             # php, на нём работает wordpress
-    php${PHP_VERSION}-fpm \         # php-fpm для взаимодействия с nginx 
-    php${PHP_VERSION}-mysqli \      # php-mysqli для взаимодействия с mariadb
-    php${PHP_VERSION}-json \        # все обязательные модули, опустив модули кэширования и дополнительные
-    php${PHP_VERSION}-curl \
-    php${PHP_VERSION}-dom \
-    php${PHP_VERSION}-exif \
-    php${PHP_VERSION}-fileinfo \
-    php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-openssl \
-    php${PHP_VERSION}-xml \
-    php${PHP_VERSION}-zip \
-    wget \                          # для скачивания wordpress
-    unzip                           # для разархивирования wordpress
-    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \  # fastcgi слушает соединения по 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)
-    sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \
-    sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
-    && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
-WORKDIR /var/www                   # рабочий путь
-RUN wget https://wordpress.org/latest.zip && \ # скачать wordpress и разархивировать в /var/www
-    unzip latest.zip && \
-    cp -rf wordpress/* . && \
-    rm -rf wordpress latest.zip
-COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфигурационный файл
-RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # всем права на wp-conten, чтобы CMS могла скачивать темы, плагины, сохранять файлы
-CMD ["/usr/sbin/php-fpm8", "-F"]  # CMD запускает php-fpm (версия должна соответствовать установленной!)  
-```
 
 ### wordpresse/Makefile    
 `srcs/requirements/wordpress/tools./make_dir.sh` создать директории и файлы   
@@ -370,10 +346,9 @@ fi
 
 ## Настройка wordpress
 `https://127.0.0.1` в браузере хостовой машины  
-Вбиваем нужные нам логин, пароль, имя сайта (akostrik, 2)  
+Вбиваем логин, пароль, имя сайта (akostrik, 2)  
 "Установить Wordpress"   
 Сообщение об успешной установке и предложением залогиниться   
-Стартовая страницу чистого wordpress
 
 ## Makefile
 `make fclean` перед сохранением в облако   
