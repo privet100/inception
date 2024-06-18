@@ -318,7 +318,7 @@ if [ ! -d "/home/${USER}/data" ]; then
 fi
 ```
 
-### wordpresse/tools/wp-config-create.sh:    
+### wordpresse/conf/wp-config-create.sh:    
 ```
 #!bin/sh
 if [ ! -f "/var/www/wp-config.php" ]; then
