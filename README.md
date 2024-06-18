@@ -67,8 +67,7 @@ root/
 │   │   │   └── tools/                    # папка для ключей
 │   │   ├── mariadb/
 │   │   │   ├── conf/create_db.sh         # скрипт, создающий БД   
-│   │   │   ├── Dockerfile                # builds a Docker image
-│   │   │   └── tools/
+│   │   │   └── Dockerfile                # builds a Docker image
 │   │   └── wordpress/
 │   │       ├── conf/wp-config-create.sh  # конфиг соединит нас с контейнером БД    
 │   │       ├── Dockerfile                # builds a Docker image
