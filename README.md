@@ -77,16 +77,6 @@ root/
 └── Makefile                              # sets up the app, calls docker-compose.yml
 ```
 
-`docker-compose up -d` запускаем конфигурацию  
-`https://127.0.0.1`  
-`https://akostrik.42.fr`  
-`docker-compose down` выключить конфигурацию   
-
-`srcs/requirements/wordpress/tools./make_dir.sh` создать директории и файлы   
-`chmod +x requirements/wordpress/tools/make_dir.sh`  
-`requirements/wordpress/tools/make_dir.sh`    
-`ls ~/data/` должны увидеть папки wordpress и mariadb  
-
 ### Makefile
 ```
 name = inception
@@ -340,7 +330,23 @@ EOF
 fi
 ```
 
+### Настройка wordpress
+`https://127.0.0.1` в браузере хостовой машины  
+Вбиваем логин, пароль, имя сайта (akostrik, 2)  
+"Установить Wordpress"   
+Сообщение об успешной установке и предложением залогиниться   
+
 ### Проверка
+`docker-compose up -d` запускаем конфигурацию  
+`https://127.0.0.1`  
+`https://akostrik.42.fr`  
+`docker-compose down` выключить конфигурацию   
+
+`srcs/requirements/wordpress/tools./make_dir.sh` создать директории и файлы   
+`chmod +x requirements/wordpress/tools/make_dir.sh`  
+`requirements/wordpress/tools/make_dir.sh`    
+`ls ~/data/` должны увидеть папки wordpress и mariadb  
+
 `cd ~/root/srcs`   
 `docker-compose up -d --build`   
 `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php, ожидаем:  
@@ -352,21 +358,13 @@ fi
 `docker exec -it wordpress php -v` проверим работу php  
 `docker exec -it wordpress php -m` проверим, все ли модули установились  
 
-## Настройка wordpress
-`https://127.0.0.1` в браузере хостовой машины  
-Вбиваем логин, пароль, имя сайта (akostrik, 2)  
-"Установить Wordpress"   
-Сообщение об успешной установке и предложением залогиниться   
-
-## Makefile
-At 42's computer:  
 * to stop these services running by default (?):  
 `service nginx stop`  
 `service mariadb stop`  
 `service mysql stop`  
 
 ## VM vs docker
-| Virtual Machine                                  | Docker                                                           |
+| VM                                               | Docker                                                           |
 | ------------------------------------------------ | ---------------------------------------------------------------- |
 | a lot of memory space                            | a lot less memory space                                          |
 | long time to boot up                             | quick boot up because it uses the running kernel that you using  |
