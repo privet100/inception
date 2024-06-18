@@ -190,10 +190,10 @@ EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]                        # для отладки запускаем nginx напрямую (не демон) => логи напрямую в tty контейнера
 ```
 
-## mariadb/Dockerfile
+### mariadb/Dockerfile
 ```
-FROM alpine:3.16
-ARG DB_NAME DB_USER DB_PASS                               # аргументы используются при только сборке образа (build)
+FROM alpine:3.19
+ARG DB_NAME DB_USER DB_PASS                               # аргументы из .env используются только при сборке образа (build)
                                                           # альтернативный способ: через environment-секцию внутри сервиса, будут в окружении запущенного контейнера 
                                     # ARG с параметрами задаёт переменную окружения с переданным параметром
                                     # ARG без параметров берёт параметр из такой же переменной в docker-compose  
@@ -218,8 +218,8 @@ CMD ["/usr/bin/mysqld", "--skip-log-error"]               # под этим по
 
 ### wordpress Dockerfile:  
 ```
-FROM alpine:3.16
-ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS # акт версия https://www.php.net/, аргументы из .env
+FROM alpine:3.19
+ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS # акт версия https://www.php.net/
 RUN apk update && apk upgrade && apk add --no-cache \
     php${PHP_VERSION} \             # wordpress работает на php
     php${PHP_VERSION}-fpm \         # php-fpm для взаимодействия с nginx 
@@ -245,7 +245,6 @@ COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфигурац�
 RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # всем права на wp-conten, чтобы CMS могла скачивать темы, плагины, сохранять файлы
 CMD ["/usr/sbin/php-fpm8", "-F"]  # CMD запускает php-fpm (версия должна соответствовать установленной!)  
 ```
-
 
 ### nginx/conf/**nginx.conf**  
 ```
@@ -278,7 +277,7 @@ server {
 }
 ```
 
-## mariadb/create_db.sh
+### mariadb/create_db.sh
 ```
 #!bin/sh
 cat << EOF > /tmp/create_db.sql                               # создание базы
@@ -295,11 +294,11 @@ GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 # run init.sql 
-/usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код ##
+/usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код
 rm -f /tmp/create_db.sql
 ```
 
-## wordpress/tools/www.conf  
+### wordpress/tools/www.conf  
 * подсунуть в контейнер правильный конфиг fastcgi (`www.conf`)   
 * запустить в контейнере fastcgi через сокет php-fpm   
 * in your WordPress database, there must be two users, one of them being the administrator. The administrator’s username can’t contain admin/Admin or administrator/Administrator (e.g., admin, administrator, Administrator, admin-123, and so forth).
