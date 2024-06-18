@@ -82,6 +82,106 @@ root/
 `https://akostrik.42.fr`  
 `docker-compose down` выключить конфигурацию   
 
+### Makefile
+```
+name = inception
+all:
+        @bash srcs/requirements/wordpress/tools/make_dir.sh
+        @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
+
+build:
+        @bash srcs/requirements/wordpress/tools/make_dir.sh
+        @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+
+down:
+        @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
+
+re:
+        @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+
+clean: down
+        @docker system prune -a
+        @sudo rm -rf ~/data/wordpress/*
+        @sudo rm -rf ~/data/mariadb/*
+
+fclean:
+        @docker stop $$(docker ps -qa)
+        @docker system prune --all --force --volumes
+        @docker network prune --force
+        @docker volume prune --force
+        @sudo rm -rf ~/data/wordpress/*
+        @sudo rm -rf ~/data/mariadb/*
+```
+
+### docker-compose.yml    
+```
+version: '3'
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: requirements/nginx/Dockerfile
+    container_name: nginx
+    depends_on:  # NEW wordpress не запустится, пока контейнер с базой данных не соберётся
+      - wordpress
+    ports:
+      - "443:443"
+    networks:    # the network line 
+      - inception # все контейнеры в docker-compose или конфигурации которых находятся в одной папке, автоматически объединяются в сеть, но чтобы сеть была доступна по имени, вдобавок к дефолтной собственную сеть
+    volumes:
+      - ./requirements/nginx/conf/:/etc/nginx/http.d/
+      - ./requirements/nginx/tools:/etc/nginx/ssl/
+      - wp-volume:/var/www/
+    restart: always
+  mariadb:
+    build:
+      context: .
+      dockerfile: requirements/mariadb/Dockerfile
+      args:
+        DB_NAME: ${DB_NAME}  # передадим в контейнер "секреты", хранимые в .env
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+        DB_ROOT: ${DB_ROOT}
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    networks:
+      - inception
+    volumes:
+      - db-volume:/var/lib/mysql
+    restart: always
+  wordpress:
+    build:
+      context: .
+      dockerfile: requirements/wordpress/Dockerfile
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - wp-volume:/var/www/
+volumes:
+  wp-volume: # общий раздел nginx и wordpress для обмена данными. Можно примонтировать туда и туда одну и ту же папку, но для удобства создадим раздел
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/wordpress
+  db-volume:                                    # раздел для хранения базы данных в /home/<username>/data
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/mariadb
+networks:
+    inception:
+        driver: bridge
+```
+
 ### nginx/Dockerfile  
 ```
 FROM alpine:3.19                                          # смотрим версию https://www.alpinelinux.org/ (нельзя alpine:latest) 
@@ -110,6 +210,37 @@ server {
     expires           off;
     etag              off;
   }
+}
+```
+
+### nginx/conf/**nginx.conf**  
+```
+server {
+    listen      443 ssl;     # чтобы nginx обрабатывал только php-файлы
+    server_name  akostrik.42.fr www.akostrik.42.fr;
+    root    /var/www/;
+    index index.php;
+    ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
+    ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_timeout 10m;
+    keepalive_timeout 70;
+    location / {
+        try_files $uri /index.php?$args;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache';
+        if_modified_since off;
+        expires off;
+        etag off;
+    }
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass wordpress:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
 }
 ```
 
@@ -197,13 +328,13 @@ RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content
 CMD ["/usr/sbin/php-fpm8", "-F"]  # CMD запускает php-fpm (версия должна соответствовать установленной!)  
 ```
 
-Wordpresse Makefile:    
+### wordpresse/Makefile    
 `srcs/requirements/wordpress/tools./make_dir.sh` создать директории и файлы   
 `chmod +x requirements/wordpress/tools/make_dir.sh`  
 `requirements/wordpress/tools/make_dir.sh`    
 `ls ~/data/` должны увидеть папки wordpress и mariadb  
 
-wp-config-create.sh:    
+### wordpresse/tools/wp-config-create.sh:    
 ```
 #!bin/sh
 if [ ! -f "/var/www/wp-config.php" ]; then
@@ -223,106 +354,6 @@ define( 'ABSPATH', __DIR__ . '/' );}
 require_once ABSPATH . 'wp-settings.php';
 EOF
 fi
-```
-
-requirements/nginx/conf/**nginx.conf** (чтобы nginx обрабатывал только php-файлы):  
-```
-server {
-    listen      443 ssl;
-    server_name  akostrik.42.fr www.akostrik.42.fr;
-    root    /var/www/;
-    index index.php;
-    ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
-    ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
-    ssl_protocols       TLSv1.2 TLSv1.3;
-    ssl_session_timeout 10m;
-    keepalive_timeout 70;
-    location / {
-        try_files $uri /index.php?$args;
-        add_header Last-Modified $date_gmt;
-        add_header Cache-Control 'no-store, no-cache';
-        if_modified_since off;
-        expires off;
-        etag off;
-    }
-    location ~ \.php$ {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass wordpress:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-    }
-}
-```
-
-### docker-compose.yml    
-```
-version: '3'
-services:
-  nginx:
-    build:
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
-    container_name: nginx
-    depends_on:  # NEW wordpress не запустится, пока контейнер с базой данных не соберётся
-      - wordpress
-    ports:
-      - "443:443"
-    networks:    # the network line 
-      - inception # все контейнеры в docker-compose или конфигурации которых находятся в одной папке, автоматически объединяются в сеть, но чтобы сеть была доступна по имени, вдобавок к дефолтной собственную сеть
-    volumes:
-      - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - wp-volume:/var/www/
-    restart: always
-  mariadb:
-    build:
-      context: .
-      dockerfile: requirements/mariadb/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}  # передадим в контейнер "секреты", хранимые в .env
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-        DB_ROOT: ${DB_ROOT}
-    container_name: mariadb
-    ports:
-      - "3306:3306"
-    networks:
-      - inception
-    volumes:
-      - db-volume:/var/lib/mysql
-    restart: always
-  wordpress:
-    build:
-      context: .
-      dockerfile: requirements/wordpress/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-    container_name: wordpress
-    depends_on:
-      - mariadb
-    restart: always
-    networks:
-      - inception
-    volumes:
-      - wp-volume:/var/www/
-volumes:
-  wp-volume: # общий раздел nginx и wordpress для обмена данными. Можно примонтировать туда и туда одну и ту же папку, но для удобства создадим раздел
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/${USER}/data/wordpress
-  db-volume:                                    # раздел для хранения базы данных в /home/<username>/data
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/${USER}/data/mariadb
-networks:
-    inception:
-        driver: bridge
 ```
 
 ### Проверка
