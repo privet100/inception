@@ -77,8 +77,12 @@ root/
 └── Makefile                              # sets up the app, calls docker-compose.yml
 ```
 
-## контейнер Nginx
-Nginx Dockerfile:  
+`docker-compose up -d` запускаем конфигурацию  
+`https://127.0.0.1`  
+`https://akostrik.42.fr`  
+`docker-compose down` выключить конфигурацию   
+
+### nginx/Dockerfile  
 ```
 FROM alpine:3.19                                          # смотрим версию https://www.alpinelinux.org/ (нельзя alpine:latest) 
 RUN apk update && apk upgrade && apk add --no-cache nginx # установить софт, --no-cache nginx = не сохраняя исходники в кэше
@@ -109,30 +113,7 @@ server {
 }
 ```
 
-Nginx docker-compose.yml:  
-```
-version: '3'
-services:
-  nginx:
-    build:
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
-    container_name: nginx  
-    ports:
-      - "443:443"                                     # только ssl
-    volumes:                                          # your volumes will be available in the /home/akostrk/data folder of the host machine using Docker
-      - ./requirements/nginx/conf/:/etc/nginx/http.d/ # конфиг, ключи
-      - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - /home/${USER}/ex3/public/html:/var/www/       # монтируем /var/www из старой конфигурации для пробного запуска nginx (потом удалим иы будем брать файлы из каталога wordpress)
-    restart: always                                   # Your containers have to restart in case of a crash ПРОВЕРИТЬ
-```
-`docker-compose up -d` запускаем конфигурацию  
-`https://127.0.0.1`  
-`https://akostrik.42.fr`  
-`docker-compose down` выключить конфигурацию   
-
-## Контейнер Mariadb
-create_db.sh:   
+## mariadb/create_db.sh
 ```
 #!bin/sh
 cat << EOF > /tmp/create_db.sql                               # создание базы
@@ -149,11 +130,11 @@ GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 # run init.sql 
-/usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код 
+/usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код ##
 rm -f /tmp/create_db.sql
 ```
 
-Mariadb Dockerfile:
+## mariadb/Dockerfile
 ```
 FROM alpine:3.16
 ARG DB_NAME DB_USER DB_PASS                                   # передача переменных окружения из .env в образ: аргументы используются при только сборке образа (build)
@@ -177,57 +158,9 @@ USER mysql                                                    # переключ
 CMD ["/usr/bin/mysqld", "--skip-log-error"]                   # под этим пользователем запускаем БД
 ```
 
-Mariadb docker-compose.yml:    
-```
-version: '3'
-services:
-  nginx:
-    build:
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
-    container_name: nginx
-    ports:
-      - "443:443"
-    volumes:
-      - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - /home/${USER}/ex3/public/html:/var/www/
-    restart: always
-  mariadb:
-    build:
-      context: .
-      dockerfile: requirements/mariadb/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-        DB_ROOT: ${DB_ROOT}
-    container_name: mariadb
-    ports:
-      - "3306:3306"
-    volumes:
-      - db-volume:/var/lib/mysql  # примонтировать раздел, чтобы состояние базы не сбрасывалось после каждого перезапуска контейнеров
-    restart: always
-```
-Mariadb Проверка:  
-`docker exec -it mariadb mysql -u root`  
-`MariaDB [(none)]>` `show databases;` должна показать:  
-```
-+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| mysql              |
-| performance_schema |
-| sys                |
-| wordpress          |   # созданная нами база wordpress
-+--------------------+
-```
-
-## Контейнер wordpress
-* `www.conf`:  
-  + подсунуть в контейнер правильный конфиг fastcgi (`www.conf`)   
-  + запустить в контейнере fastcgi через сокет php-fpm   
+## wordpress/tools/www.conf  
+* подсунуть в контейнер правильный конфиг fastcgi (`www.conf`)   
+* запустить в контейнере fastcgi через сокет php-fpm   
 * in your WordPress database, there must be two users, one of them being the administrator. The administrator’s username can’t contain admin/Admin or administrator/Administrator (e.g., admin, administrator, Administrator, admin-123, and so forth).
 wordpress Dockerfile:  
 ```
