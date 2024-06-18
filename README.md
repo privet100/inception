@@ -82,6 +82,11 @@ root/
 `https://akostrik.42.fr`  
 `docker-compose down` выключить конфигурацию   
 
+`srcs/requirements/wordpress/tools./make_dir.sh` создать директории и файлы   
+`chmod +x requirements/wordpress/tools/make_dir.sh`  
+`requirements/wordpress/tools/make_dir.sh`    
+`ls ~/data/` должны увидеть папки wordpress и mariadb  
+
 ### Makefile
 ```
 name = inception
@@ -303,11 +308,15 @@ rm -f /tmp/create_db.sql
 * запустить в контейнере fastcgi через сокет php-fpm   
 * in your WordPress database, there must be two users, one of them being the administrator. The administrator’s username can’t contain admin/Admin or administrator/Administrator (e.g., admin, administrator, Administrator, admin-123, and so forth).
 
-### wordpresse/Makefile    
-`srcs/requirements/wordpress/tools./make_dir.sh` создать директории и файлы   
-`chmod +x requirements/wordpress/tools/make_dir.sh`  
-`requirements/wordpress/tools/make_dir.sh`    
-`ls ~/data/` должны увидеть папки wordpress и mariadb  
+### wordpresse/make_dir.sh    
+```
+#!/bin/bash
+if [ ! -d "/home/${USER}/data" ]; then
+        mkdir ~/data
+        mkdir ~/data/mariadb
+        mkdir ~/data/wordpress
+fi
+```
 
 ### wordpresse/tools/wp-config-create.sh:    
 ```
