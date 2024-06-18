@@ -90,15 +90,15 @@ root/
 ### Makefile
 ```
 name = inception
-all:
+all: # запуск после остановки  
         @bash srcs/requirements/wordpress/tools/make_dir.sh
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
 
-build:
+build:  # развёртывание проекта 
         @bash srcs/requirements/wordpress/tools/make_dir.sh
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
-down:
+down:  # останвока
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
 
 re:
@@ -109,7 +109,7 @@ clean: down
         @sudo rm -rf ~/data/wordpress/*
         @sudo rm -rf ~/data/mariadb/*
 
-fclean:
+fclean:           # перед сохранением в облако   
         @docker stop $$(docker ps -qa)
         @docker system prune --all --force --volumes
         @docker network prune --force
@@ -359,11 +359,6 @@ fi
 Сообщение об успешной установке и предложением залогиниться   
 
 ## Makefile
-`make fclean` перед сохранением в облако   
-`make build` развёртывание проекта  
-`make down` остановка  
-`make` запуск после остановки  
-
 At 42's computer:  
 * to stop these services running by default (?):  
 `service nginx stop`  
