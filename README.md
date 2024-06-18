@@ -303,12 +303,12 @@ EOF
 rm -f /tmp/create_db.sql
 ```
 
-### wordpress/tools/www.conf  
+### wordpress/tools/www.conf (?)  
 * подсунуть в контейнер правильный конфиг fastcgi (`www.conf`)   
 * запустить в контейнере fastcgi через сокет php-fpm   
 * in your WordPress database, there must be two users, one of them being the administrator. The administrator’s username can’t contain admin/Admin or administrator/Administrator (e.g., admin, administrator, Administrator, admin-123, and so forth).
 
-### wordpresse/make_dir.sh    
+### wordpresse/tools/make_dir.sh    
 ```
 #!/bin/bash
 if [ ! -d "/home/${USER}/data" ]; then
