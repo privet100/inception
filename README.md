@@ -167,7 +167,7 @@ volumes:
       o: bind
       type: none
       device: /home/${USER}/data/wordpress
-  db-volume:                                    # раздел для хранения базы данных в /home/<username>/data
+  db-volume:
     driver_opts:
       o: bind
       type: none
@@ -178,11 +178,14 @@ networks:
 ```
 
 ### nginx/Dockerfile  
+версия https://www.alpinelinux.org/ (нельзя alpine:latest)  
+--no-cache nginx = не сохраняя исходники в кэше  
+для отладки запускаем nginx напрямую (не демон) => логи напрямую в tty контейнера  
 ```
-FROM alpine:3.19                                          # версия https://www.alpinelinux.org/ (нельзя alpine:latest) 
-RUN apk update && apk upgrade && apk add --no-cache nginx # --no-cache nginx = не сохраняя исходники в кэше
+FROM alpine:3.19                                         
+RUN apk update && apk upgrade && apk add --no-cache nginx
 EXPOSE 443
-CMD ["nginx", "-g", "daemon off;"]                        # для отладки запускаем nginx напрямую (не демон) => логи напрямую в tty контейнера
+CMD ["nginx", "-g", "daemon off;"]                       
 ```
 
 ### mariadb/Dockerfile
@@ -196,8 +199,8 @@ ARG DB_NAME DB_USER DB_PASS # аргументы из .env используют�
 RUN apk update && apk add --no-cache mariadb mariadb-client
 RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
     { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | \
-    tee  /etc/my.cnf.d/docker.cnf; \                  # результат echo в файл
-    sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf # заменяет строки в файлах по значению
+    tee  /etc/my.cnf.d/docker.cnf; \                  # в файл
+    sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
 RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # создаём БД из того, что мы сконфигурировали на предыдущем слое
 EXPOSE 3306
 COPY requirements/mariadb/conf/create_db.sh .
@@ -221,7 +224,7 @@ RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_V
     sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \
     sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
     && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
-WORKDIR /var/www                   # рабочий путь
+WORKDIR /var/www
 RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
 COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
 RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # всем права на wp-conten, чтобы CMS могла скачивать темы, плагины, сохранять файлы
