@@ -121,7 +121,7 @@ services:
       - wordpress
     ports:
       - "443:443"
-    networks: # чтобы сеть стала доступна по имени (все контейнеры в docker-compose или конфигурации которых в одной папке, автоматически объединяются в сеть)
+    networks: # сеть доступна по имени (все контейнеры в docker-compose или конфигурации которых в одной папке, автоматически объединяются в сеть)
       - inception 
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
@@ -133,7 +133,7 @@ services:
       context: .
       dockerfile: requirements/mariadb/Dockerfile
       args:
-        DB_NAME: ${DB_NAME}  # передадим в контейнер "секреты", хранимые в .env
+        DB_NAME: ${DB_NAME} # .env
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
         DB_ROOT: ${DB_ROOT}
