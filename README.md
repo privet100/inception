@@ -212,31 +212,21 @@ CMD ["/usr/bin/mysqld", "--skip-log-error"]               # под этим по
 ```
 
 ### wordpress Dockerfile:  
+wordpress работает на php 
+php-fpm для взаимодействия с nginx   
+php-mysqli для взаимодействия с mariadb  
+fastcgi слушает соединения по 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)  
 ```
 FROM alpine:3.19
 ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS # акт версия https://www.php.net/
-RUN apk update && apk upgrade && apk add --no-cache \
-    php${PHP_VERSION} \             # wordpress работает на php
-    php${PHP_VERSION}-fpm \         # php-fpm для взаимодействия с nginx 
-    php${PHP_VERSION}-mysqli \      # php-mysqli для взаимодействия с mariadb
-    php${PHP_VERSION}-json \        # обязательные модули
-    php${PHP_VERSION}-curl \
-    php${PHP_VERSION}-dom \
-    php${PHP_VERSION}-exif \
-    php${PHP_VERSION}-fileinfo \
-    php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-openssl \
-    php${PHP_VERSION}-xml \
-    php${PHP_VERSION}-zip \
-    wget \                          # для скачивания wordpress
-    unzip                           # для разархивирования wordpress
-    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \  # fastcgi слушает соединения по 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)
+RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \
+    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \
     sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \
     sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
     && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
 WORKDIR /var/www                   # рабочий путь
 RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
-COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфигурационный файл
+COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
 RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # всем права на wp-conten, чтобы CMS могла скачивать темы, плагины, сохранять файлы
 CMD ["/usr/sbin/php-fpm8", "-F"]  # CMD запускает php-fpm (версия должна соответствовать установленной!)  
 ```
