@@ -215,10 +215,14 @@ CMD ["/usr/bin/mysqld", "--skip-log-error"]
 wordpress работает на php 
 php-fpm для взаимодействия с nginx   
 php-mysqli для взаимодействия с mariadb  
-fastcgi слушает соединения по 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)  
+fastcgi слушает соединения по 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
+конфиг fastcgi  контейнере (`www.conf`)    
+запустить в контейнере fastcgi через сокет php-fpm   
+версия php должна соответствовать установленной!
+акт версия php: https://www.php.net/
 ```
 FROM alpine:3.19
-ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS # акт версия https://www.php.net/
+ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS
 RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \
     sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \
     sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \
@@ -227,11 +231,11 @@ RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_V
 WORKDIR /var/www
 RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
 COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
-RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # всем права на wp-conten, чтобы CMS могла скачивать темы, плагины, сохранять файлы
-CMD ["/usr/sbin/php-fpm8", "-F"]  # CMD запускает php-fpm (версия должна соответствовать установленной!)  
+RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # CMS может скачивать темы, плагины, сохранять файлы
+CMD ["/usr/sbin/php-fpm8", "-F"]
 ```
 
-### nginx/conf/**nginx.conf**  
+### nginx/conf/nginx.conf  
 ```
 server {
     listen      443 ssl;     # чтобы nginx обрабатывал только php-файлы
@@ -282,11 +286,6 @@ EOF
 /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код
 rm -f /tmp/create_db.sql
 ```
-
-### wordpress/tools/www.conf (?)  
-* подсунуть в контейнер правильный конфиг fastcgi (`www.conf`)   
-* запустить в контейнере fastcgi через сокет php-fpm   
-* in your WordPress database, there must be two users, one of them being the administrator. The administrator’s username can’t contain admin/Admin or administrator/Administrator (e.g., admin, administrator, Administrator, admin-123, and so forth).
 
 ### wordpresse/tools/make_dir.sh    
 ```
