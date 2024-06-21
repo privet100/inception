@@ -1,6 +1,6 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
-## VM
+### VM
 * создать VM
   + папку в sgoinfre
   + оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше
@@ -57,6 +57,7 @@
   + также через Makefile, Dockerfile, docker-compose.yml ? 
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
+### Файлы проекта
 ```
 root/
 ├── srcs/
