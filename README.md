@@ -239,15 +239,15 @@ CMD ["/usr/sbin/php-fpm8", "-F"]
 ### nginx/conf/nginx.conf  
 ```
 server {
-    listen      443 ssl;     # чтобы nginx обрабатывал только php-файлы
-    server_name  akostrik.42.fr www.akostrik.42.fr;
-    root    /var/www/;
-    index index.php;
+    listen              443 ssl;                            # nginx обрабатывает только php-файлы
+    server_name         akostrik.42.fr www.akostrik.42.fr;
+    root                /var/www/;
+    index               index.php;
     ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
     ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
-    ssl_protocols       TLSv1.2 TLSv1.3;
-    ssl_session_timeout 10m;
-    keepalive_timeout 70;
+    ssl_protocols       TLSv1.2 TLSv1.3;                    # поддерживаемые протоколы tls
+    ssl_session_timeout 10m;                                # опции кэширования 
+    keepalive_timeout   70;                                 # таймауты
     location / {
         try_files $uri /index.php?$args;
         add_header Last-Modified $date_gmt;
