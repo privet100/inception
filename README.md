@@ -17,12 +17,10 @@
   + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL`
 * Порты
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
-
-| Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
-| ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-| `ssh`   | `TCP`    | `127.0.0.1` | `2222`       | `10.0.2.15` | `22`         |
-| `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
-
+  + | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
+    | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
+    | `ssh`   | `TCP`    | `127.0.0.1` | `2222`       | `10.0.2.15` | `22`         |
+    | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
   + `ufw enable` 
   + `ufw allow 22` ssh 
   + `ufw allow 443` https = port SSL
