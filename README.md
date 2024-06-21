@@ -178,7 +178,7 @@ networks:
 
 ### nginx/Dockerfile  
 версия https://www.alpinelinux.org/ (нельзя alpine:latest)  
---no-cache nginx = не сохраняя исходники в кэше  
+--no-cache = не сохраняя исходники в кэше  
 для отладки запускаем nginx напрямую (не демон) => логи напрямую в tty контейнера  
 ```
 FROM alpine:3.19                                         
