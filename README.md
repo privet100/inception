@@ -440,7 +440,7 @@ fi
   + повтор: **Est ce qu'il faut avoir accès à login.42.fr sur la machine physique Ou uniquement virtuel?**
   + остановилась: Pour comprendre la toute base de k8s dans la vie de tout les jours ça se chiffre en mois d'apprentissage intensif.
 
-[docker](https://github.com/privet100/general-culture/blob/main/docker.md)
+[docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
 https://github.com/codesshaman/inception  
 https://github.com/rbiodies/Inception   
