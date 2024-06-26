@@ -438,7 +438,8 @@ fi
   + faut voir docker compose comme un simple wrapper build au dessus de docker 
   + повтор: les Shared Folders de la VM ou qu'un serveur SSH mal configuré sur la VM peuvent poser problème
   + повтор: **Est ce qu'il faut avoir accès à login.42.fr sur la machine physique Ou uniquement virtuel?**
-  + остановилась: Pour comprendre la toute base de k8s dans la vie de tout les jours ça se chiffre en mois d'apprentissage intensif.
+  + остановилась: docker-compose il va juste simplifier tes commandes docker pour tout mettre en place comme tu veux.
+(fait attention à l'ordre des services que tu vas deploy ça peut poser des problèmes)
 
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
