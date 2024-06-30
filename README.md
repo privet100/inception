@@ -99,6 +99,7 @@ mkdir -p ./srcs/requirements/wordpress
 mkdir -p ./srcs/requirements/wordpress/conf
 touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
 mkdir -p ./srcs/requirements/wordpress/tools
+mkdir -p ./srcs/requirements/wordpress/tools/makedirs.sh
 touch ./srcs/requirements/wordpress/Dockerfile
 touch ./srcs/requirements/wordpress/.dockerignore
 ```
