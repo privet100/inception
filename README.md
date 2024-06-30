@@ -107,7 +107,7 @@ fclean:           # перед сохранением в облако
         @sudo rm -rf ~/data/mariadb/*
 ```
 
-### docker-compose.yml    
+### srcs/docker-compose.yml    
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 ```
 version: '3'
@@ -177,6 +177,16 @@ networks:
         driver: bridge
 ```
 
+### srcs/.env
+```
+DOMAIN_NAME=akostrik.42.fr
+CERT_=./requirements/tools/akostrik.42.fr
+KEY_=./requirements/tools/akostrik.42.fr
+DB_NAME=wordpress
+DB_ROOT=rootpass
+DB_USER=wpuser
+DB_PASS=wppass
+```
 ### nginx/Dockerfile  
 версия https://www.alpinelinux.org/ (нельзя alpine:latest)  
 --no-cache = не сохраняя исходники в кэше  
