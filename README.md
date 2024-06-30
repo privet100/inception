@@ -55,10 +55,10 @@
   + **./make_dirs.sh**
     ```
     #!/bin/bash
-    mkdir project
-    mkdir project/srcs
+    mkdir -f project
+    mkdir -f project/srcs
     touch project/Makefile
-    mkdir project/srcs/requirements
+    mkdir -f project/srcs/requirements
     touch project/srcs/docker-compose.yml
     touch project/srcs/.env
     echo "DOMAIN_NAME=akostrik.42.fr" > project/srcs/.env
@@ -68,25 +68,25 @@
     echo "DB_ROOT=rootpass" >> project/srcs/.env
     echo "DB_USER=wpuser" >> project/srcs/.env
     echo "DB_PASS=wppass" >> project/srcs/.env
-    mkdir project/srcs/requirements/bonus
-    mkdir project/srcs/requirements/mariadb
-    mkdir project/srcs/requirements/mariadb/conf
+    mkdir -f project/srcs/requirements/bonus
+    mkdir -f project/srcs/requirements/mariadb
+    mkdir -f project/srcs/requirements/mariadb/conf
     touch project/srcs/requirements/mariadb/conf/create_db.sh
-    mkdir project/srcs/requirements/mariadb/tools
+    mkdir -f project/srcs/requirements/mariadb/tools
     touch project/srcs/requirements/mariadb/Dockerfile
     touch project/srcs/requirements/mariadb/.dockerignore
     echo ".git" > project/srcs/requirements/mariadb/.dockerignore
-    mkdir project/srcs/requirements/nginx
-    mkdir project/srcs/requirements/nginx/conf
+    mkdir -f project/srcs/requirements/nginx
+    mkdir -f project/srcs/requirements/nginx/conf
     touch project/srcs/requirements/nginx/conf/nginx.conf
-    mkdir project/srcs/requirements/nginx/tools
+    mkdir -f project/srcs/requirements/nginx/tools
     touch project/srcs/requirements/nginx/Dockerfile
     echo ".git" > project/srcs/requirements/nginx/.dockerignore
-    mkdir project/srcs/requirements/tools
-    mkdir project/srcs/requirements/wordpress
-    mkdir project/srcs/requirements/wordpress/conf
+    mkdir -f project/srcs/requirements/tools
+    mkdir -f project/srcs/requirements/wordpress
+    mkdir -f project/srcs/requirements/wordpress/conf
     touch project/srcs/requirements/wordpress/conf/wp-config-create.sh
-    mkdir project/srcs/requirements/wordpress/tools
+    mkdir -f project/srcs/requirements/wordpress/tools
     touch project/srcs/requirements/wordpress/Dockerfile
     touch project/srcs/requirements/wordpress/.dockerignore
     echo ".git" > project/srcs/requirements/wordpress/.dockerignore
