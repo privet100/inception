@@ -24,11 +24,9 @@
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   + `ufw enable` 
   + `ufw allow 22` ssh 
-  + `ufw allow 443` https = port SSL
-* `/etc/hosts`
-  + 127.0.0.1  localhost akostrik.42.fr
-  + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
-  +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
+  + `ufw allow 80`  
+  + `ufw allow 443` port https = port SSL
+  + `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
 * ssh
   + **/etc/ssh/sshd_config**:      // без этого пункта работает   
     `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
@@ -37,7 +35,6 @@
     `PasswordAuthentication yes # подтверждаем вход по паролю`  
   + `service ssh restart` // без этого пункта работает
   + `ssh akostrik@localhost -p 2222` на хостовой
-* `./make_dirs.sh` создать папки
 * установка mkcert и сертификат
   + `apt update -y` 
   + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
@@ -51,7 +48,11 @@
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
   + le certificat SSL n’a pas été signé par Trusted Authority
     - le navigateur affiche un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
-* `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I didn't own the unix socket, so I chowned it
+* `/etc/hosts`
+  + 127.0.0.1  localhost akostrik.42.fr
+  + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
+  +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
+* `./make_dirs.sh` создать папки
 * автоматизировать настройку
   + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
   + также через Makefile, Dockerfile, docker-compose.yml ? 
