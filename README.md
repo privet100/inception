@@ -29,7 +29,7 @@
   + **/etc/ssh/sshd_config**:      // без этого пункта работает   
     `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
-    `PubkeyAuthentication`  
+    `PubkeyAuthentication no`  
     `PasswordAuthentication yes # подтверждаем вход по паролю`  
   + `service ssh restart` // без этого пункта работает
   + `ssh akostrik@localhost -p 2222` на хостовой
