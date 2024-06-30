@@ -46,7 +46,7 @@
   + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
   + le certificat SSL n’a pas été signé par Trusted Authority
-    - le navigateur affiche un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
+    - un message d’alerte indiquant que ce site tente de vous voler des informations sensibles
 * `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
 * `/etc/hosts`
   + 127.0.0.1  localhost akostrik.42.fr
