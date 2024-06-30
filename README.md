@@ -6,9 +6,8 @@
   + оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше
   + формат VDI или VHD
   + динамический формат
-  + 8 гигабайт под диск 
-* устанавливаем [debian](https://www.debian.org/ "скачать debian")
-* `apt update`; `apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
+  + 8 гигабайт под диск
+  + устанавливаем [debian](https://www.debian.org/ "скачать debian")
 * user
   + `adduser akostrik`
   + `usermod -aG docker akostrik` добавим в группу docker 
@@ -47,6 +46,7 @@
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
   + le certificat SSL n’a pas été signé par Trusted Authority
     - le navigateur affiche un message d’alerte indiquant que ce site tente surement de vous voler des informations sensibles
+* `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
 * `/etc/hosts`
   + 127.0.0.1  localhost akostrik.42.fr
   + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
