@@ -36,8 +36,8 @@
 * mkcert и сертификат
   + `apt update -y` 
   + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
-  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` загружаем бинарник mkcert
-  + `mv mkcert-v*-linux-amd64 mkcert` переименовываем 
+  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
+  + `mv mkcert-v*-linux-amd64 mkcert`
   + `chmod a+x mkcert`
   + `mv mkcert /usr/local/bin/` перемещаем в рабочую директорию
   + `cd ~/project/srcs/requirements/nginx/tools/`
