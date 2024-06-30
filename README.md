@@ -79,31 +79,28 @@
 ### makedirs.sh
 ```
 #!/bin/bash
-mkdir -f ./srcs
-mkdir -f ./srcs/requirements
+mkdir -p ./srcs
+mkdir -p ./srcs/requirements
 touch ./srcs/docker-compose.yml
-mkdir -f ./srcs/requirements/bonus
-mkdir -f ./srcs/requirements/mariadb
-mkdir -f ./srcs/requirements/mariadb/conf
+mkdir -p ./srcs/requirements/bonus
+mkdir -p ./srcs/requirements/mariadb
+mkdir -p ./srcs/requirements/mariadb/conf
 touch ./srcs/requirements/mariadb/conf/create_db.sh
-mkdir -f ./srcs/requirements/mariadb/tools
+mkdir -p ./srcs/requirements/mariadb/tools
 touch ./srcs/requirements/mariadb/Dockerfile
 touch ./srcs/requirements/mariadb/.dockerignore
-echo ".git" > ./srcs/requirements/mariadb/.dockerignore
-mkdir -f ./srcs/requirements/nginx
-mkdir -f ./srcs/requirements/nginx/conf
+mkdir -p ./srcs/requirements/nginx
+mkdir -p ./srcs/requirements/nginx/conf
 touch ./srcs/requirements/nginx/conf/nginx.conf
-mkdir -f ./srcs/requirements/nginx/tools
+mkdir -p ./srcs/requirements/nginx/tools
 touch ./srcs/requirements/nginx/Dockerfile
-echo ".git" > project/srcs/requirements/nginx/.dockerignore
-mkdir -f ./srcs/requirements/tools
-mkdir -f ./srcs/requirements/wordpress
-mkdir -f ./srcs/requirements/wordpress/conf
+mkdir -p ./srcs/requirements/tools
+mkdir -p ./srcs/requirements/wordpress
+mkdir -p ./srcs/requirements/wordpress/conf
 touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
-mkdir -f ./srcs/requirements/wordpress/tools
+mkdir -p ./srcs/requirements/wordpress/tools
 touch ./srcs/requirements/wordpress/Dockerfile
 touch ./srcs/requirements/wordpress/.dockerignore
-echo ".git" > ./srcs/requirements/wordpress/.dockerignore
 ```
 
 ### Makefile
