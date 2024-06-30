@@ -93,7 +93,7 @@
     echo ".git" > project/srcs/requirements/wordpress/.dockerignore
     ```
   + ```
-    root/
+    project/
     ├── srcs/
     │   ├── requirements/
     │   │   ├── nginx/
@@ -376,11 +376,11 @@ fi
 `https://akostrik.42.fr`  
 `docker-compose down` выключить конфигурацию   
 
-`cd ~/root/srcs`   
+`cd ~/project/srcs`   
 `docker-compose up -d --build`   
 `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php, ожидаем:  
 ```
-    1 root      0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
+    1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
     9 nobody    0:00 {php-fpm8} php-fpm: pool www
    10 nobody    0:00 {php-fpm8} php-fpm: pool www
 ```
