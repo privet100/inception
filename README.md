@@ -238,7 +238,7 @@ CMD ["/usr/sbin/php-fpm8", "-F"]
 ### nginx/conf/nginx.conf  
 ```
 server {
-    listen              443 ssl;                            # nginx обрабатывает php-файлы, port https = port SSL
+  listen              443 ssl;                            # nginx обрабатывает php-файлы, port https = port SSL
     server_name         akostrik.42.fr www.akostrik.42.fr;
     root                /var/www/;
     index               index.php;
