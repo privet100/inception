@@ -33,7 +33,7 @@
     `PasswordAuthentication yes`  
   + `service ssh restart`
   + `systemctl restart sshd`
-  + `ssh akostrik@localhost -p 2222` на хостовой
+  + `ssh akostrik@localhost -p 4246` на хостовой
 * mkcert и сертификат
   + `apt update -y` 
   + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
