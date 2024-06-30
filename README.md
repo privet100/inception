@@ -66,7 +66,7 @@
     │   │   └── wordpress/
     │   │       ├── conf/wp-config-create.sh  # конфиг соединит нас с контейнером БД    
     │   │       ├── Dockerfile                # builds a Docker image
-    │   │       └── tools/make_dir.sh
+    │   │       └── tools/makedirs.sh
     │   ├── .env
     │   └── docker-compose.yml                # calls dockerfiles
     ├───makedirs.sh
@@ -108,7 +108,7 @@ fclean:  # перед сохранением в облако
 ```
 
 ### makedirs.sh
-`chmod +x requirements/wordpress/tools/make_dir.sh` (?)
+`chmod +x requirements/wordpress/tools/makedirs.sh` (?)
  ```
 #!/bin/bash
 mkdir -f ./srcs
@@ -315,7 +315,7 @@ EOF
 rm -f /tmp/create_db.sql
 ```
 
-### srcs/requirements/wordpresse/tools/make_dir.sh    
+### srcs/requirements/wordpresse/tools/makedirs.sh    
 ```
 #!/bin/bash
 if [ ! -d "/home/${USER}/data" ]; then
