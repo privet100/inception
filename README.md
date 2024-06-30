@@ -122,8 +122,8 @@ services:
       - wordpress
     ports:
       - "443:443"
-    networks: # сеть доступна по имени (все контейнеры в docker-compose или конфигурации которых в одной папке, автоматически объединяются в сеть)
-      - inception 
+    networks: 
+      - inception # сеть доступна по имени (хотя сеть существует и без этого) 
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools:/etc/nginx/ssl/
