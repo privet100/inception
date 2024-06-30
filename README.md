@@ -23,7 +23,7 @@
   + `ufw allow 80`  
   + `ufw allow 443`
   + `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
-* ssh (без этого пункта работает ?)
+* ssh
   + **/etc/ssh/sshd_config**:         
     `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
