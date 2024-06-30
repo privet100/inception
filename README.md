@@ -186,7 +186,7 @@ DB_ROOT=rootpass
 DB_USER=wpuser
 DB_PASS=wppass
 ```
-### nginx/Dockerfile  
+### srcs/reauirements/nginx/Dockerfile  
 версия https://www.alpinelinux.org/ (нельзя alpine:latest)  
 --no-cache = не сохраняя исходники в кэше  
 для отладки запускаем nginx напрямую (не демон) => логи напрямую в tty контейнера  
@@ -326,6 +326,10 @@ define( 'ABSPATH', __DIR__ . '/' );}
 require_once ABSPATH . 'wp-settings.php';
 EOF
 fi
+```
+### srcs/requirements/.dockerignore
+```
+.git
 ```
 
 ### Проверка
