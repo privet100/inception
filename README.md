@@ -21,9 +21,9 @@
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   + `ufw enable` 
-  + `ufw allow 22` ssh 
+  + `ufw allow 22`
   + `ufw allow 80`  
-  + `ufw allow 443` port https = port SSL
+  + `ufw allow 443`
   + `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
 * ssh (без этого пункта работает ?)
   + **/etc/ssh/sshd_config**:         
@@ -240,7 +240,7 @@ CMD ["/usr/sbin/php-fpm8", "-F"]
 ### nginx/conf/nginx.conf  
 ```
 server {
-    listen              443 ssl;                            # nginx обрабатывает только php-файлы
+    listen              443 ssl;                            # nginx обрабатывает php-файлы, port https = port SSL
     server_name         akostrik.42.fr www.akostrik.42.fr;
     root                /var/www/;
     index               index.php;
