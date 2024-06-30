@@ -76,6 +76,36 @@
   + также через Makefile, Dockerfile, docker-compose.yml ? 
 * ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
+### makedirs.sh
+```
+#!/bin/bash
+mkdir -f ./srcs
+mkdir -f ./srcs/requirements
+touch ./srcs/docker-compose.yml
+mkdir -f ./srcs/requirements/bonus
+mkdir -f ./srcs/requirements/mariadb
+mkdir -f ./srcs/requirements/mariadb/conf
+touch ./srcs/requirements/mariadb/conf/create_db.sh
+mkdir -f ./srcs/requirements/mariadb/tools
+touch ./srcs/requirements/mariadb/Dockerfile
+touch ./srcs/requirements/mariadb/.dockerignore
+echo ".git" > ./srcs/requirements/mariadb/.dockerignore
+mkdir -f ./srcs/requirements/nginx
+mkdir -f ./srcs/requirements/nginx/conf
+touch ./srcs/requirements/nginx/conf/nginx.conf
+mkdir -f ./srcs/requirements/nginx/tools
+touch ./srcs/requirements/nginx/Dockerfile
+echo ".git" > project/srcs/requirements/nginx/.dockerignore
+mkdir -f ./srcs/requirements/tools
+mkdir -f ./srcs/requirements/wordpress
+mkdir -f ./srcs/requirements/wordpress/conf
+touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
+mkdir -f ./srcs/requirements/wordpress/tools
+touch ./srcs/requirements/wordpress/Dockerfile
+touch ./srcs/requirements/wordpress/.dockerignore
+echo ".git" > ./srcs/requirements/wordpress/.dockerignore
+```
+
 ### Makefile
 ```
 name = inception
@@ -105,36 +135,6 @@ fclean:  # перед сохранением в облако
         @docker volume prune --force
         @sudo rm -rf ~/data/wordpress/*
         @sudo rm -rf ~/data/mariadb/*
-```
-
-### makedirs.sh
- ```
-#!/bin/bash
-mkdir -f ./srcs
-mkdir -f ./srcs/requirements
-touch ./srcs/docker-compose.yml
-mkdir -f ./srcs/requirements/bonus
-mkdir -f ./srcs/requirements/mariadb
-mkdir -f ./srcs/requirements/mariadb/conf
-touch ./srcs/requirements/mariadb/conf/create_db.sh
-mkdir -f ./srcs/requirements/mariadb/tools
-touch ./srcs/requirements/mariadb/Dockerfile
-touch ./srcs/requirements/mariadb/.dockerignore
-echo ".git" > ./srcs/requirements/mariadb/.dockerignore
-mkdir -f ./srcs/requirements/nginx
-mkdir -f ./srcs/requirements/nginx/conf
-touch ./srcs/requirements/nginx/conf/nginx.conf
-mkdir -f ./srcs/requirements/nginx/tools
-touch ./srcs/requirements/nginx/Dockerfile
-echo ".git" > project/srcs/requirements/nginx/.dockerignore
-mkdir -f ./srcs/requirements/tools
-mkdir -f ./srcs/requirements/wordpress
-mkdir -f ./srcs/requirements/wordpress/conf
-touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
-mkdir -f ./srcs/requirements/wordpress/tools
-touch ./srcs/requirements/wordpress/Dockerfile
-touch ./srcs/requirements/wordpress/.dockerignore
-echo ".git" > ./srcs/requirements/wordpress/.dockerignore
 ```
 
 ### srcs/docker-compose.yml    
