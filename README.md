@@ -8,8 +8,7 @@
   + динамический формат
   + 8 гигабайт под диск 
 * устанавливаем [debian](https://www.debian.org/ "скачать debian")
-* `apt update`
-* `apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
+* `apt update`; `apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
 * user
   + `adduser akostrik`
   + `usermod -aG docker akostrik` добавим в группу docker 
@@ -35,7 +34,7 @@
     `PasswordAuthentication yes # подтверждаем вход по паролю`  
   + `service ssh restart` // без этого пункта работает
   + `ssh akostrik@localhost -p 2222` на хостовой
-* установка mkcert и сертификат
+* mkcert и сертификат
   + `apt update -y` 
   + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
   + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` загружаем бинарник mkcert
