@@ -61,14 +61,6 @@
     touch project/Makefile
     mkdir -f project/srcs/requirements
     touch project/srcs/docker-compose.yml
-    touch project/srcs/.env
-    echo "DOMAIN_NAME=akostrik.42.fr" > project/srcs/.env
-    echo "CERT_=./requirements/tools/akostrik.42.fr.crt" >> project/srcs/.env
-    echo "KEY_=./requirements/tools/akostrik.42.fr.key" >> project/srcs/.env
-    echo "DB_NAME=wordpress" >> project/srcs/.env
-    echo "DB_ROOT=rootpass" >> project/srcs/.env
-    echo "DB_USER=wpuser" >> project/srcs/.env
-    echo "DB_PASS=wppass" >> project/srcs/.env
     mkdir -f project/srcs/requirements/bonus
     mkdir -f project/srcs/requirements/mariadb
     mkdir -f project/srcs/requirements/mariadb/conf
