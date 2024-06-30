@@ -50,6 +50,7 @@
   + 127.0.0.1  localhost akostrik.42.fr
   + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
   +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
+* пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 * автоматизировать настройку
   + `./make_dirs.sh` создать папки
   + ```
@@ -73,8 +74,7 @@
     ```
   + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
   + также через Makefile, Dockerfile, docker-compose.yml ? 
-* пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
-
+* ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
 ### Makefile
 ```
@@ -108,7 +108,6 @@ fclean:           # перед сохранением в облако
 ```
 
 ### srcs/docker-compose.yml    
-![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 ```
 version: '3'
 services:
