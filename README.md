@@ -162,7 +162,7 @@ services:
     volumes:
       - wp-volume:/var/www/
 volumes:
-  wp-volume: # общий раздел nginx и wordpress для обмена данными. Можно примонтировать туда и туда одну и ту же папку, но для удобства создадим раздел
+  wp-volume: # создадим раздел, НО можно было бы примонтировать к nginx и wordpress одну и ту же папку
     driver_opts:
       o: bind
       type: none
