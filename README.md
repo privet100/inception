@@ -224,7 +224,7 @@ DB_ROOT=rootpass
 DB_USER=wpuser
 DB_PASS=wppass
 ```
-### srcs/reauirements/nginx/Dockerfile  
+### srcs/requirements/nginx/Dockerfile  
 ```
 FROM alpine:3.19                                           # https://www.alpinelinux.org (нельзя alpine:latest)  
 RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
@@ -232,7 +232,7 @@ EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]                         # для отладки запускаем nginx напрямую (не демон), логи напрямую в tty контейнера  
 ```
 
-### srcs/reauirements/mariadb/Dockerfile
+### srcs/requirements/mariadb/Dockerfile
 ```
 FROM alpine:3.19
 ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
@@ -254,7 +254,7 @@ USER mysql
 CMD ["/usr/bin/mysqld", "--skip-log-error"]               
 ```
 
-### srcs/reauirements/wordpress/Dockerfile  
+### srcs/requirements/wordpress/Dockerfile  
 ```
 FROM alpine:3.19
 ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS  # wordpress работает на php, версия php (https://www.php.net/) соответствует установленной
@@ -270,7 +270,7 @@ RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content
 CMD ["/usr/sbin/php-fpm8", "-F"]
 ```
 
-### srcs/reauirements/nginx/conf/nginx.conf  
+### srcs/requirements/nginx/conf/nginx.conf  
 ```
 server {
   listen              443 ssl;                           # nginx обрабатывает php-файлы, port https = port SSL
@@ -301,7 +301,7 @@ server {
 }
 ```
 
-### srcs/reauirements/mariadb/create_db.sh
+### srcs/requirements/mariadb/create_db.sh
 ```
 #!bin/sh
 cat << EOF > /tmp/create_db.sql                               # создание базы
@@ -322,7 +322,7 @@ EOF
 rm -f /tmp/create_db.sql
 ```
 
-### srcs/reauirements/wordpresse/tools/make_dir.sh    
+### srcs/requirements/wordpresse/tools/make_dir.sh    
 ```
 #!/bin/bash
 if [ ! -d "/home/${USER}/data" ]; then
@@ -332,7 +332,7 @@ if [ ! -d "/home/${USER}/data" ]; then
 fi
 ```
 
-### srcs/reauirements/wordpresse/conf/wp-config-create.sh
+### srcs/requirements/wordpresse/conf/wp-config-create.sh
 ```
 #!bin/sh
 if [ ! -f "/var/www/wp-config.php" ]; then
