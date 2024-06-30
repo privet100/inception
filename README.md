@@ -52,38 +52,6 @@
   +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 * автоматизировать настройку
-  + **./make_dirs.sh**
-    `chmod +x requirements/wordpress/tools/make_dir.sh` (?)
-     ```
-    #!/bin/bash
-    mkdir -f project
-    mkdir -f project/srcs
-    touch project/Makefile
-    mkdir -f project/srcs/requirements
-    touch project/srcs/docker-compose.yml
-    mkdir -f project/srcs/requirements/bonus
-    mkdir -f project/srcs/requirements/mariadb
-    mkdir -f project/srcs/requirements/mariadb/conf
-    touch project/srcs/requirements/mariadb/conf/create_db.sh
-    mkdir -f project/srcs/requirements/mariadb/tools
-    touch project/srcs/requirements/mariadb/Dockerfile
-    touch project/srcs/requirements/mariadb/.dockerignore
-    echo ".git" > project/srcs/requirements/mariadb/.dockerignore
-    mkdir -f project/srcs/requirements/nginx
-    mkdir -f project/srcs/requirements/nginx/conf
-    touch project/srcs/requirements/nginx/conf/nginx.conf
-    mkdir -f project/srcs/requirements/nginx/tools
-    touch project/srcs/requirements/nginx/Dockerfile
-    echo ".git" > project/srcs/requirements/nginx/.dockerignore
-    mkdir -f project/srcs/requirements/tools
-    mkdir -f project/srcs/requirements/wordpress
-    mkdir -f project/srcs/requirements/wordpress/conf
-    touch project/srcs/requirements/wordpress/conf/wp-config-create.sh
-    mkdir -f project/srcs/requirements/wordpress/tools
-    touch project/srcs/requirements/wordpress/Dockerfile
-    touch project/srcs/requirements/wordpress/.dockerignore
-    echo ".git" > project/srcs/requirements/wordpress/.dockerignore
-    ```
   + ```
     project/
     ├── srcs/
@@ -101,6 +69,7 @@
     │   │       └── tools/make_dir.sh
     │   ├── .env
     │   └── docker-compose.yml                # calls dockerfiles
+    ├───make_dirs.sh
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
   + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
@@ -136,6 +105,37 @@ fclean:  # перед сохранением в облако
         @docker volume prune --force
         @sudo rm -rf ~/data/wordpress/*
         @sudo rm -rf ~/data/mariadb/*
+```
+
+### make_dirs.sh
+`chmod +x requirements/wordpress/tools/make_dir.sh` (?)
+ ```
+#!/bin/bash
+mkdir -f ./srcs
+mkdir -f ./srcs/requirements
+touch ./srcs/docker-compose.yml
+mkdir -f ./srcs/requirements/bonus
+mkdir -f ./srcs/requirements/mariadb
+mkdir -f ./srcs/requirements/mariadb/conf
+touch ./srcs/requirements/mariadb/conf/create_db.sh
+mkdir -f ./srcs/requirements/mariadb/tools
+touch ./srcs/requirements/mariadb/Dockerfile
+touch ./srcs/requirements/mariadb/.dockerignore
+echo ".git" > ./srcs/requirements/mariadb/.dockerignore
+mkdir -f ./srcs/requirements/nginx
+mkdir -f ./srcs/requirements/nginx/conf
+touch ./srcs/requirements/nginx/conf/nginx.conf
+mkdir -f ./srcs/requirements/nginx/tools
+touch ./srcs/requirements/nginx/Dockerfile
+echo ".git" > project/srcs/requirements/nginx/.dockerignore
+mkdir -f ./srcs/requirements/tools
+mkdir -f ./srcs/requirements/wordpress
+mkdir -f ./srcs/requirements/wordpress/conf
+touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
+mkdir -f ./srcs/requirements/wordpress/tools
+touch ./srcs/requirements/wordpress/Dockerfile
+touch ./srcs/requirements/wordpress/.dockerignore
+echo ".git" > ./srcs/requirements/wordpress/.dockerignore
 ```
 
 ### srcs/docker-compose.yml    
