@@ -52,13 +52,7 @@
   + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
   +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
 * `./make_dirs.sh` создать папки
-* автоматизировать настройку
-  + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
-  + также через Makefile, Dockerfile, docker-compose.yml ? 
-* пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
-
-### Файлы проекта
-```
+  + ```
 root/
 ├── srcs/
 │   ├── requirements/
@@ -77,6 +71,12 @@ root/
 │   └── docker-compose.yml                # calls dockerfiles
 └── Makefile                              # sets up the app, calls docker-compose.yml
 ```
+
+* автоматизировать настройку
+  + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
+  + также через Makefile, Dockerfile, docker-compose.yml ? 
+* пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
+
 
 ### Makefile
 ```
