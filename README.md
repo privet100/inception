@@ -155,11 +155,11 @@ services:
       context: .
       dockerfile: requirements/nginx/Dockerfile
     container_name: nginx
-    depends_on:  
+    depends_on:
       - wordpress
     ports:
       - "443:443"
-    networks: 
+    networks:
       - inception # сеть доступна по имени (хотя сеть существует и без этого) 
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
