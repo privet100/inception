@@ -53,7 +53,8 @@
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 * автоматизировать настройку
   + **./make_dirs.sh**
-    ```
+    `chmod +x requirements/wordpress/tools/make_dir.sh` (?)
+     ```
     #!/bin/bash
     mkdir -f project
     mkdir -f project/srcs
@@ -374,11 +375,6 @@ fi
 `https://127.0.0.1`  
 `https://akostrik.42.fr`  
 `docker-compose down` выключить конфигурацию   
-
-`srcs/requirements/wordpress/tools./make_dir.sh` создать директории и файлы   
-`chmod +x requirements/wordpress/tools/make_dir.sh`  
-`requirements/wordpress/tools/make_dir.sh`    
-`ls ~/data/` должны увидеть папки wordpress и mariadb  
 
 `cd ~/root/srcs`   
 `docker-compose up -d --build`   
