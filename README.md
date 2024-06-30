@@ -162,7 +162,7 @@ services:
     volumes:
       - wp-volume:/var/www/
 volumes:
-  wp-volume: # создадим раздел, НО можно было бы примонтировать к nginx и wordpress одну и ту же папку
+  wp-volume: # создадим раздел, но можно было бы примонтировать к nginx и wordpress одну и ту же папку
     driver_opts:
       o: bind
       type: none
@@ -192,10 +192,10 @@ CMD ["nginx", "-g", "daemon off;"]
 mysql пользователь, созданный при установке БД, под этим пользователем запускаем БД
 ```
 FROM alpine:3.19
-ARG DB_NAME DB_USER DB_PASS # аргументы из .env используются только при сборке образа (build)
-                            # альтернативный способ: через environment-секцию внутри сервиса, будут в окружении запущенного контейнера 
-                            # ARG с параметрами задаёт переменную окружения с переданным параметром
-                            # ARG без параметров берёт параметр из такой же переменной в docker-compose  
+ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
+                            # аргументы из environment-секции внутри сервиса - в окружении запущенного контейнера 
+                            # из docker-compose ?  
+                            # с параметрами = переменная окружения с переданным параметром
 RUN apk update && apk add --no-cache mariadb mariadb-client
 RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
     { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | \
