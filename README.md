@@ -362,6 +362,7 @@ fi
 ```
 
 ### Проверка
+`chmod +x makedirs.sh` (?)  
 `chmod +x requirements/wordpress/tools/makedirs.sh` (?)  
   
 `docker-compose up -d` запускаем конфигурацию  
