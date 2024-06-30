@@ -364,6 +364,11 @@ fi
 .git
 ```
 
+### srcs/requirements/worldpress/.dockerignore
+```
+.git
+```
+
 ### Проверка
 `docker-compose up -d` запускаем конфигурацию  
 `https://127.0.0.1`  
