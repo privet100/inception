@@ -108,7 +108,6 @@ fclean:  # перед сохранением в облако
 ```
 
 ### makedirs.sh
-`chmod +x requirements/wordpress/tools/makedirs.sh` (?)
  ```
 #!/bin/bash
 mkdir -f ./srcs
@@ -363,6 +362,8 @@ fi
 ```
 
 ### Проверка
+`chmod +x requirements/wordpress/tools/makedirs.sh` (?)  
+  
 `docker-compose up -d` запускаем конфигурацию  
 `https://127.0.0.1`  
 `https://akostrik.42.fr`  
