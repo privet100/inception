@@ -225,18 +225,14 @@ DB_USER=wpuser
 DB_PASS=wppass
 ```
 ### srcs/reauirements/nginx/Dockerfile  
-версия https://www.alpinelinux.org/ (нельзя alpine:latest)  
---no-cache = не сохраняя исходники в кэше  
-для отладки запускаем nginx напрямую (не демон) => логи напрямую в tty контейнера  
 ```
-FROM alpine:3.19                                         
-RUN apk update && apk upgrade && apk add --no-cache nginx
+FROM alpine:3.19                                           # https://www.alpinelinux.org (нельзя alpine:latest)  
+RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
 EXPOSE 443
-CMD ["nginx", "-g", "daemon off;"]                       
+CMD ["nginx", "-g", "daemon off;"]                         # для отладки запускаем nginx напрямую (не демон), логи напрямую в tty контейнера  
 ```
 
 ### srcs/reauirements/mariadb/Dockerfile
-mysql пользователь, созданный при установке БД, под этим пользователем запускаем БД
 ```
 FROM alpine:3.19
 ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
@@ -248,7 +244,7 @@ RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
     { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | \
     tee  /etc/my.cnf.d/docker.cnf; \                  # в файл
     sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # создаём БД из того, что сконфигурировали на пред. слое
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # БД из сконфигурированного на пред. слое, user mysql создан при установке БД
 EXPOSE 3306
 COPY requirements/mariadb/conf/create_db.sh .
 RUN sh create_db.sh && rm create_db.sh
@@ -259,20 +255,12 @@ CMD ["/usr/bin/mysqld", "--skip-log-error"]
 ```
 
 ### srcs/reauirements/wordpress/Dockerfile  
-wordpress работает на php 
-php-fpm для взаимодействия с nginx   
-php-mysqli для взаимодействия с mariadb  
-fastcgi слушает соединения по 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
-конфиг fastcgi  контейнере (`www.conf`)    
-запустить в контейнере fastcgi через сокет php-fpm   
-версия php должна соответствовать установленной!
-акт версия php: https://www.php.net/
 ```
 FROM alpine:3.19
-ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS
-RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \
-    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \
-    sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \
+ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS  # wordpress работает на php, версия php (https://www.php.net/) соответствует установленной
+RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \  # php-mysqli для взаимодействия с mariadb  
+    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \  # php-fpm для взаимодействия с nginx, запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
+    sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \  # конфиг fastcgi в контейнере `www.conf`
     sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
     && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
 WORKDIR /var/www
@@ -285,31 +273,31 @@ CMD ["/usr/sbin/php-fpm8", "-F"]
 ### srcs/reauirements/nginx/conf/nginx.conf  
 ```
 server {
-  listen              443 ssl;                            # nginx обрабатывает php-файлы, port https = port SSL
-    server_name         akostrik.42.fr www.akostrik.42.fr;
-    root                /var/www/;
-    index               index.php;
-    ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
-    ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
-    ssl_protocols       TLSv1.2 TLSv1.3;                    # поддерживаемые протоколы tls
-    ssl_session_timeout 10m;                                # опции кэширования 
-    keepalive_timeout   70;                                 # таймауты
-    location / {
-        try_files $uri /index.php?$args;
-        add_header Last-Modified $date_gmt;
-        add_header Cache-Control 'no-store, no-cache';
-        if_modified_since off;
-        expires off;
-        etag off;
-    }
-    location ~ \.php$ {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass wordpress:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-    }
+  listen              443 ssl;                           # nginx обрабатывает php-файлы, port https = port SSL
+  server_name         akostrik.42.fr www.akostrik.42.fr;
+  root                /var/www/;
+  index               index.php;
+  ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
+  ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
+  ssl_protocols       TLSv1.2 TLSv1.3;                    # поддерживаемые протоколы tls
+  ssl_session_timeout 10m;                                # опции кэширования 
+  keepalive_timeout   70;                                 # таймауты
+  location / {
+    try_files $uri /index.php?$args;
+    add_header Last-Modified $date_gmt;
+    add_header Cache-Control 'no-store, no-cache';
+    if_modified_since off;
+    expires off;
+    etag off;
+  }
+  location ~ \.php$ {
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass wordpress:9000;
+    fastcgi_index index.php;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+  }
 }
 ```
 
