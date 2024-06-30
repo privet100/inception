@@ -196,12 +196,12 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /home/${USER}/data/wordpress
+      device: /home/akostrik/data/wordpress
   db-volume:
     driver_opts:
       o: bind
       type: none
-      device: /home/${USER}/data/mariadb
+      device: /home/akostrik/data/mariadb
 networks:
     inception:
         driver: bridge
