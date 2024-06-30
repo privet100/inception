@@ -197,7 +197,7 @@ EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]                       
 ```
 
-### mariadb/Dockerfile
+### srcs/reauirements/mariadb/Dockerfile
 mysql пользователь, созданный при установке БД, под этим пользователем запускаем БД
 ```
 FROM alpine:3.19
@@ -220,7 +220,7 @@ USER mysql
 CMD ["/usr/bin/mysqld", "--skip-log-error"]               
 ```
 
-### wordpress/Dockerfile  
+### srcs/reauirements/wordpress/Dockerfile  
 wordpress работает на php 
 php-fpm для взаимодействия с nginx   
 php-mysqli для взаимодействия с mariadb  
@@ -244,7 +244,7 @@ RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content
 CMD ["/usr/sbin/php-fpm8", "-F"]
 ```
 
-### nginx/conf/nginx.conf  
+### srcs/reauirements/nginx/conf/nginx.conf  
 ```
 server {
   listen              443 ssl;                            # nginx обрабатывает php-файлы, port https = port SSL
@@ -275,7 +275,7 @@ server {
 }
 ```
 
-### mariadb/create_db.sh
+### srcs/reauirements/mariadb/create_db.sh
 ```
 #!bin/sh
 cat << EOF > /tmp/create_db.sql                               # создание базы
@@ -296,7 +296,7 @@ EOF
 rm -f /tmp/create_db.sql
 ```
 
-### wordpresse/tools/make_dir.sh    
+### srcs/reauirements/wordpresse/tools/make_dir.sh    
 ```
 #!/bin/bash
 if [ ! -d "/home/${USER}/data" ]; then
@@ -306,7 +306,7 @@ if [ ! -d "/home/${USER}/data" ]; then
 fi
 ```
 
-### wordpresse/conf/wp-config-create.sh
+### srcs/reauirements/wordpresse/conf/wp-config-create.sh
 ```
 #!bin/sh
 if [ ! -f "/var/www/wp-config.php" ]; then
@@ -327,7 +327,13 @@ require_once ABSPATH . 'wp-settings.php';
 EOF
 fi
 ```
-### srcs/requirements/.dockerignore
+
+### srcs/requirements/nginx/.dockerignore
+```
+.git
+```
+
+### srcs/requirements/mariadb/.dockerignore
 ```
 .git
 ```
