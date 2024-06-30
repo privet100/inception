@@ -314,11 +314,9 @@ rm -f /tmp/create_db.sql
 ### srcs/requirements/wordpresse/tools/makedirs.sh    
 ```
 #!/bin/bash
-if [ ! -d "/home/${USER}/data" ]; then
-        mkdir ~/data
-        mkdir ~/data/mariadb
-        mkdir ~/data/wordpress
-fi
+mkdir -p ~/data
+mkdir -p ~/data/mariadb
+mkdir -p ~/data/wordpress
 ```
 
 ### srcs/requirements/wordpresse/conf/wp-config-create.sh
