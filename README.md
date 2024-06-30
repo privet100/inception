@@ -30,7 +30,7 @@
     `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
     `PubkeyAuthentication no`  
-    `PasswordAuthentication yes #`  
+    `PasswordAuthentication yes`  
   + `service ssh restart`
   + `systemctl restart sshd`
   + `ssh akostrik@localhost -p 2222` на хостовой
