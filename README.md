@@ -212,7 +212,7 @@ USER mysql
 CMD ["/usr/bin/mysqld", "--skip-log-error"]               
 ```
 
-### wordpress Dockerfile:  
+### wordpress/Dockerfile  
 wordpress работает на php 
 php-fpm для взаимодействия с nginx   
 php-mysqli для взаимодействия с mariadb  
@@ -298,7 +298,7 @@ if [ ! -d "/home/${USER}/data" ]; then
 fi
 ```
 
-### wordpresse/conf/wp-config-create.sh:    
+### wordpresse/conf/wp-config-create.sh
 ```
 #!bin/sh
 if [ ! -f "/var/www/wp-config.php" ]; then
