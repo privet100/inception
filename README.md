@@ -69,7 +69,7 @@
     │   │       └── tools/make_dir.sh
     │   ├── .env
     │   └── docker-compose.yml                # calls dockerfiles
-    ├───make_dirs.sh
+    ├───makedirs.sh
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
   + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
@@ -80,11 +80,11 @@
 ```
 name = inception
 all:    # запуск после остановки  
-        @bash srcs/requirements/wordpress/tools/make_dir.sh
+        @bash srcs/requirements/wordpress/tools/makedirs.sh
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
 
 build:  # развёртывание 
-        @bash srcs/requirements/wordpress/tools/make_dir.sh
+        @bash srcs/requirements/wordpress/tools/makedirs.sh
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
 down:   # остановка
@@ -107,7 +107,7 @@ fclean:  # перед сохранением в облако
         @sudo rm -rf ~/data/mariadb/*
 ```
 
-### make_dirs.sh
+### makedirs.sh
 `chmod +x requirements/wordpress/tools/make_dir.sh` (?)
  ```
 #!/bin/bash
