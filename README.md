@@ -6,6 +6,12 @@
   + динамический формат
   + 8 гигабайт под диск
   + устанавливаем [debian](https://www.debian.org/ "скачать debian")
+  + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
+  + `apt update -y` 
+  + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
+  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
+  + `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
+  + `chmod a+x /usr/local/bin/mkcert`
 * user
   + `adduser akostrik`
   + `usermod -aG docker akostrik` добавим в группу docker 
@@ -32,24 +38,17 @@
   + `service ssh restart`
   + `systemctl restart sshd`
   + `ssh akostrik@localhost -p 4246` на хостовой
-* mkcert и сертификат
-  + `apt update -y` 
-  + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
-  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
-  + `mv mkcert-v*-linux-amd64 mkcert`
-  + `chmod a+x mkcert`
-  + `mv mkcert /usr/local/bin/` перемещаем в рабочую директорию
+* сертификат
   + `cd ~/project/srcs/requirements/nginx/tools/`
   + `mkcert akostrik.42.fr`
   + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
   + le certificat SSL n’a pas été signé par Trusted Authority
     - un message d’alerte indiquant que ce site tente de vous voler des informations sensibles
-* `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
 * `/etc/hosts`
-  + 127.0.0.1  localhost akostrik.42.fr
-  + **modifier IP dans le fichier de conf de NGINX dans la case server_name**
-  +  modifier IP dans la génération du certificat SSL, mais bon, celui-ci n’est pas authentifié
+  + 127.0.0.1 localhost akostrik.42.fr
+  + **modifier IP dans le fichier de conf de NGINX dans la case server_name (?)**
+  +  modifier IP dans la génération du certificat SSL
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 * автоматизировать настройку
   + ```
