@@ -49,7 +49,7 @@
 * `/etc/hosts`
   + 127.0.0.1 localhost akostrik.42.fr
 * автоматизировать настройку
-  + ```
+  + makedirs.sh ```
     #!/bin/bash
     mkdir -p ./srcs
     mkdir -p ./srcs/requirements
@@ -105,15 +105,15 @@
 ```
 name = inception
 all:    # после остановки  
-        @bash srcs/requirements/wordpress/tools/makedirs.sh
-        @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
+        @bash ./srcs/requirements/wordpress/tools/makedirs.sh
+        @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
 build:  # развёртывание = first run
         @bash srcs/requirements/wordpress/tools/makedirs.sh
-        @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+        @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
 down:   # остановка
-        @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
+        @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env down
 re:
-        @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+        @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
 clean: down
         @docker system prune -a
         @sudo rm -rf ~/data/wordpress/*
@@ -358,7 +358,7 @@ fi
 `https://akostrik.42.fr`  
 `docker-compose down` выключить конфигурацию   
 
-`cd ~/project/srcs`   
+`cd project/srcs`   
 `docker-compose up -d --build`   
 `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php, ожидаем:  
 ```
