@@ -3,9 +3,7 @@
 * создать VM
   + папку в sgoinfre
   + оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше
-  + формат VDI или VHD
-  + динамический формат
-  + 8 гигабайт под диск
+  + диск: формат VDI или VHD, динамический, 8 гигабайт
   + устанавливаем [debian](https://www.debian.org/ "скачать debian")
   + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
   + `apt update -y` 
