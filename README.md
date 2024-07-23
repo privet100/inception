@@ -98,9 +98,10 @@
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
   + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
-  + автоматизировать настройку - Makefile, Dockerfile, docker-compose.yml ? 
+  + Makefile
+  + Dockerfile
+  + docker-compose.yml 
 * ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
-
 
 ### Makefile
 ```
