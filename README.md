@@ -1,4 +1,5 @@
 ### VM
+* пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 * создать VM
   + папку в sgoinfre
   + оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше
@@ -47,9 +48,6 @@
     - un message d’alerte indiquant que ce site tente de vous voler des informations sensibles
 * `/etc/hosts`
   + 127.0.0.1 localhost akostrik.42.fr
-  + **modifier IP dans le fichier de conf de NGINX dans la case server_name (?)**
-  +  modifier IP dans la génération du certificat SSL
-* пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 * автоматизировать настройку
   + ```
     #!/bin/bash
