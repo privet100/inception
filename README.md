@@ -50,7 +50,33 @@
   + **modifier IP dans le fichier de conf de NGINX dans la case server_name (?)**
   +  modifier IP dans la génération du certificat SSL
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
-* автоматизировать настройку - makedirs.sh
+* автоматизировать настройку
+  + makedirs.sh ```
+  #!/bin/bash
+  mkdir -p ./srcs
+  mkdir -p ./srcs/requirements
+  touch ./srcs/docker-compose.yml
+  mkdir -p ./srcs/requirements/bonus
+  mkdir -p ./srcs/requirements/mariadb
+  mkdir -p ./srcs/requirements/mariadb/conf
+  touch ./srcs/requirements/mariadb/conf/create_db.sh
+  mkdir -p ./srcs/requirements/mariadb/tools
+  touch ./srcs/requirements/mariadb/Dockerfile
+  touch ./srcs/requirements/mariadb/.dockerignore
+  mkdir -p ./srcs/requirements/nginx
+  mkdir -p ./srcs/requirements/nginx/conf
+  touch ./srcs/requirements/nginx/conf/nginx.conf
+  mkdir -p ./srcs/requirements/nginx/tools
+  touch ./srcs/requirements/nginx/Dockerfile
+  mkdir -p ./srcs/requirements/tools
+  mkdir -p ./srcs/requirements/wordpress
+  mkdir -p ./srcs/requirements/wordpress/conf
+  touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
+  mkdir -p ./srcs/requirements/wordpress/tools
+  mkdir -p ./srcs/requirements/wordpress/tools/makedirs.sh
+  touch ./srcs/requirements/wordpress/Dockerfile
+  touch ./srcs/requirements/wordpress/.dockerignore
+  ```
   + ```
     project/
     ├── srcs/
@@ -75,33 +101,6 @@
   + автоматизировать настройку - Makefile, Dockerfile, docker-compose.yml ? 
 * ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
-### makedirs.sh
-```
-#!/bin/bash
-mkdir -p ./srcs
-mkdir -p ./srcs/requirements
-touch ./srcs/docker-compose.yml
-mkdir -p ./srcs/requirements/bonus
-mkdir -p ./srcs/requirements/mariadb
-mkdir -p ./srcs/requirements/mariadb/conf
-touch ./srcs/requirements/mariadb/conf/create_db.sh
-mkdir -p ./srcs/requirements/mariadb/tools
-touch ./srcs/requirements/mariadb/Dockerfile
-touch ./srcs/requirements/mariadb/.dockerignore
-mkdir -p ./srcs/requirements/nginx
-mkdir -p ./srcs/requirements/nginx/conf
-touch ./srcs/requirements/nginx/conf/nginx.conf
-mkdir -p ./srcs/requirements/nginx/tools
-touch ./srcs/requirements/nginx/Dockerfile
-mkdir -p ./srcs/requirements/tools
-mkdir -p ./srcs/requirements/wordpress
-mkdir -p ./srcs/requirements/wordpress/conf
-touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
-mkdir -p ./srcs/requirements/wordpress/tools
-mkdir -p ./srcs/requirements/wordpress/tools/makedirs.sh
-touch ./srcs/requirements/wordpress/Dockerfile
-touch ./srcs/requirements/wordpress/.dockerignore
-```
 
 ### Makefile
 ```
