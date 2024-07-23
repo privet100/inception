@@ -86,11 +86,11 @@
     │   │   │   ├── Dockerfile                # builds a Docker image
     │   │   │   └── tools/                    # ключи
     │   │   ├── mariadb/
-    │   │   │   ├── conf/create_db.sh         # скрипт, создающий БД   
-    │   │   │   └── Dockerfile                # builds a Docker image
+    │   │   │   ├── conf/create_db.sh         # создать БД   
+    │   │   │   └── Dockerfile
     │   │   └── wordpress/
     │   │       ├── conf/wp-config-create.sh  # конфиг соединит нас с контейнером БД    
-    │   │       ├── Dockerfile                # builds a Docker image
+    │   │       ├── Dockerfile
     │   │       └── tools/makedirs.sh
     │   ├── .env
     │   └── docker-compose.yml                # calls dockerfiles
@@ -106,25 +106,20 @@
 ### Makefile
 ```
 name = inception
-all:    # запуск после остановки  
+all:    # после остановки  
         @bash srcs/requirements/wordpress/tools/makedirs.sh
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
-
-build:  # развёртывание 
+build:  # развёртывание = first run
         @bash srcs/requirements/wordpress/tools/makedirs.sh
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
-
 down:   # остановка
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
-
 re:
         @docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
-
 clean: down
         @docker system prune -a
         @sudo rm -rf ~/data/wordpress/*
         @sudo rm -rf ~/data/mariadb/*
-
 fclean:  # перед сохранением в облако   
         @docker stop $$(docker ps -qa)
         @docker system prune --all --force --volumes
@@ -371,6 +366,7 @@ fi
 ```
     1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
     9 nobody    0:00 {php-fpm8} php-fpm: pool www
+
    10 nobody    0:00 {php-fpm8} php-fpm: pool www
 ```
 `docker exec -it wordpress php -v` проверим работу php  
