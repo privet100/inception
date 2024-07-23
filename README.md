@@ -181,7 +181,7 @@ services:
     volumes:
       - wp-volume:/var/www/
 volumes:
-  wp-volume: # создадим раздел, но можно было бы примонтировать к nginx и wordpress одну и ту же папку
+  wp-volume: # создадим раздел (можно было бы примонтировать к nginx и wordpress одну и ту же папку)
     driver_opts:
       o: bind
       type: none
