@@ -50,7 +50,7 @@
   + **modifier IP dans le fichier de conf de NGINX dans la case server_name (?)**
   +  modifier IP dans la génération du certificat SSL
 * пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
-* автоматизировать настройку
+* автоматизировать настройку - makedirs.sh
   + ```
     project/
     ├── srcs/
@@ -72,7 +72,7 @@
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
   + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
-  + также через Makefile, Dockerfile, docker-compose.yml ? 
+  + автоматизировать настройку - Makefile, Dockerfile, docker-compose.yml ? 
 * ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
 ### makedirs.sh
