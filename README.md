@@ -13,8 +13,7 @@ VM root 2, VM akostrik 2, mariadb akostrik 2
 
 ### user
   + `adduser akostrik`
-  + `usermod -aG docker akostrik` добавим в группу docker 
-  + `usermod -aG sudo akostrik`
+  + `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
   + `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL`
 
 ### Порты
@@ -43,8 +42,7 @@ VM root 2, VM akostrik 2, mariadb akostrik 2
   + `ssh akostrik@localhost -p 4246` на хостовой
 
 ### сертификат
-  + `apt update -y` 
-  + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
+  + `apt update -y; apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
   + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
   + `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
   + `chmod a+x /usr/local/bin/mkcert`
