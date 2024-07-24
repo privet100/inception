@@ -70,33 +70,30 @@ touch ./srcs/requirements/wordpress/.dockerignore
 ```
 name = inception
 all:    # после остановки  
-         @bash ./srcs/requirements/wordpress/tools/makedirs.sh
-         @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
+  @bash ./srcs/requirements/wordpress/tools/makedirs.sh
+  @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
 build:  # развёртывание = first run
-         @bash srcs/requirements/wordpress/tools/makedirs.sh
-         @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
+  @bash srcs/requirements/wordpress/tools/makedirs.sh
+  @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
 down:   # остановка
-         @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env down
+  @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env down
 re:
-         @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
+  @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
 clean: down
-         @docker system prune -a
-         @sudo rm -rf ~/data/wordpress/*
-         @sudo rm -rf ~/data/mariadb/*
+  @docker system prune -a
+  @sudo rm -rf ~/data/wordpress/*
+  @sudo rm -rf ~/data/mariadb/*
 fclean:  # перед сохранением в облако   
-         @docker stop $$(docker ps -qa)
-         @docker system prune --all --force --volumes
-         @docker network prune --force
-         @docker volume prune --force
-         @sudo rm -rf ~/data/wordpress/*
-         @sudo rm -rf ~/data/mariadb/*
+  @docker stop $$(docker ps -qa)
+  @docker system prune --all --force --volumes
+  @docker network prune --force
+  @docker volume prune --force
+  @sudo rm -rf ~/data/wordpress/*
+  @sudo rm -rf ~/data/mariadb/*
 ```
 
 ### srcs/.env
 ```
-DOMAIN_NAME=akostrik.42.fr     # ?
-CERT_=./requirements/tools/akostrik.42.cert
-KEY_=./requirements/tools/akostrik.42.fr
 DB_NAME=wordpress
 DB_ROOT=2
 DB_USER=wpuser
