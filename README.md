@@ -325,30 +325,22 @@ DB_PASS=wppass
   ```
 
 ### Проверка
-`chmod +x makedirs.sh` (?)  
-`chmod +x requirements/wordpress/tools/makedirs.sh` (?)  
-  
-`docker-compose up -d` запускаем конфигурацию  
-`https://127.0.0.1`  
-`https://akostrik.42.fr`  
-`docker-compose down` выключить конфигурацию   
-
-`cd project/srcs`   
-`docker-compose up -d --build`   
+`docker exec -it wordpress php -m` проверим, все ли модули установились  
+`docker exec -it wordpress php -v` проверим работу php  
 `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php, ожидаем:  
 ```
-    1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
-    9 nobody    0:00 {php-fpm8} php-fpm: pool www
-
-   10 nobody    0:00 {php-fpm8} php-fpm: pool www
+1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
+...
+10 nobody    0:00 {php-fpm8} php-fpm: pool www
 ```
-`docker exec -it wordpress php -v` проверим работу php  
-`docker exec -it wordpress php -m` проверим, все ли модули установились  
-
-* to stop these services running by default (?):  
+`cd project/srcs`   
+`docker-compose up -d --build` запускаем конфигурацию  
+`https://127.0.0.1`  
+`https://akostrik.42.fr`  
 `service nginx stop`  
 `service mariadb stop`  
 `service mysql stop`  
+`docker-compose down`
 
 ## VM vs docker
 | VM                                               | Docker                                                           |
