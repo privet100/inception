@@ -246,7 +246,7 @@
     |                     networks:
     |                         inception:
     |                             driver: bridge
-├── makedirs.sh
+    ├── makedirs.sh
     │                   #!/bin/bash
     │                   mkdir -p ./srcs
     │                   mkdir -p ./srcs/requirements    │                   
