@@ -46,8 +46,8 @@
   + le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
 * `/etc/hosts`
   + 127.0.0.1 localhost akostrik.42.fr
-* makedirs.sh:
 * ```
+  makedirs.sh:
   #!/bin/bash
   mkdir -p ./srcs
   mkdir -p ./srcs/requirements    │                   
@@ -73,8 +73,8 @@
   touch ./srcs/requirements/wordpress/Dockerfile
   touch ./srcs/requirements/wordpress/.dockerignore
   ```
-* Makefile:                             # sets up the app
 * ```
+  Makefile:                             # sets up the app
   name = inception
   all:    # после остановки  
            @bash ./srcs/requirements/wordpress/tools/makedirs.sh
