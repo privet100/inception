@@ -54,123 +54,120 @@
     project/
     ├── srcs/
     │   ├── requirements/
-    │   │   ├── nginx/
-    │   │   │   ├── conf/nginx.conf  
-    │   │   │   │       server {
-    │   │   │   │         listen              443 ssl;                           # nginx обрабатывает php-файлы, https = SSL
-    │   │   │   │         server_name         akostrik.42.fr www.akostrik.42.fr;
-    │   │   │   │         root                /var/www/;
-    │   │   │   │         index               index.php;
-    │   │   │   │         ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
-    │   │   │   │         ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
-    │   │   │   │         ssl_protocols       TLSv1.2 TLSv1.3;                    # поддерживаемые протоколы tls
-    │   │   │   │         ssl_session_timeout 10m;                                # опции кэширования 
-    │   │   │   │         keepalive_timeout   70;                                 # таймауты
-    │   │   │   │         location / {
-    │   │   │   │           try_files $uri /index.php?$args;
-    │   │   │   │           add_header Last-Modified $date_gmt;
-    │   │   │   │           add_header Cache-Control 'no-store, no-cache';
-    │   │   │   │           if_modified_since off;
-    │   │   │   │           expires off;
-    │   │   │   │           etag off;
-    │   │   │   │         }
-    │   │   │   │         location ~ \.php$ {
-    │   │   │   │           fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    │   │   │   │           fastcgi_pass wordpress:9000;
-    │   │   │   │           fastcgi_index index.php;
-    │   │   │   │           include fastcgi_params;
-    │   │   │   │           fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    │   │   │   │           fastcgi_param PATH_INFO $fastcgi_path_info;
-    │   │   │   │         }
-    │   │   │   │       }
-    │   │   │   ├── Dockerfile                # builds a Docker image
-    │   │   │   │       FROM alpine:3.19                                           # https://www.alpinelinux.org (нельзя alpine:latest)  
-    │   │   │   │       RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
-    │   │   │   │       EXPOSE 443
-    │   │   │   │       CMD ["nginx", "-g", "daemon off;"]                         # для отладки запускаем nginx напрямую (не демон), логи напрямую в tty контейнера  
-    │   │   │   ├── tools/akostrik.42.fr      #???
-    │   │   │   ├── tools/akostrik.42.fr 
-    │   │   │   └── .dockerignore
+    │   │   ├── nginx/conf/nginx.conf  
+    │   │   │           server {
+    │   │   │             listen              443 ssl;                           # nginx обрабатывает php-файлы, https = SSL
+    │   │   │             server_name         akostrik.42.fr www.akostrik.42.fr;
+    │   │   │             root                /var/www/;
+    │   │   │             index               index.php;
+    │   │   │             ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
+    │   │   │             ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
+    │   │   │             ssl_protocols       TLSv1.2 TLSv1.3;                    # поддерживаемые протоколы tls
+    │   │   │             ssl_session_timeout 10m;                                # опции кэширования 
+    │   │   │             keepalive_timeout   70;                                 # таймауты
+    │   │   │             location / {
+    │   │   │               try_files $uri /index.php?$args;
+    │   │   │               add_header Last-Modified $date_gmt;
+    │   │   │               add_header Cache-Control 'no-store, no-cache';
+    │   │   │               if_modified_since off;
+    │   │   │               expires off;
+    │   │   │               etag off;
+    │   │   │             }
+    │   │   │            location ~ \.php$ {
+    │   │   │              fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    │   │   │             fastcgi_pass wordpress:9000;
+    │   │   │              fastcgi_index index.php;
+    │   │   │             include fastcgi_params;
+    │   │   │              fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    │   │   │              fastcgi_param PATH_INFO $fastcgi_path_info;
+    │   │   │            }
+    │   │   │           }
+    │   │   ├── nginx/Dockerfile                # builds a Docker image
+    │   │   │           FROM alpine:3.19                                           # https://www.alpinelinux.org (нельзя alpine:latest)  
+    │   │   │           RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
+    │   │   │           EXPOSE 443
+    │   │   │           CMD ["nginx", "-g", "daemon off;"]                         # для отладки запускаем nginx напрямую (не демон), логи напрямую в tty контейнера  
+    │   │   ├── nginx/tools/akostrik.42.fr      #???
+    │   │   ├── nginx/tools/akostrik.42.fr 
+    │   │   ├── nginx/.dockerignore
     │   │   │           .git
-    │   │   ├── mariadb/
-    │   │   │   ├── conf/create_db.sh
-    │   │   │   │       #!bin/sh
-    │   │   │   │       cat << EOF > /tmp/create_db.sql
-    │   │   │   │       USE mysql;
-    │   │   │   │       FLUSH PRIVILEGES;
-    │   │   │   │       DELETE FROM     mysql.user WHERE User='';
-    │   │   │   │       DROP DATABASE test;
-    │   │   │   │       DELETE FROM mysql.db WHERE Db='test';
-    │   │   │   │       DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-    │   │   │   │       ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT}';
-    │   │   │   │       CREATE DATABASE ${DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
-    │   │   │   │       CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${DB_PASS}';
-    │   │   │   │       GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
-    │   │   │   │       FLUSH PRIVILEGES;
-    │   │   │   │       EOF
-    │   │   │   │       # run init.sql 
-    │   │   │   │       /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код
-    │   │   │   │       rm -f /tmp/create_db.sql
-    │   │   │   ├── Dockerfile
-    │   │   │   │       FROM alpine:3.19
-    │   │   │   │       ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
-    │   │   │   │                                   # аргументы из environment-секции внутри сервиса - в окружении запущенного контейнера 
-    │   │   │   │                                   # из docker-compose ?  
-    │   │   │   │                                   # с параметрами = переменная окружения с переданным параметром
-    │   │   │   │       RUN apk update && apk add --no-cache mariadb mariadb-client
-    │   │   │   │       RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
-    │   │   │   │           { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | \
-    │   │   │   │           tee  /etc/my.cnf.d/docker.cnf; \                  # в файл
-    │   │   │   │           sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
-    │   │   │   │       RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # БД из сконфигурированного на пред. слое, user mysql создан при установке БД
-    │   │   │   │       EXPOSE 3306
-    │   │   │   │       COPY requirements/mariadb/conf/create_db.sh .
-    │   │   │   │       RUN sh create_db.sh && rm create_db.sh
-    │   │   │   │       USER mysql                                                
-    │   │   │   │       #? COPY tools/db.sh .
-    │   │   │   │       #? ENTRYPOINT  ["sh", "db.sh"]
-    │   │   │   │       CMD ["/usr/bin/mysqld", "--skip-log-error"]               
-    │   │   │   └── .dockerignore
+    │   │   ├── mariadb/conf/create_db.sh
+    │   │   │           #!bin/sh
+    │   │   │           cat << EOF > /tmp/create_db.sql
+    │   │   │           USE mysql;
+    │   │   │           FLUSH PRIVILEGES;
+    │   │   │           DELETE FROM     mysql.user WHERE User='';
+    │   │   │           DROP DATABASE test;
+    │   │   │           DELETE FROM mysql.db WHERE Db='test';
+    │   │   │           DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+    │   │   │           ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT}';
+    │   │   │           CREATE DATABASE ${DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
+    │   │   │           CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${DB_PASS}';
+    │   │   │           GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
+    │   │   │           FLUSH PRIVILEGES;
+    │   │   │           EOF
+    │   │   │           # run init.sql 
+    │   │   │           /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код
+    │   │   │           rm -f /tmp/create_db.sql
+    │   │   ├── mariadb/Dockerfile
+    │   │   │           FROM alpine:3.19
+    │   │   │           ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
+    │   │   │                                      # аргументы из environment-секции внутри сервиса - в окружении запущенного контейнера 
+    │   │   │                                      # из docker-compose ?  
+    │   │   │                                      # с параметрами = переменная окружения с переданным параметром
+    │   │   │           RUN apk update && apk add --no-cache mariadb mariadb-client
+    │   │   │           RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
+    │   │   │              { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | \
+    │   │   │              tee  /etc/my.cnf.d/docker.cnf; \                  # в файл
+    │   │   │              sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
+    │   │   │           RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # БД из сконфигурированного на пред. слое, user mysql создан при установке БД
+    │   │   │           EXPOSE 3306
+    │   │   │           COPY requirements/mariadb/conf/create_db.sh .
+    │   │   │           RUN sh create_db.sh && rm create_db.sh
+    │   │   │           USER mysql                                                
+    │   │   │           #? COPY tools/db.sh .
+    │   │   │           #? ENTRYPOINT  ["sh", "db.sh"]
+    │   │   │           CMD ["/usr/bin/mysqld", "--skip-log-error"]               
+    │   │   ├── mariadb/.dockerignore
     │   │   │           .git
-    │   │   └── wordpress/
-    │   │       ├── conf/wp-config-create.sh  # соединит с контейнером БД    
-    │   │       │       #!bin/sh
-    │   │       │       if [ ! -f "/var/www/wp-config.php" ]; then
-    │   │       │       cat << EOF > /var/www/wp-config.php
-    │   │       │       <?php
-    │   │       │       define( 'DB_NAME', '${DB_NAME}' );
-    │   │       │       define( 'DB_USER', '${DB_USER}' );
-    │   │       │       define( 'DB_PASSWORD', '${DB_PASS}' );
-    │   │       │       define( 'DB_HOST', 'mariadb' );
-    │   │       │       define( 'DB_CHARSET', 'utf8' );
-    │   │       │       define( 'DB_COLLATE', '' );
-    │   │       │       define('FS_METHOD','direct');
-    │   │       │       \$table_prefix = 'wp_';   # экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)
-    │   │       │       define( 'WP_DEBUG', false );
-    │   │       │       if ( ! defined( 'ABSPATH' ) ) {
-    │   │       │       define( 'ABSPATH', __DIR__ . '/' );}
-    │   │       │       require_once ABSPATH . 'wp-settings.php';
-    │   │       │       EOF
-    │   │       │       fi
-    │   │       ├── Dockerfile
-    │   │       │       FROM alpine:3.19
-    │   │       │       ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS  # wordpress работает на php, версия php (https://www.php.net/) соответствует установленной
-    │   │       │       RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \  # php-mysqli для mariadb  
-    │   │       │       sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \  # php-fpm для взаимодействия с nginx, запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
-    │   │       │       sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \  # конфиг fastcgi в контейнере `www.conf`
-    │   │       │       sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
-    │   │       │       && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
-    │   │       │       WORKDIR /var/www
-    │   │       │       RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
-    │   │       │       COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
-    │   │       │       RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # CMS может скачивать темы, плагины, сохранять файлы
-    │   │       │       CMD ["/usr/sbin/php-fpm8", "-F"]
-    │   │       ├── tools/makedirs.sh
-    │   │       │       #!/bin/bash
-    │   │       │       mkdir -p ~/data
-    │   │       │       mkdir -p ~/data/mariadb
-    │   │       │       mkdir -p ~/data/wordpress
-    │   │       └── .dockerignore
+    │   │   ├── wordpress/conf/wp-config-create.sh  # соединит с контейнером БД    
+    │   │   |           #!bin/sh
+    │   │   |           if [ ! -f "/var/www/wp-config.php" ]; then
+    │   │   |           cat << EOF > /var/www/wp-config.php
+    │   │   |           <?php
+    │   │   |           define( 'DB_NAME', '${DB_NAME}' );
+    │   │   |           define( 'DB_USER', '${DB_USER}' );
+    │   │   |           define( 'DB_PASSWORD', '${DB_PASS}' );
+    │   │   |           define( 'DB_HOST', 'mariadb' );
+    │   │   |           define( 'DB_CHARSET', 'utf8' );
+    │   │   |           define( 'DB_COLLATE', '' );
+    │   │   |           define('FS_METHOD','direct');
+    │   │   |           \$table_prefix = 'wp_';   # экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)
+    │   │   |           define( 'WP_DEBUG', false );
+    │   │   |           if ( ! defined( 'ABSPATH' ) ) {
+    │   │   |           define( 'ABSPATH', __DIR__ . '/' );}
+    │   │   |           require_once ABSPATH . 'wp-settings.php';
+    │   │   |           EOF
+    │   │   |           fi
+    │   │   ├── wordpress/Dockerfile
+    │   │   |            FROM alpine:3.19
+    │   │   |           ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS  # wordpress работает на php, версия php (https://www.php.net/) соответствует установленной
+    │   │   |           RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \  # php-mysqli для mariadb  
+    │   │   |           sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \  # php-fpm для взаимодействия с nginx, запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
+    │   │   |           sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \  # конфиг fastcgi в контейнере `www.conf`
+    │   │   |           sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
+    │   │   |           && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
+    │   │   |           WORKDIR /var/www
+    │   │   |           RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
+    │   │   |           COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
+    │   │   |           RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # CMS может скачивать темы, плагины, сохранять файлы
+    │   │   |           CMD ["/usr/sbin/php-fpm8", "-F"]
+    │   │   ├── wordpress/tools/makedirs.sh
+    │   │   |           #!/bin/bash
+    │   │   |           mkdir -p ~/data
+    │   │   |           mkdir -p ~/data/mariadb
+    │   │   |           mkdir -p ~/data/wordpress
+    │   │   └── wordpress//.dockerignore
     │   │               .git
     │   ├── .env
     │   │               DOMAIN_NAME=akostrik.42.fr
