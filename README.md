@@ -7,11 +7,6 @@
   + устанавливаем [debian](https://www.debian.org/ "скачать debian")
     - choose software to install: ssh
   + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
-  + `apt update -y` 
-  + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
-  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
-  + `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
-  + `chmod a+x /usr/local/bin/mkcert`
 * user
   + `adduser akostrik`
   + `usermod -aG docker akostrik` добавим в группу docker 
@@ -39,6 +34,11 @@
   + `systemctl restart sshd`
   + `ssh akostrik@localhost -p 4246` на хостовой
 * сертификат
+  + `apt update -y` 
+  + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
+  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
+  + `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
+  + `chmod a+x /usr/local/bin/mkcert`
   + `cd ~/project/srcs/requirements/nginx/tools/`
   + `mkcert akostrik.42.fr`
   + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
@@ -94,21 +94,6 @@
     ├───makedirs.sh
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
-  + ```
-    sudo apt-get update
-    sudo apt-get upgrade -y
-    sudo apt-get install make curl lsb-release ca-certificates apt-transport-https software-properties-common hostsed -y
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt-get update
-    sudo apt-get install docker-ce -y
-    sudo apt-get update
-    sudo apt-get install docker-compose docker-compose-plugin -y
-    sudo apt-get update
-    ```
-  + Makefile
-  + Dockerfile
-  + docker-compose.yml 
 * ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
 ### Makefile
