@@ -83,7 +83,10 @@
     │   │   ├── nginx/
     │   │   │   ├── conf/nginx.conf  
     │   │   │   ├── Dockerfile                # builds a Docker image
-    │   │   │   └── tools/                    # ключи
+    │   │   │   ├── tools/akostrik.42.fr      #???
+    │   │   │   ├── tools/akostrik.42.fr 
+    │   │   │   └── .dockerignore
+    │   │   │           .git
     │   │   ├── mariadb/
     │   │   │   ├── conf/create_db.sh         # создать БД   
     │   │   │   └── Dockerfile
@@ -92,10 +95,31 @@
     │   │       ├── Dockerfile
     │   │       └── tools/makedirs.sh
     │   ├── .env
+    │   │               DOMAIN_NAME=akostrik.42.fr
+    │   │               CERT_=./requirements/tools/akostrik.42.fr
+    │   │               KEY_=./requirements/tools/akostrik.42.fr
+    │   │               DB_NAME=wordpress
+    │   │               DB_ROOT=rootpass
+    │   │               DB_USER=wpuser
+    │   │               DB_PASS=wppass
     │   └── docker-compose.yml                # calls dockerfiles
     ├───makedirs.sh
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
+
+### srcs/requirements/nginx/.dockerignore
+```
+```
+
+### srcs/requirements/mariadb/.dockerignore
+```
+.git
+```
+
+### srcs/requirements/worldpress/.dockerignore
+```
+.git
+```
 
 ### Makefile
 ```
@@ -129,15 +153,15 @@ version: '3'
 services:
   nginx:
     build:
-      context: .
+      context: .   # either a path to a directory containing a Dockerfile, or a url to a git repository
       dockerfile: requirements/nginx/Dockerfile
     container_name: nginx
     depends_on:
       - wordpress
     ports:
       - "443:443"
-    networks:
-      - inception # сеть доступна по имени (хотя сеть существует и без этого) 
+    networks: # сеть доступна по имени (существует и без этого)
+      - inception   
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools:/etc/nginx/ssl/
@@ -192,16 +216,6 @@ networks:
         driver: bridge
 ```
 
-### srcs/.env
-```
-DOMAIN_NAME=akostrik.42.fr
-CERT_=./requirements/tools/akostrik.42.fr
-KEY_=./requirements/tools/akostrik.42.fr
-DB_NAME=wordpress
-DB_ROOT=rootpass
-DB_USER=wpuser
-DB_PASS=wppass
-```
 ### srcs/requirements/nginx/Dockerfile  
 ```
 FROM alpine:3.19                                           # https://www.alpinelinux.org (нельзя alpine:latest)  
@@ -330,20 +344,6 @@ EOF
 fi
 ```
 
-### srcs/requirements/nginx/.dockerignore
-```
-.git
-```
-
-### srcs/requirements/mariadb/.dockerignore
-```
-.git
-```
-
-### srcs/requirements/worldpress/.dockerignore
-```
-.git
-```
 
 ### Проверка
 `chmod +x makedirs.sh` (?)  
