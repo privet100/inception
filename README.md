@@ -83,17 +83,37 @@
     │   │   ├── nginx/
     │   │   │   ├── conf/nginx.conf  
     │   │   │   ├── Dockerfile                # builds a Docker image
+    │   │   │           FROM alpine:3.19                                           # https://www.alpinelinux.org (нельзя alpine:latest)  
+    │   │   │           RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
+    │   │   │           EXPOSE 443
+    │   │   │           CMD ["nginx", "-g", "daemon off;"]                         # для отладки запускаем nginx напрямую (не демон), логи напрямую в tty контейнера  
     │   │   │   ├── tools/akostrik.42.fr      #???
     │   │   │   ├── tools/akostrik.42.fr 
     │   │   │   └── .dockerignore
     │   │   │           .git
     │   │   ├── mariadb/
     │   │   │   ├── conf/create_db.sh         # создать БД   
-    │   │   │   └── Dockerfile
+    │   │   │   ├── Dockerfile
+    │   │   │   └── .dockerignore
+    │   │   │           .git
     │   │   └── wordpress/
     │   │       ├── conf/wp-config-create.sh  # конфиг соединит нас с контейнером БД    
     │   │       ├── Dockerfile
-    │   │       └── tools/makedirs.sh
+    │   │               FROM alpine:3.19
+    │   │               ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS  # wordpress работает на php, версия php (https://www.php.net/) соответствует установленной
+    │   │               RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \  # php-mysqli для mariadb  
+    │   │               sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \  # php-fpm для взаимодействия с nginx, запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
+    │   │               sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \  # конфиг fastcgi в контейнере `www.conf`
+    │   │               sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
+    │   │               && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
+    │   │               WORKDIR /var/www
+    │   │               RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
+    │   │               COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
+    │   │               RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # CMS может скачивать темы, плагины, сохранять файлы
+    │   │               CMD ["/usr/sbin/php-fpm8", "-F"]
+    │   │       ├── tools/makedirs.sh
+    │   │       └── .dockerignore
+    │   │               .git
     │   ├── .env
     │   │               DOMAIN_NAME=akostrik.42.fr
     │   │               CERT_=./requirements/tools/akostrik.42.fr
@@ -106,20 +126,6 @@
     ├───makedirs.sh
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
-
-### srcs/requirements/nginx/.dockerignore
-```
-```
-
-### srcs/requirements/mariadb/.dockerignore
-```
-.git
-```
-
-### srcs/requirements/worldpress/.dockerignore
-```
-.git
-```
 
 ### Makefile
 ```
@@ -216,13 +222,6 @@ networks:
         driver: bridge
 ```
 
-### srcs/requirements/nginx/Dockerfile  
-```
-FROM alpine:3.19                                           # https://www.alpinelinux.org (нельзя alpine:latest)  
-RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
-EXPOSE 443
-CMD ["nginx", "-g", "daemon off;"]                         # для отладки запускаем nginx напрямую (не демон), логи напрямую в tty контейнера  
-```
 
 ### srcs/requirements/mariadb/Dockerfile
 ```
@@ -244,22 +243,6 @@ USER mysql
 #? COPY tools/db.sh .
 #? ENTRYPOINT  ["sh", "db.sh"]
 CMD ["/usr/bin/mysqld", "--skip-log-error"]               
-```
-
-### srcs/requirements/wordpress/Dockerfile  
-```
-FROM alpine:3.19
-ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS  # wordpress работает на php, версия php (https://www.php.net/) соответствует установленной
-RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \  # php-mysqli для взаимодействия с mariadb  
-    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g"         /etc/php8/php-fpm.d/www.conf \  # php-fpm для взаимодействия с nginx, запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
-    sed -i "s|;listen.owner = nobody |listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf \  # конфиг fastcgi в контейнере `www.conf`
-    sed -i "s|;listen.group = nobody |listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf \
-    && rm -f /var/cache/apk/*      # очищаем кэш установленных модулей
-WORKDIR /var/www
-RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
-COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
-RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # CMS может скачивать темы, плагины, сохранять файлы
-CMD ["/usr/sbin/php-fpm8", "-F"]
 ```
 
 ### srcs/requirements/nginx/conf/nginx.conf  
@@ -343,7 +326,6 @@ require_once ABSPATH . 'wp-settings.php';
 EOF
 fi
 ```
-
 
 ### Проверка
 `chmod +x makedirs.sh` (?)  
