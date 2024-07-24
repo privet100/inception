@@ -22,7 +22,7 @@
   + `chmod a+x /usr/local/bin/mkcert`
   + `mkcert akostrik.42.fr; mv akostrik.42.fr-key.pem akostrik.42.fr.key; mv akostrik.42.fr.pem akostrik.42.fr.crt`
     - le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
-  + **/etc/ssh/sshd_config**:         
+  + `/etc/ssh/sshd_config`:         
     `Port 4246                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
     `PubkeyAuthentication no`  
