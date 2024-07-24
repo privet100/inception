@@ -181,7 +181,72 @@
     │   │               DB_USER=wpuser
     │   │               DB_PASS=wppass
     │   └── docker-compose.yml                # calls dockerfiles
-    ├── makedirs.sh
+    |                   version: '3'
+    |                   services:
+    |                     nginx:
+    |                         build:
+    |                           context: .   # either a path to a directory containing a Dockerfile, or a url to a git repository
+    |                           dockerfile: requirements/nginx/Dockerfile
+    |                         container_name: nginx
+    |                         depends_on:
+    |                           - wordpress
+    |                         ports:
+    |                           - "443:443"
+    |                         networks: # сеть доступна по имени (существует и без этого)
+    |                           - inception   
+    |                         volumes:
+    |                           - ./requirements/nginx/conf/:/etc/nginx/http.d/
+    |                           - ./requirements/nginx/tools:/etc/nginx/ssl/
+    |                           - wp-volume:/var/www/
+    |                         restart: always
+    |                       mariadb:
+    |                         build:
+    |                           context: .
+    |                           dockerfile: requirements/mariadb/Dockerfile
+    |                           args:
+    |                             DB_NAME: ${DB_NAME} # .env
+    |                             DB_USER: ${DB_USER}
+    |                             DB_PASS: ${DB_PASS}
+    |                             DB_ROOT: ${DB_ROOT}
+    |                         container_name: mariadb
+    |                         ports:
+    |                           - "3306:3306"
+    |                         networks:
+    |                           - inception
+    |                         volumes:
+    |                           - db-volume:/var/lib/mysql
+    |                         restart: always
+    |                       wordpress:
+    |                         build:
+    |                           context: .
+    |                           dockerfile: requirements/wordpress/Dockerfile
+    |                           args:
+    |                             DB_NAME: ${DB_NAME}
+    |                             DB_USER: ${DB_USER}
+    |                             DB_PASS: ${DB_PASS}
+    |                         container_name: wordpress
+    |                         depends_on:
+    |                           - mariadb
+    |                         restart: always
+    |                         networks:
+    |                           - inception
+    |                         volumes:
+    |                           - wp-volume:/var/www/
+    |                     volumes:
+    |                       wp-volume: # создадим раздел (можно было бы примонтировать к nginx и wordpress одну и ту же папку)
+    |                         driver_opts:
+    |                           o: bind
+    |                           type: none
+    |                           device: /home/akostrik/data/wordpress
+    |                       db-volume:
+    |                         driver_opts:
+    |                           o: bind
+    |                           type: none
+    |                           device: /home/akostrik/data/mariadb
+    |                     networks:
+    |                         inception:
+    |                             driver: bridge
+├── makedirs.sh
     │                   #!/bin/bash
     │                   mkdir -p ./srcs
     │                   mkdir -p ./srcs/requirements    │                   
@@ -229,75 +294,6 @@
                                 @docker volume prune --force
                                 @sudo rm -rf ~/data/wordpress/*
                                 @sudo rm -rf ~/data/mariadb/*
-```
-
-### srcs/docker-compose.yml    
-```
-version: '3'
-services:
-  nginx:
-    build:
-      context: .   # either a path to a directory containing a Dockerfile, or a url to a git repository
-      dockerfile: requirements/nginx/Dockerfile
-    container_name: nginx
-    depends_on:
-      - wordpress
-    ports:
-      - "443:443"
-    networks: # сеть доступна по имени (существует и без этого)
-      - inception   
-    volumes:
-      - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - wp-volume:/var/www/
-    restart: always
-  mariadb:
-    build:
-      context: .
-      dockerfile: requirements/mariadb/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME} # .env
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-        DB_ROOT: ${DB_ROOT}
-    container_name: mariadb
-    ports:
-      - "3306:3306"
-    networks:
-      - inception
-    volumes:
-      - db-volume:/var/lib/mysql
-    restart: always
-  wordpress:
-    build:
-      context: .
-      dockerfile: requirements/wordpress/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-    container_name: wordpress
-    depends_on:
-      - mariadb
-    restart: always
-    networks:
-      - inception
-    volumes:
-      - wp-volume:/var/www/
-volumes:
-  wp-volume: # создадим раздел (можно было бы примонтировать к nginx и wordpress одну и ту же папку)
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/akostrik/data/wordpress
-  db-volume:
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/akostrik/data/mariadb
-networks:
-    inception:
-        driver: bridge
 ```
 
 ### Проверка
