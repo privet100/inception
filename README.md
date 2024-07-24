@@ -192,6 +192,10 @@
     │   │       │       RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # CMS может скачивать темы, плагины, сохранять файлы
     │   │       │       CMD ["/usr/sbin/php-fpm8", "-F"]
     │   │       ├── tools/makedirs.sh
+    │   │       │       #!/bin/bash
+    │   │       │       mkdir -p ~/data
+    │   │       │       mkdir -p ~/data/mariadb
+    │   │       │       mkdir -p ~/data/wordpress
     │   │       └── .dockerignore
     │   │               .git
     │   ├── .env
@@ -300,14 +304,6 @@ volumes:
 networks:
     inception:
         driver: bridge
-```
-
-### srcs/requirements/wordpresse/tools/makedirs.sh    
-```
-#!/bin/bash
-mkdir -p ~/data
-mkdir -p ~/data/mariadb
-mkdir -p ~/data/wordpress
 ```
 
 ### Проверка
