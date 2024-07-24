@@ -5,24 +5,15 @@ VM root 2, VM akostrik 2, mariadb akostrik 2
 
 ### VM, debian
   + папку в sgoinfre
-  + оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше
-  + диск: формат VDI или VHD, динамический, 8 гигабайт
+  + оперативка от 512 МБ если на ПК 4-8 гб
+  + диск: VDI или VHD, динамический, 8 гб
   + устанавливаем [debian](https://www.debian.org/ "скачать debian")
-    - choose software to install: ssh
+    - software to install: ssh
+    - user: akostrik
   + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
-
-### user
-  + `adduser akostrik`
   + `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
-  + `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL`
-
-### Порты
-  + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
-  + | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
-    | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-    | `ssh`   | `TCP`    | `127.0.0.1` | `4246`       | `10.0.2.15` | `42`         |
-    | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
-    | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
+  + `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
+  + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
   + `sudo apt-get update; sudo apt-get install ufw`
   + `sudo ufw enable` 
   + `sudo ufw allow ssh` ?
@@ -30,8 +21,12 @@ VM root 2, VM akostrik 2, mariadb akostrik 2
   + `sudo ufw allow 80`  
   + `sudo ufw allow 443`
   + `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
-
-### ssh
+  + `apt update -y; apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
+  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
+  + `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
+  + `chmod a+x /usr/local/bin/mkcert`
+  + `mkcert akostrik.42.fr; mv akostrik.42.fr-key.pem akostrik.42.fr.key; mv akostrik.42.fr.pem akostrik.42.fr.crt`
+    - le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
   + **/etc/ssh/sshd_config**:         
     `Port 4246                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
@@ -40,19 +35,12 @@ VM root 2, VM akostrik 2, mariadb akostrik 2
   + `/etc/init.d/ssh restart`
   + `systemctl restart sshd`
   + `ssh akostrik@localhost -p 4246` на хостовой
-
-### сертификат
-  + `apt update -y; apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
-  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
-  + `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
-  + `chmod a+x /usr/local/bin/mkcert`
-  + `mkcert akostrik.42.fr`
-  + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
-  + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
-  + le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
-
-### `/etc/hosts`
-  + 127.0.0.1 localhost akostrik.42.fr
+  + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
+  + | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
+    | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
+    | `ssh`   | `TCP`    | `127.0.0.1` | `4246`       | `10.0.2.15` | `42`         |
+    | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
+    | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
 
 ### makedirs.sh
 ```
