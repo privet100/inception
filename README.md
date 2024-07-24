@@ -36,7 +36,7 @@ VM root 2, VM akostrik 2, mariadb akostrik 2
     `PermitRootLogin yes`   
     `PubkeyAuthentication no`  
     `PasswordAuthentication yes`  
-  + `service ssh restart`
+  + `/etc/init.d/ssh restart`
   + `systemctl restart sshd`
   + `ssh akostrik@localhost -p 4246` на хостовой
 
