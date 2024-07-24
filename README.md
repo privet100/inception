@@ -49,7 +49,7 @@
     - un message d’alerte indiquant que ce site tente de vous voler des informations sensibles
 * `/etc/hosts`
   + 127.0.0.1 localhost akostrik.42.fr
-* автоматизировать настройку
+* создать папки
   + ```
     #!/bin/bash
     mkdir -p ./srcs
