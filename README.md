@@ -1,8 +1,5 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
-### пароли
-VM root 2, VM akostrik 2, mariadb akostrik 2 
-
 ### VM, debian
   + папку в sgoinfre
   + оперативка от 512 МБ если на ПК 4-8 гб
@@ -41,6 +38,7 @@ VM root 2, VM akostrik 2, mariadb akostrik 2
     | `ssh`   | `TCP`    | `127.0.0.1` | `4246`       | `10.0.2.15` | `42`         |
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
+  + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ### makedirs.sh
 ```
