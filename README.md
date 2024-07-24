@@ -159,7 +159,25 @@
     │   │   │   └── .dockerignore
     │   │   │           .git
     │   │   └── wordpress/
-    │   │       ├── conf/wp-config-create.sh  # конфиг соединит нас с контейнером БД    
+    │   │       ├── conf/wp-config-create.sh  # соединит с контейнером БД    
+    │   │       │       #!bin/sh
+    │   │       │       if [ ! -f "/var/www/wp-config.php" ]; then
+    │   │       │       cat << EOF > /var/www/wp-config.php
+    │   │       │       <?php
+    │   │       │       define( 'DB_NAME', '${DB_NAME}' );
+    │   │       │       define( 'DB_USER', '${DB_USER}' );
+    │   │       │       define( 'DB_PASSWORD', '${DB_PASS}' );
+    │   │       │       define( 'DB_HOST', 'mariadb' );
+    │   │       │       define( 'DB_CHARSET', 'utf8' );
+    │   │       │       define( 'DB_COLLATE', '' );
+    │   │       │       define('FS_METHOD','direct');
+    │   │       │       \$table_prefix = 'wp_';   # экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)
+    │   │       │       define( 'WP_DEBUG', false );
+    │   │       │       if ( ! defined( 'ABSPATH' ) ) {
+    │   │       │       define( 'ABSPATH', __DIR__ . '/' );}
+    │   │       │       require_once ABSPATH . 'wp-settings.php';
+    │   │       │       EOF
+    │   │       │       fi
     │   │       ├── Dockerfile
     │   │       │       FROM alpine:3.19
     │   │       │       ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS  # wordpress работает на php, версия php (https://www.php.net/) соответствует установленной
@@ -290,28 +308,6 @@ networks:
 mkdir -p ~/data
 mkdir -p ~/data/mariadb
 mkdir -p ~/data/wordpress
-```
-
-### srcs/requirements/wordpresse/conf/wp-config-create.sh
-```
-#!bin/sh
-if [ ! -f "/var/www/wp-config.php" ]; then
-cat << EOF > /var/www/wp-config.php
-<?php
-define( 'DB_NAME', '${DB_NAME}' );
-define( 'DB_USER', '${DB_USER}' );
-define( 'DB_PASSWORD', '${DB_PASS}' );
-define( 'DB_HOST', 'mariadb' );
-define( 'DB_CHARSET', 'utf8' );
-define( 'DB_COLLATE', '' );
-define('FS_METHOD','direct');
-\$table_prefix = 'wp_';   # экранируем строку \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)
-define( 'WP_DEBUG', false );
-if ( ! defined( 'ABSPATH' ) ) {
-define( 'ABSPATH', __DIR__ . '/' );}
-require_once ABSPATH . 'wp-settings.php';
-EOF
-fi
 ```
 
 ### Проверка
