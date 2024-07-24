@@ -41,15 +41,13 @@
   + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
   + `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
   + `chmod a+x /usr/local/bin/mkcert`
-  + `cd ~/project/srcs/requirements/nginx/tools/`
   + `mkcert akostrik.42.fr`
   + `mv akostrik.42.fr-key.pem akostrik.42.fr.key` чтобы nginx правильно читал
   + `mv akostrik.42.fr.pem akostrik.42.fr.crt`
-  + le certificat SSL n’a pas été signé par Trusted Authority
-    - un message d’alerte indiquant que ce site tente de vous voler des informations sensibles
+  + le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
 * `/etc/hosts`
   + 127.0.0.1 localhost akostrik.42.fr
-### *
+*
 ```
 srcs/requirements/nginx/conf/nginx.conf  
   server {
@@ -81,12 +79,12 @@ srcs/requirements/nginx/conf/nginx.conf
   }
 
 srcs/requirements/nginx/Dockerfile                # builds a Docker image
-  FROM alpine:3.19                                           # https://www.alpinelinux.org (нельзя alpine:latest)  
+  FROM alpine:3.19                                # https://www.alpinelinux.org (latest)  
   RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
   EXPOSE 443
-  CMD ["nginx", "-g", "daemon off;"]                         # для отладки запускаем nginx напрямую (не демон), логи напрямую в tty контейнера  
+  CMD ["nginx", "-g", "daemon off;"]              # для отладки запускаем nginx напрямую (не демон), логи в tty контейнера  
 
-srcs/requirements/nginx/tools/akostrik.42.fr      #???
+srcs/requirements/nginx/tools/akostrik.42.fr      
 
 srcs/requirements/nginx/tools/akostrik.42.fr 
 
@@ -180,7 +178,7 @@ srcs/requirements/wordpress//.dockerignore
 
 srcs/.env
   DOMAIN_NAME=akostrik.42.fr
-  CERT_=./requirements/tools/akostrik.42.fr
+  CERT_=./requirements/tools/akostrik.42.cert
   KEY_=./requirements/tools/akostrik.42.fr
   DB_NAME=wordpress
   DB_ROOT=rootpass
