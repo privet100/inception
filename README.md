@@ -97,10 +97,9 @@
            @docker volume prune --force
            @sudo rm -rf ~/data/wordpress/*
            @sudo rm -rf ~/data/mariadb/*
-```
-
-```
-srcs/requirements/nginx/conf/nginx.conf  
+  ```
+* ```
+  srcs/requirements/nginx/conf/nginx.conf:  
   server {
     listen              443 ssl;                           # nginx обрабатывает php-файлы, https = SSL
     server_name         akostrik.42.fr www.akostrik.42.fr;
@@ -128,21 +127,22 @@ srcs/requirements/nginx/conf/nginx.conf
       fastcgi_param PATH_INFO $fastcgi_path_info;
     }
   }
-
-srcs/requirements/nginx/Dockerfile                # builds a Docker image
+  ```
+* ```
+  srcs/requirements/nginx/Dockerfile:                # builds a Docker image
   FROM alpine:3.19                                # https://www.alpinelinux.org (latest)  
   RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
   EXPOSE 443
   CMD ["nginx", "-g", "daemon off;"]              # для отладки запускаем nginx напрямую (не демон), логи в tty контейнера  
-
-srcs/requirements/nginx/tools/akostrik.42.fr      
-
-srcs/requirements/nginx/tools/akostrik.42.fr 
-
-srcs/requirements/nginx/.dockerignore
+  ```
+* ```srcs/requirements/nginx/tools/akostrik.42.fr``` 
+* ```srcs/requirements/nginx/tools/akostrik.42.fr``` 
+* ```
+  srcs/requirements/nginx/.dockerignore:
   .git
-
-srcs/requirements/mariadb/conf/create_db.sh
+  ```
+* ```
+  srcs/requirements/mariadb/conf/create_db.sh:
   #!bin/sh
   cat << EOF > /tmp/create_db.sql
   USE mysql;
@@ -160,8 +160,9 @@ srcs/requirements/mariadb/conf/create_db.sh
   # run init.sql 
   /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код
   rm -f /tmp/create_db.sql
-
-srcs/requirements/mariadb/Dockerfile
+  ```
+* ```
+  srcs/requirements/mariadb/Dockerfile:
   FROM alpine:3.19
   ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
                             # аргументы из environment-секции внутри сервиса - в окружении запущенного контейнера 
@@ -180,11 +181,13 @@ srcs/requirements/mariadb/Dockerfile
   #? COPY tools/db.sh .
   #? ENTRYPOINT  ["sh", "db.sh"]
   CMD ["/usr/bin/mysqld", "--skip-log-error"]               
-
-srcs/requirements/mariadb/.dockerignore
+  ```
+* ```
+  srcs/requirements/mariadb/.dockerignore:
   .git
-
-srcs/requirements/wordpress/conf/wp-config-create.sh  # соединит с контейнером БД    
+  ```
+* ```
+  srcs/requirements/wordpress/conf/wp-config-create.sh  # соединит с контейнером БД:    
   #!bin/sh
   if [ ! -f "/var/www/wp-config.php" ]; then
   cat << EOF > /var/www/wp-config.php
@@ -203,8 +206,9 @@ srcs/requirements/wordpress/conf/wp-config-create.sh  # соединит с ко
   require_once ABSPATH . 'wp-settings.php';
   EOF
   fi
-
-srcs/requirements/wordpress/Dockerfile
+  ```
+* ```
+  srcs/requirements/wordpress/Dockerfile:
   FROM alpine:3.19
   ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS  # wordpress работает на php, версия php (https://www.php.net/) соответствует установленной
   RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-mysqli php${PHP_VERSION}-json php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-mbstring php${PHP_VERSION}-openssl php${PHP_VERSION}-xml php${PHP_VERSION}-zip wget unzip \  # php-mysqli для mariadb  
@@ -217,17 +221,20 @@ srcs/requirements/wordpress/Dockerfile
   COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
   RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # CMS может скачивать темы, плагины, сохранять файлы
   CMD ["/usr/sbin/php-fpm8", "-F"]
-
-srcs/requirements/wordpress/tools/makedirs.sh
+  ```
+* ```
+  srcs/requirements/wordpress/tools/makedirs.sh:
   #!/bin/bash
   mkdir -p ~/data
   mkdir -p ~/data/mariadb
   mkdir -p ~/data/wordpress
-
-srcs/requirements/wordpress//.dockerignore
+  ```
+* ```
+  srcs/requirements/wordpress//.dockerignore:
   .git
-
-srcs/.env
+  ```
+* ```
+  srcs/.env:
   DOMAIN_NAME=akostrik.42.fr
   CERT_=./requirements/tools/akostrik.42.cert
   KEY_=./requirements/tools/akostrik.42.fr
@@ -235,8 +242,9 @@ srcs/.env
   DB_ROOT=rootpass
   DB_USER=wpuser
   DB_PASS=wppass
-
-srcs/docker-compose.yml                # calls dockerfiles
+  ```
+* ```
+  srcs/docker-compose.yml:                # calls dockerfiles
   version: '3'
   services:
     nginx:
@@ -302,7 +310,7 @@ srcs/docker-compose.yml                # calls dockerfiles
     networks:
         inception:
             driver: bridge
-```
+  ```
 
 ### Проверка
 `chmod +x makedirs.sh` (?)  
