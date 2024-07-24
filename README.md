@@ -94,6 +94,24 @@
     │   │   ├── mariadb/
     │   │   │   ├── conf/create_db.sh         # создать БД   
     │   │   │   ├── Dockerfile
+    │   │   │   │       FROM alpine:3.19
+    │   │   │   │       ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
+    │   │   │   │                                   # аргументы из environment-секции внутри сервиса - в окружении запущенного контейнера 
+    │   │   │   │                                   # из docker-compose ?  
+    │   │   │   │                                   # с параметрами = переменная окружения с переданным параметром
+    │   │   │   │       RUN apk update && apk add --no-cache mariadb mariadb-client
+    │   │   │   │       RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
+    │   │   │   │           { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | \
+    │   │   │   │           tee  /etc/my.cnf.d/docker.cnf; \                  # в файл
+    │   │   │   │           sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
+    │   │   │   │       RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # БД из сконфигурированного на пред. слое, user mysql создан при установке БД
+    │   │   │   │       EXPOSE 3306
+    │   │   │   │       COPY requirements/mariadb/conf/create_db.sh .
+    │   │   │   │       RUN sh create_db.sh && rm create_db.sh
+    │   │   │   │       USER mysql                                                
+    │   │   │   │       #? COPY tools/db.sh .
+    │   │   │   │       #? ENTRYPOINT  ["sh", "db.sh"]
+    │   │   │   │       CMD ["/usr/bin/mysqld", "--skip-log-error"]               
     │   │   │   └── .dockerignore
     │   │   │           .git
     │   │   └── wordpress/
@@ -110,7 +128,7 @@
     │   │       │       RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
     │   │       │       COPY ./requirements/wordpress/conf/wp-config-create.sh . # конфиг
     │   │       │       RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/ # CMS может скачивать темы, плагины, сохранять файлы
-    │   │       │        CMD ["/usr/sbin/php-fpm8", "-F"]
+    │   │       │       CMD ["/usr/sbin/php-fpm8", "-F"]
     │   │       ├── tools/makedirs.sh
     │   │       └── .dockerignore
     │   │               .git
@@ -220,29 +238,6 @@ volumes:
 networks:
     inception:
         driver: bridge
-```
-
-
-### srcs/requirements/mariadb/Dockerfile
-```
-FROM alpine:3.19
-ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
-                            # аргументы из environment-секции внутри сервиса - в окружении запущенного контейнера 
-                            # из docker-compose ?  
-                            # с параметрами = переменная окружения с переданным параметром
-RUN apk update && apk add --no-cache mariadb mariadb-client
-RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
-    { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | \
-    tee  /etc/my.cnf.d/docker.cnf; \                  # в файл
-    sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # БД из сконфигурированного на пред. слое, user mysql создан при установке БД
-EXPOSE 3306
-COPY requirements/mariadb/conf/create_db.sh .
-RUN sh create_db.sh && rm create_db.sh
-USER mysql                                                
-#? COPY tools/db.sh .
-#? ENTRYPOINT  ["sh", "db.sh"]
-CMD ["/usr/bin/mysqld", "--skip-log-error"]               
 ```
 
 ### srcs/requirements/nginx/conf/nginx.conf  
