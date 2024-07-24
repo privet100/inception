@@ -293,6 +293,14 @@ EOF
 fi
 ```
 
+### srcs/requirements/wordpress/tools/makedirs.sh
+```
+#!/bin/bash
+mkdir -p ~/data
+mkdir -p ~/data/mariadb
+mkdir -p ~/data/wordpress
+```
+
 ### srcs/requirements/wordpress/Dockerfile
 ```
 FROM alpine:3.19
@@ -309,15 +317,7 @@ RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content
 CMD ["/usr/sbin/php-fpm8", "-F"]
 ```
 
-### srcs/requirements/wordpress/tools/makedirs.sh
-```
-#!/bin/bash
-mkdir -p ~/data
-mkdir -p ~/data/mariadb
-mkdir -p ~/data/wordpress
-```
-
-### srcs/requirements/nginx/.dockerignore, srcs/requirements/mariadb/.dockerignore, srcs/requirements/wordpress//.dockerignore
+### srcs/requirements/nginx/.dockerignore, srcs/requirements/mariadb/.dockerignore, srcs/requirements/wordpress/.dockerignore
 `.git`
 
 ### Проверка
