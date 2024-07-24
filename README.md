@@ -98,9 +98,9 @@ DOMAIN_NAME=akostrik.42.fr     # ?
 CERT_=./requirements/tools/akostrik.42.cert
 KEY_=./requirements/tools/akostrik.42.fr
 DB_NAME=wordpress
-DB_ROOT=rootpass
+DB_ROOT=2
 DB_USER=wpuser
-DB_PASS=wppass
+DB_PASS=2
 ```
 
 ### srcs/docker-compose.yml:                # calls dockerfiles
