@@ -1,10 +1,8 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
-### VM, debian
-  + папку в sgoinfre
-  + оперативка от 512 МБ если на ПК 4-8 гб
-  + диск: VDI или VHD, динамический, 8 гб
-  + устанавливаем [debian](https://www.debian.org/ "скачать debian")
+### VM
+  + папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD, динамический, 8 гб
+  + [debian](https://www.debian.org/ "скачать debian")
     - software to install: ssh
     - user: akostrik
   + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
