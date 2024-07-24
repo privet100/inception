@@ -47,7 +47,7 @@
 * `/etc/hosts`
   + 127.0.0.1 localhost akostrik.42.fr
 * makedirs.sh:
-*  ```
+* ```
   #!/bin/bash
   mkdir -p ./srcs
   mkdir -p ./srcs/requirements    │                   
