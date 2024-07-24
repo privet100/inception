@@ -49,34 +49,8 @@
     - un message d’alerte indiquant que ce site tente de vous voler des informations sensibles
 * `/etc/hosts`
   + 127.0.0.1 localhost akostrik.42.fr
-* создать папки
-  + ```
-    #!/bin/bash
-    mkdir -p ./srcs
-    mkdir -p ./srcs/requirements
-    touch ./srcs/docker-compose.yml
-    mkdir -p ./srcs/requirements/bonus
-    mkdir -p ./srcs/requirements/mariadb
-    mkdir -p ./srcs/requirements/mariadb/conf
-    touch ./srcs/requirements/mariadb/conf/create_db.sh
-    mkdir -p ./srcs/requirements/mariadb/tools
-    touch ./srcs/requirements/mariadb/Dockerfile
-    touch ./srcs/requirements/mariadb/.dockerignore
-    mkdir -p ./srcs/requirements/nginx
-    mkdir -p ./srcs/requirements/nginx/conf
-    touch ./srcs/requirements/nginx/conf/nginx.conf
-    mkdir -p ./srcs/requirements/nginx/tools
-    touch ./srcs/requirements/nginx/Dockerfile
-    mkdir -p ./srcs/requirements/tools
-    mkdir -p ./srcs/requirements/wordpress
-    mkdir -p ./srcs/requirements/wordpress/conf
-    touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
-    mkdir -p ./srcs/requirements/wordpress/tools
-    mkdir -p ./srcs/requirements/wordpress/tools/makedirs.sh
-    touch ./srcs/requirements/wordpress/Dockerfile
-    touch ./srcs/requirements/wordpress/.dockerignore
+### *
     ```
-  + ```
     project/
     ├── srcs/
     │   ├── requirements/
@@ -207,7 +181,31 @@
     │   │               DB_USER=wpuser
     │   │               DB_PASS=wppass
     │   └── docker-compose.yml                # calls dockerfiles
-    ├───makedirs.sh
+    ├── makedirs.sh
+    │                   #!/bin/bash
+    │                   mkdir -p ./srcs
+    │                   mkdir -p ./srcs/requirements    │                   
+    │                   touch ./srcs/docker-compose.yml
+    │                   mkdir -p ./srcs/requirements/bonus
+    │                   mkdir -p ./srcs/requirements/mariadb
+    │                   mkdir -p ./srcs/requirements/mariadb/conf
+    │                   touch ./srcs/requirements/mariadb/conf/create_db.sh
+    │                   mkdir -p ./srcs/requirements/mariadb/tools
+    │                   touch ./srcs/requirements/mariadb/Dockerfile
+    │                   touch ./srcs/requirements/mariadb/.dockerignore
+    │                   mkdir -p ./srcs/requirements/nginx
+    │                   mkdir -p ./srcs/requirements/nginx/conf
+    │                   touch ./srcs/requirements/nginx/conf/nginx.conf
+    │                   mkdir -p ./srcs/requirements/nginx/tools
+    │                   touch ./srcs/requirements/nginx/Dockerfile
+    │                   mkdir -p ./srcs/requirements/tools
+    │                   mkdir -p ./srcs/requirements/wordpress
+    │                   mkdir -p ./srcs/requirements/wordpress/conf
+    │                   touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
+    │                   mkdir -p ./srcs/requirements/wordpress/tools
+    │                   mkdir -p ./srcs/requirements/wordpress/tools/makedirs.sh
+    │                   touch ./srcs/requirements/wordpress/Dockerfile
+    │                   touch ./srcs/requirements/wordpress/.dockerignore
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
 
