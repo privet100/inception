@@ -110,7 +110,7 @@ fclean:  # перед сохранением в облако
 
 ### srcs/.env
 ```
-DOMAIN_NAME=akostrik.42.fr
+DOMAIN_NAME=akostrik.42.fr     # ?
 CERT_=./requirements/tools/akostrik.42.cert
 KEY_=./requirements/tools/akostrik.42.fr
 DB_NAME=wordpress
