@@ -5,6 +5,7 @@
   + оперативной памяти от 512 МБ если на ПК 4-8 ГБ, до 4096 МБ если на ПК от 16 и выше
   + диск: формат VDI или VHD, динамический, 8 гигабайт
   + устанавливаем [debian](https://www.debian.org/ "скачать debian")
+    - choose software to install: ssh
   + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
   + `apt update -y` 
   + `apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
@@ -15,7 +16,7 @@
   + `adduser akostrik`
   + `usermod -aG docker akostrik` добавим в группу docker 
   + `usermod -aG sudo akostrik`
-  + в `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL`
+  + `/etc/sudoers` добавляем `akostrik ALL=(ALL:ALL) ALL`
 * Порты
   + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
   + | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
@@ -30,7 +31,7 @@
   + `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
 * ssh
   + **/etc/ssh/sshd_config**:         
-    `Port 4242                  # на школьном маке 22-й занят ssh хостовой машины`  
+    `Port 4246                  # на школьном маке 22-й занят ssh хостовой машины`  
     `PermitRootLogin yes`   
     `PubkeyAuthentication no`  
     `PasswordAuthentication yes`  
@@ -93,7 +94,18 @@
     ├───makedirs.sh
     └── Makefile                              # sets up the app, calls docker-compose.yml
     ```
-  + `https://github.com/tblaase/inception/blob/main/inception_prep.sh`
+  + ```
+    sudo apt-get update
+    sudo apt-get upgrade -y
+    sudo apt-get install make curl lsb-release ca-certificates apt-transport-https software-properties-common hostsed -y
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce -y
+    sudo apt-get update
+    sudo apt-get install docker-compose docker-compose-plugin -y
+    sudo apt-get update
+    ```
   + Makefile
   + Dockerfile
   + docker-compose.yml 
