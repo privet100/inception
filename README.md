@@ -207,32 +207,28 @@
     │                   touch ./srcs/requirements/wordpress/Dockerfile
     │                   touch ./srcs/requirements/wordpress/.dockerignore
     └── Makefile                              # sets up the app, calls docker-compose.yml
-    ```
-
-### Makefile
-```
-name = inception
-all:    # после остановки  
-        @bash ./srcs/requirements/wordpress/tools/makedirs.sh
-        @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
-build:  # развёртывание = first run
-        @bash srcs/requirements/wordpress/tools/makedirs.sh
-        @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
-down:   # остановка
-        @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env down
-re:
-        @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
-clean: down
-        @docker system prune -a
-        @sudo rm -rf ~/data/wordpress/*
-        @sudo rm -rf ~/data/mariadb/*
-fclean:  # перед сохранением в облако   
-        @docker stop $$(docker ps -qa)
-        @docker system prune --all --force --volumes
-        @docker network prune --force
-        @docker volume prune --force
-        @sudo rm -rf ~/data/wordpress/*
-        @sudo rm -rf ~/data/mariadb/*
+                        name = inception
+                        all:    # после остановки  
+                                @bash ./srcs/requirements/wordpress/tools/makedirs.sh
+                                @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
+                        build:  # развёртывание = first run
+                                @bash srcs/requirements/wordpress/tools/makedirs.sh
+                                @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
+                        down:   # остановка
+                                @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env down
+                        re:
+                                @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
+                        clean: down
+                                @docker system prune -a
+                                @sudo rm -rf ~/data/wordpress/*
+                                @sudo rm -rf ~/data/mariadb/*
+                        fclean:  # перед сохранением в облако   
+                                @docker stop $$(docker ps -qa)
+                                @docker system prune --all --force --volumes
+                                @docker network prune --force
+                                @docker volume prune --force
+                                @sudo rm -rf ~/data/wordpress/*
+                                @sudo rm -rf ~/data/mariadb/*
 ```
 
 ### srcs/docker-compose.yml    
