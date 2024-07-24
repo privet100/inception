@@ -93,6 +93,23 @@
     │   │   │           .git
     │   │   ├── mariadb/
     │   │   │   ├── conf/create_db.sh         # создать БД   
+    │   │   │   │       #!bin/sh
+    │   │   │   │       cat << EOF > /tmp/create_db.sql                               # создание базы
+    │   │   │   │       USE mysql;
+    │   │   │   │       FLUSH PRIVILEGES;
+    │   │   │   │       DELETE FROM     mysql.user WHERE User='';
+    │   │   │   │       DROP DATABASE test;
+    │   │   │   │       DELETE FROM mysql.db WHERE Db='test';
+    │   │   │   │       DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+    │   │   │   │       ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT}';
+    │   │   │   │       CREATE DATABASE ${DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
+    │   │   │   │       CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${DB_PASS}';
+    │   │   │   │       GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
+    │   │   │   │       FLUSH PRIVILEGES;
+    │   │   │   │       EOF
+    │   │   │   │       # run init.sql 
+    │   │   │   │       /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код
+    │   │   │   │       rm -f /tmp/create_db.sql
     │   │   │   ├── Dockerfile
     │   │   │   │       FROM alpine:3.19
     │   │   │   │       ARG DB_NAME DB_USER DB_PASS # аргументы из .env только при сборке образа (build)
@@ -269,27 +286,6 @@ server {
     fastcgi_param PATH_INFO $fastcgi_path_info;
   }
 }
-```
-
-### srcs/requirements/mariadb/create_db.sh
-```
-#!bin/sh
-cat << EOF > /tmp/create_db.sql                               # создание базы
-USE mysql;
-FLUSH PRIVILEGES;
-DELETE FROM     mysql.user WHERE User='';
-DROP DATABASE test;
-DELETE FROM mysql.db WHERE Db='test';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT}';
-CREATE DATABASE ${DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${DB_PASS}';
-GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
-FLUSH PRIVILEGES;
-EOF
-# run init.sql 
-/usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql  # выполняем код
-rm -f /tmp/create_db.sql
 ```
 
 ### srcs/requirements/wordpresse/tools/makedirs.sh    
