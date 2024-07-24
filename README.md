@@ -92,9 +92,9 @@
     │   │   │   └── .dockerignore
     │   │   │           .git
     │   │   ├── mariadb/
-    │   │   │   ├── conf/create_db.sh         # создать БД   
+    │   │   │   ├── conf/create_db.sh
     │   │   │   │       #!bin/sh
-    │   │   │   │       cat << EOF > /tmp/create_db.sql                               # создание базы
+    │   │   │   │       cat << EOF > /tmp/create_db.sql
     │   │   │   │       USE mysql;
     │   │   │   │       FLUSH PRIVILEGES;
     │   │   │   │       DELETE FROM     mysql.user WHERE User='';
