@@ -65,23 +65,31 @@
 
 ### Makefile:                             
 Sets up the app
+all = после остановки
+fclean перед сохранением в облако
 ```
 name = inception
-all:    # после остановки  
+
+all:
   @bash ./srcs/requirements/wordpress/tools/makedirs.sh
   @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
-build:  # развёртывание = first run
+
+build:
   @bash ./srcs/requirements/wordpress/tools/makedirs.sh
   @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
-down:   # остановка
+
+down:
   @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env down
+
 re:
   @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
+
 clean: down
   @docker system prune -a
   @sudo rm -rf ~/data/wordpress/*
   @sudo rm -rf ~/data/mariadb/*
-fclean:  # перед сохранением в облако   
+
+fclean:
   @docker stop $$(docker ps -qa)
   @docker system prune --all --force --volumes
   @docker network prune --force
