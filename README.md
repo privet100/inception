@@ -278,7 +278,7 @@ define( 'DB_HOST', 'mariadb' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
 define('FS_METHOD','direct');
-\$table_prefix = 'wp_';   # экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)
+\$table_prefix = 'wp_';
 define( 'WP_DEBUG', false );
 if ( ! defined( 'ABSPATH' ) ) {
 define( 'ABSPATH', __DIR__ . '/' );}
