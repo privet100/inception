@@ -37,6 +37,7 @@
     touch ./srcs/requirements/nginx/conf/nginx.conf
     mkdir -p ./srcs/requirements/nginx/tools
     touch ./srcs/requirements/nginx/Dockerfile
+    touch ./srcs/requirements/nginx/.dockerignore
     mkdir -p ./srcs/requirements/mariadb
     mkdir -p ./srcs/requirements/mariadb/conf
     touch ./srcs/requirements/mariadb/conf/create_db.sh
