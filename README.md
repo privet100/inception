@@ -5,8 +5,8 @@
   + [debian](https://www.debian.org/ "скачать debian")
     - software to install: ssh
   + user akostrik
-   - `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
-   - `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
+    - `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
+    - `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
   + ssh
     + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
       | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
