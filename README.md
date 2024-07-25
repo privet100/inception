@@ -16,7 +16,7 @@
       | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
       | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
     - `sudo ufw enable` 
-    - `sudo ufw allow 22` (`sudo ufw allow ssh` ?)
+    - `sudo ufw allow 4250` (`sudo ufw allow ssh` ?)
     - `sudo ufw allow 80`  
     - `sudo ufw allow 443`
     - `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
