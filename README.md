@@ -252,7 +252,8 @@ USER mysql
 CMD ["/usr/bin/mysqld", "--skip-log-error"]               
 ```
 
-### srcs/requirements/wordpress/conf/wp-config-create.sh  # соединит с контейнером БД
+### srcs/requirements/wordpress/conf/wp-config-create.sh 
+Соединит с контейнером БД
 ```
 #!bin/sh
 if [ ! -f "/var/www/wp-config.php" ]; then
