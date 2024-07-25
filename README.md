@@ -180,7 +180,8 @@ volumes:
 
 networks:
     inception:
-        driver: bridge  ```
+        driver: bridge
+```
 
 ### srcs/requirements/nginx/conf/nginx.conf 
 ```
