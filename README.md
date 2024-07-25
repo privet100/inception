@@ -54,7 +54,7 @@
     touch ./srcs/requirements/wordpress/.dockerignore
     ```
   + certificat
-    - `apt update -y; apt install -y wget curl libnss3-tools` утиллиты чтобы загрузить mkcert
+    - `sudo apt update -y; apt install -y wget curl libnss3-tools` утиллиты чтобы загрузить mkcert
     - `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
     - `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
     - `chmod a+x /usr/local/bin/mkcert`
