@@ -299,10 +299,10 @@ RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content
 CMD ["/usr/sbin/php-fpm8", "-F"]
 ```
 
-### srcs/requirements/nginx/.dockerignore \
-srcs/requirements/mariadb/.dockerignore \
-srcs/requirements/wordpress/.dockerignore
-`.git`
+### srcs/requirements/nginx/.dockerignore
+### srcs/requirements/mariadb/.dockerignore
+### srcs/requirements/wordpress/.dockerignore
+три файла `.git`
 
 ### Проверка
 `docker exec -it wordpress php -m` проверим, все ли модули установились  
