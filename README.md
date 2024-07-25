@@ -65,7 +65,8 @@
   + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
   + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
-### Makefile:                             # sets up the app
+### Makefile:                             
+Sets up the app
 ```
 name = inception
 all:    # после остановки  
@@ -99,7 +100,8 @@ DB_USER=wpuser
 DB_PASS=2
 ```
 
-### srcs/docker-compose.yml:                # calls dockerfiles
+### srcs/docker-compose.yml:                
+Calls dockerfiles
 ```
   version: '3'
   services:
@@ -199,7 +201,8 @@ server {
 }
 ```
 
-### srcs/requirements/nginx/Dockerfile                # builds a Docker image
+### srcs/requirements/nginx/Dockerfile                
+Builds a Docker image
 ```
 FROM alpine:3.19                                # https://www.alpinelinux.org (latest)  
 RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
