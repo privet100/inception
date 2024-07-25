@@ -46,8 +46,6 @@
     mkdir -p ./srcs/requirements/wordpress
     mkdir -p ./srcs/requirements/wordpress/conf
     touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
-    mkdir -p ./srcs/requirements/wordpress/tools
-    touch ./srcs/requirements/wordpress/tools/makedirs.sh
     touch ./srcs/requirements/wordpress/Dockerfile
     touch ./srcs/requirements/wordpress/.dockerignore
     ```
@@ -70,11 +68,15 @@ fclean перед сохранением в облако
 name = inception
 
 all:
-  @bash ./srcs/requirements/wordpress/tools/makedirs.sh
+  mkdir -p ~/data
+  mkdir -p ~/data/mariadb
+  mkdir -p ~/data/wordpress
   @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
 
 build:
-  @bash ./srcs/requirements/wordpress/tools/makedirs.sh
+  mkdir -p ~/data
+  mkdir -p ~/data/mariadb
+  mkdir -p ~/data/wordpress
   @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
 
 down:
@@ -280,14 +282,6 @@ define( 'ABSPATH', __DIR__ . '/' );}
 require_once ABSPATH . 'wp-settings.php';
 EOF
 fi
-```
-
-### srcs/requirements/wordpress/tools/makedirs.sh
-```
-#!/bin/bash
-mkdir -p ~/data
-mkdir -p ~/data/mariadb
-mkdir -p ~/data/wordpress
 ```
 
 ### srcs/requirements/wordpress/Dockerfile
