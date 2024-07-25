@@ -27,6 +27,7 @@
       `PubkeyAuthentication no`  
       `PasswordAuthentication yes`  
     - `/etc/init.d/ssh restart`
+    - `systemctl restart ssh` (?)
     - `systemctl restart sshd` (?)
     - `ssh akostrik@localhost -p 4246` на хостовой
   + ```
