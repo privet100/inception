@@ -25,9 +25,7 @@
       `PermitRootLogin yes`   
       `PubkeyAuthentication no`  (?)
       `PasswordAuthentication yes`  
-    - `/etc/init.d/ssh restart`
-    - `systemctl restart ssh` (?)
-    - `systemctl restart sshd` (?)
+    - `/etc/init.d/ssh restart` (`systemctl restart ssh` ?)
     -  `ps ax | grep sshd` check you have the sshd service running
     -  `netstat -plant | grep :22` check it is listening on port 22
     - `ssh akostrik@localhost -p 4246` на хостовой
