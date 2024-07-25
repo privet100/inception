@@ -15,7 +15,6 @@
       | `ssh`   | `TCP`    | `127.0.0.1` | `4246`       | `10.0.2.15` | `22`         |
       | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
       | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
-    - `sudo apt-get update; sudo apt-get install ufw`
     - `sudo ufw enable` 
     - `sudo ufw allow 22` (`sudo ufw allow ssh` ?)
     - `sudo ufw allow 80`  
