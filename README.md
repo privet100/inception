@@ -29,6 +29,7 @@
     - `/etc/init.d/ssh restart`
     - `systemctl restart ssh` (?)
     - `systemctl restart sshd` (?)
+    -  `ps ax | grep sshd` проверить
     - `ssh akostrik@localhost -p 4246` на хостовой
   + ```
     #!/bin/bash
