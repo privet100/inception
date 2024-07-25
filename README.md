@@ -202,8 +202,8 @@ server {
 ### srcs/requirements/nginx/Dockerfile                
 Builds a Docker image
 ```
-FROM alpine:3.19                                # https://www.alpinelinux.org (latest)  
-RUN apk update && apk upgrade && apk add --no-cache nginx  # не сохраняя исходники в кэше
+FROM alpine:3.19                                # https://www.alpinelinux.org 
+RUN apk update && apk upgrade && apk add --no-cache nginx
 EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]              # для отладки запускаем nginx напрямую (не демон), логи в tty контейнера  
 ```
