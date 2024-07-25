@@ -9,7 +9,7 @@
     - `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
     - `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
   + ssh
-    + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
+    + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
       | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
       | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
       | `ssh`   | `TCP`    | `127.0.0.1` | `4249`       | `10.0.2.15` | `22`         |
@@ -21,14 +21,12 @@
     - `sudo ufw allow 443`
     - `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
     - `/etc/ssh/sshd_config`:         
-      `Port 4250                  # на школьном маке 22-й занят ssh хостовой машины`  
+      `Port 22  
       `PermitRootLogin yes`   
       `PubkeyAuthentication no`  (?)
       `PasswordAuthentication yes`  
     - `/etc/init.d/ssh restart` (`systemctl restart ssh` ?)
-    -  `ps ax | grep sshd` check you have the sshd service running
-    -  `netstat -plant | grep :22` check it is listening on port 22
-    - `ssh akostrik@localhost -p 4246` на хостовой
+    - `ssh akostrik@localhost -p 4249` на хостовой
   + ```
     #!/bin/bash
     mkdir -p ./srcs
