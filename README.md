@@ -1,144 +1,69 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
 ### VM
-  + папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD, динамический, 8 гб
-  + [debian](https://www.debian.org/ "скачать debian")
-    - software to install: ssh
-  + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
-  + user akostrik
-    - `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
-    - `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
-  + ssh
-    + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
-      | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
-      | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-      | `ssh`   | `TCP`    | `127.0.0.1` | `4249`       | `10.0.2.15` | `22`         |
-      | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
-      | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
-    - `sudo ufw enable` 
-    - `sudo ufw allow 22` (`sudo ufw allow ssh` ?)
-    - `sudo ufw allow 80`  
-    - `sudo ufw allow 443`
-    - `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
-    - `/etc/ssh/sshd_config`:         
-      `Port 22  
-      `PermitRootLogin yes`   
-      `PubkeyAuthentication no`  (?)
-      `PasswordAuthentication yes`  
-    - `/etc/init.d/ssh restart` (`systemctl restart ssh` ?)
-    - `ssh akostrik@localhost -p 4249` на хостовой
-  + ```
-    #!/bin/bash
-    mkdir -p ./srcs
-    mkdir -p ./srcs/requirements/nginx
-    mkdir -p ./srcs/requirements/nginx/conf
-    mkdir -p ./srcs/requirements/nginx/tools
-    mkdir -p ./srcs/requirements/mariadb
-    mkdir -p ./srcs/requirements/mariadb/conf
-    mkdir -p ./srcs/requirements/mariadb/tools
-    mkdir -p ./srcs/requirements/wordpress
-    mkdir -p ./srcs/requirements/wordpress/conf
-    touch ./srcs/requirements/mariadb/conf/create_db.sh
-    touch ./srcs/requirements/mariadb/Dockerfile
-    touch ./srcs/docker-compose.yml
-    touch ./srcs/requirements/nginx/conf/nginx.conf
-    touch ./srcs/requirements/nginx/Dockerfile
-    touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
-    touch ./srcs/requirements/wordpress/Dockerfile
-    touch ./srcs/requirements/mariadb/.dockerignore
-    touch ./srcs/requirements/nginx/.dockerignore
-    touch ./srcs/requirements/wordpress/.dockerignore
-    ```
-  + certificat
-    - `su`
-    - `apt update -y; apt install -y wget curl libnss3-tools` утиллиты чтобы загрузить mkcert
-    - `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
-    - `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
-    - `chmod a+x /usr/local/bin/mkcert`
-    - `mkcert akostrik.42.fr; mv akostrik.42.fr-key.pem akostrik.42.fr.key; mv akostrik.42.fr.pem akostrik.42.fr.crt`
-    - le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
-  + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
-  + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
-  + Makefile:                             
-     - Sets up the app  
-     - all = после остановки  
-     - fclean перед сохранением в облако
-
-### srcs/docker-compose.yml:                
-Calls dockerfiles
-```
-version: '3'
-
-services:
-  nginx:
-    build:
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
-    container_name: nginx
-    depends_on:
-      - wordpress
-    ports:
-      - "443:443"
-    networks:
-      - inception
-    volumes:
-      - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - wp-volume:/var/www/
-    restart: always
-
-  mariadb:
-    build:
-      context: .
-      dockerfile: requirements/mariadb/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-        DB_ROOT: ${DB_ROOT}
-    container_name: mariadb
-    ports:
-      - "3306:3306"
-    networks:
-      - inception
-    volumes:
-      - db-volume:/var/lib/mysql
-    restart: always
-
-  wordpress:
-    build:
-      context: .
-      dockerfile: requirements/wordpress/Dockerfile
-      args:
-        DB_NAME: ${DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
-    container_name: wordpress
-    depends_on:
-      - mariadb
-    networks:
-      - inception
-    volumes:
-      - wp-volume:/var/www/
-    restart: always
-
-volumes:
-  wp-volume:
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/${USER}/data/wordpress
-
-  db-volume:
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/${USER}/data/mariadb
-
-networks:
-    inception:
-        driver: bridge
-```
++ папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD, динамический, 8 гб
++ [debian](https://www.debian.org/ "скачать debian")
+  - software to install: ssh
++ `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
++ `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
++ `/etc/ssh/sshd_config`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
++ ssh
+  + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
+    | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
+    | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
+    | `ssh`   | `TCP`    | `127.0.0.1` | `4249`       | `10.0.2.15` | `22`         |
+    | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
+    | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
+  - `sudo ufw enable` 
+  - `sudo ufw allow 22`
+  - `sudo ufw allow 80`  
+  - `sudo ufw allow 443`
+  - `/etc/init.d/ssh restart`
+  - `ssh root@localhost -p 4249` на хостовой
++ ```
+  #!/bin/bash
+  apt update
+  apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr
+  adduser akostrik
+  usermod -aG docker akostrik
+  usermod -aG sudo akostrik
+  mkdir -p ./srcs
+  mkdir -p ./srcs/requirements/nginx
+  mkdir -p ./srcs/requirements/nginx/conf
+  mkdir -p ./srcs/requirements/nginx/tools
+  mkdir -p ./srcs/requirements/mariadb
+  mkdir -p ./srcs/requirements/mariadb/conf
+  mkdir -p ./srcs/requirements/mariadb/tools
+  mkdir -p ./srcs/requirements/wordpress
+  mkdir -p ./srcs/requirements/wordpress/conf
+  touch ./srcs/requirements/mariadb/conf/create_db.sh
+  touch ./srcs/requirements/mariadb/Dockerfile
+  touch ./srcs/docker-compose.yml
+  touch ./srcs/requirements/nginx/conf/nginx.conf
+  touch ./srcs/requirements/nginx/Dockerfile
+  touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
+  touch ./srcs/requirements/wordpress/Dockerfile
+  touch ./srcs/requirements/mariadb/.dockerignore
+  touch ./srcs/requirements/nginx/.dockerignore
+  touch ./srcs/requirements/wordpress/.dockerignore
+  su
+  apt update -y; apt install -y wget curl libnss3-tools
+  curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
+  mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+  chmod a+x /usr/local/bin/mkcert
+  cd ./srcs/requirements/nginx/tools
+  mkcert akostrik.42.fr
+  mv akostrik.42.fr-key.pem akostrik.42.fr.key;
+  mv akostrik.42.fr.pem akostrik.42.fr.crt
+  ```
++ le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
++ пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
++ Makefile:                             
+  - Sets up the app  
+  - all = после остановки  
+  - fclean перед сохранением в облако
++ srcs/docker-compose.yml:                
+  - calls dockerfiles
 
 ### srcs/requirements/nginx/conf/nginx.conf 
 ```
