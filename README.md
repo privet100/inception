@@ -8,63 +8,62 @@
   + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
   + `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
   + `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
-  + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
-  + `sudo apt-get update; sudo apt-get install ufw`
-  + `sudo ufw enable` 
-  + `sudo ufw allow ssh` ?
-  + `sudo ufw allow 22`
-  + `sudo ufw allow 80`  
-  + `sudo ufw allow 443`
-  + `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
-  + `apt update -y; apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
-  + `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
-  + `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
-  + `chmod a+x /usr/local/bin/mkcert`
-  + `mkcert akostrik.42.fr; mv akostrik.42.fr-key.pem akostrik.42.fr.key; mv akostrik.42.fr.pem akostrik.42.fr.crt`
+  + ssh
+    + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
+      | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
+      | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
+      | `ssh`   | `TCP`    | `127.0.0.1` | `4246`       | `10.0.2.15` | `22`         |
+      | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
+      | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
+    - `sudo apt-get update; sudo apt-get install ufw`
+    - `sudo ufw enable` 
+    - `sudo ufw allow 22` (`sudo ufw allow ssh` ?)
+    - `sudo ufw allow 80`  
+    - `sudo ufw allow 443`
+    - `sudo chown $(whoami):$(whoami) /var/run/docker.sock` I should own the unix socket (?)
+    - `/etc/ssh/sshd_config`:         
+      `Port 4246                  # на школьном маке 22-й занят ssh хостовой машины`  
+      `PermitRootLogin yes`   
+      `PubkeyAuthentication no`  
+      `PasswordAuthentication yes`  
+    - `/etc/init.d/ssh restart`
+    - `systemctl restart sshd` (?)
+    - `ssh akostrik@localhost -p 4246` на хостовой
+  + ```
+    #!/bin/bash
+    mkdir -p ./srcs
+    mkdir -p ./srcs/requirements    │                   
+    touch ./srcs/docker-compose.yml
+    mkdir -p ./srcs/requirements/bonus
+    mkdir -p ./srcs/requirements/mariadb
+    mkdir -p ./srcs/requirements/mariadb/conf
+    touch ./srcs/requirements/mariadb/conf/create_db.sh
+    mkdir -p ./srcs/requirements/mariadb/tools
+    touch ./srcs/requirements/mariadb/Dockerfile
+    touch ./srcs/requirements/mariadb/.dockerignore
+    mkdir -p ./srcs/requirements/nginx
+    mkdir -p ./srcs/requirements/nginx/conf
+    touch ./srcs/requirements/nginx/conf/nginx.conf
+    mkdir -p ./srcs/requirements/nginx/tools
+    touch ./srcs/requirements/nginx/Dockerfile
+    mkdir -p ./srcs/requirements/tools
+    mkdir -p ./srcs/requirements/wordpress
+    mkdir -p ./srcs/requirements/wordpress/conf
+    touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
+    mkdir -p ./srcs/requirements/wordpress/tools
+    mkdir -p ./srcs/requirements/wordpress/tools/makedirs.sh
+    touch ./srcs/requirements/wordpress/Dockerfile
+    touch ./srcs/requirements/wordpress/.dockerignore
+    ```
+  + certificat
+    - `apt update -y; apt install -y wget curl libnss3-tools` утиллиты, которые помогут нам загрузить mkcert
+    - `curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -` бинарник
+    - `mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert` в рабочую директорию
+    - `chmod a+x /usr/local/bin/mkcert`
+    - `mkcert akostrik.42.fr; mv akostrik.42.fr-key.pem akostrik.42.fr.key; mv akostrik.42.fr.pem akostrik.42.fr.crt`
     - le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
-  + `/etc/ssh/sshd_config`:         
-    `Port 4246                  # на школьном маке 22-й занят ssh хостовой машины`  
-    `PermitRootLogin yes`   
-    `PubkeyAuthentication no`  
-    `PasswordAuthentication yes`  
-  + `/etc/init.d/ssh restart`
-  + `systemctl restart sshd`
-  + `ssh akostrik@localhost -p 4246` на хостовой
-  + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
-  + | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
-    | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-    | `ssh`   | `TCP`    | `127.0.0.1` | `4246`       | `10.0.2.15` | `22`         |
-    | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
-    | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
+  + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
   + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
-
-### makedirs.sh
-```
-#!/bin/bash
-mkdir -p ./srcs
-mkdir -p ./srcs/requirements    │                   
-touch ./srcs/docker-compose.yml
-mkdir -p ./srcs/requirements/bonus
-mkdir -p ./srcs/requirements/mariadb
-mkdir -p ./srcs/requirements/mariadb/conf
-touch ./srcs/requirements/mariadb/conf/create_db.sh
-mkdir -p ./srcs/requirements/mariadb/tools
-touch ./srcs/requirements/mariadb/Dockerfile
-touch ./srcs/requirements/mariadb/.dockerignore
-mkdir -p ./srcs/requirements/nginx
-mkdir -p ./srcs/requirements/nginx/conf
-touch ./srcs/requirements/nginx/conf/nginx.conf
-mkdir -p ./srcs/requirements/nginx/tools
-touch ./srcs/requirements/nginx/Dockerfile
-mkdir -p ./srcs/requirements/tools
-mkdir -p ./srcs/requirements/wordpress
-mkdir -p ./srcs/requirements/wordpress/conf
-touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
-mkdir -p ./srcs/requirements/wordpress/tools
-mkdir -p ./srcs/requirements/wordpress/tools/makedirs.sh
-touch ./srcs/requirements/wordpress/Dockerfile
-touch ./srcs/requirements/wordpress/.dockerignore
-```
 
 ### Makefile:                             # sets up the app
 ```
