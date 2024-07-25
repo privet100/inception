@@ -110,72 +110,77 @@ DB_PASS=2
 ### srcs/docker-compose.yml:                
 Calls dockerfiles
 ```
-  version: '3'
-  services:
-    nginx:
-        build:
-          context: .   # either a path to a directory containing a Dockerfile, or a url to a git repository
-          dockerfile: requirements/nginx/Dockerfile
-        container_name: nginx
-        depends_on:
-          - wordpress
-        ports:
-          - "443:443"
-        networks:
-          - inception
-        volumes:
-          - ./requirements/nginx/conf/:/etc/nginx/http.d/
-          - ./requirements/nginx/tools:/etc/nginx/ssl/
-          - wp-volume:/var/www/
-        restart: always
-      mariadb:
-        build:
-          context: .
-          dockerfile: requirements/mariadb/Dockerfile
-          args:
-            DB_NAME: ${DB_NAME} # .env
-            DB_USER: ${DB_USER}
-            DB_PASS: ${DB_PASS}
-            DB_ROOT: ${DB_ROOT}
-        container_name: mariadb
-        ports:
-          - "3306:3306"
-        networks:
-          - inception
-        volumes:
-          - db-volume:/var/lib/mysql
-        restart: always
-      wordpress:
-        build:
-          context: .
-          dockerfile: requirements/wordpress/Dockerfile
-          args:
-            DB_NAME: ${DB_NAME}
-            DB_USER: ${DB_USER}
-            DB_PASS: ${DB_PASS}
-        container_name: wordpress
-        depends_on:
-          - mariadb
-        restart: always
-        networks:
-          - inception
-        volumes:
-          - wp-volume:/var/www/
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: requirements/nginx/Dockerfile
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    networks:
+      - inception
     volumes:
-      wp-volume: # создадим раздел (можно было бы примонтировать к nginx и wordpress одну и ту же папку)
-        driver_opts:
-          o: bind
-          type: none
-          device: /home/akostrik/data/wordpress
-      db-volume:
-        driver_opts:
-          o: bind
-          type: none
-          device: /home/akostrik/data/mariadb
-    networks: # сеть доступна по имени (хотя существует и без этого)
-        inception:
-            driver: bridge
-  ```
+      - ./requirements/nginx/conf/:/etc/nginx/http.d/
+      - ./requirements/nginx/tools:/etc/nginx/ssl/
+      - wp-volume:/var/www/
+    restart: always
+
+  mariadb:
+    build:
+      context: .
+      dockerfile: requirements/mariadb/Dockerfile
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+        DB_ROOT: ${DB_ROOT}
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    networks:
+      - inception
+    volumes:
+      - db-volume:/var/lib/mysql
+    restart: always
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: requirements/wordpress/Dockerfile
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+    volumes:
+      - wp-volume:/var/www/
+    restart: always
+
+volumes:
+  wp-volume:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/wordpress
+
+  db-volume:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/mariadb
+
+networks:
+    inception:
+        driver: bridge  ```
 
 ### srcs/requirements/nginx/conf/nginx.conf 
 ```
