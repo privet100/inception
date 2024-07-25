@@ -28,7 +28,8 @@
     - `/etc/init.d/ssh restart`
     - `systemctl restart ssh` (?)
     - `systemctl restart sshd` (?)
-    -  `ps ax | grep sshd` проверить
+    -  `ps ax | grep sshd` check you have the sshd service running
+    -  `netstat -plant | grep :22` check it is listening on port 22
     - `ssh akostrik@localhost -p 4246` на хостовой
   + ```
     #!/bin/bash
