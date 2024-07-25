@@ -299,7 +299,9 @@ RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content
 CMD ["/usr/sbin/php-fpm8", "-F"]
 ```
 
-### srcs/requirements/nginx/.dockerignore, srcs/requirements/mariadb/.dockerignore, srcs/requirements/wordpress/.dockerignore
+### srcs/requirements/nginx/.dockerignore \
+srcs/requirements/mariadb/.dockerignore \
+srcs/requirements/wordpress/.dockerignore
 `.git`
 
 ### Проверка
