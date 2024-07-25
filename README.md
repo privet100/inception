@@ -121,8 +121,8 @@ Calls dockerfiles
           - wordpress
         ports:
           - "443:443"
-        networks: 
-          - inception   
+        networks:
+          - inception
         volumes:
           - ./requirements/nginx/conf/:/etc/nginx/http.d/
           - ./requirements/nginx/tools:/etc/nginx/ssl/
