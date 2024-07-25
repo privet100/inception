@@ -4,10 +4,9 @@
   + папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD, динамический, 8 гб
   + [debian](https://www.debian.org/ "скачать debian")
     - software to install: ssh
-    - user: akostrik
-  + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
-  + `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
-  + `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
+  + user akostrik
+   - `usermod -aG docker akostrik; usermod -aG sudo akostrik` группы
+   - `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
   + ssh
     + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
       | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
@@ -62,6 +61,7 @@
     - `chmod a+x /usr/local/bin/mkcert`
     - `mkcert akostrik.42.fr; mv akostrik.42.fr-key.pem akostrik.42.fr.key; mv akostrik.42.fr.pem akostrik.42.fr.crt`
     - le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
+  + `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr`
   + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
   + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
