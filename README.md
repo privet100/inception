@@ -59,53 +59,10 @@
     - le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
   + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
   + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
-
-### Makefile:                             
-Sets up the app  
-all = после остановки  
-fclean перед сохранением в облако
-```
-name = inception
-
-all:
-  mkdir -p ~/data
-  mkdir -p ~/data/mariadb
-  mkdir -p ~/data/wordpress
-  @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d
-
-build:
-  mkdir -p ~/data
-  mkdir -p ~/data/mariadb
-  mkdir -p ~/data/wordpress
-  @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
-
-down:
-  @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env down
-
-re:
-  @docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d --build
-
-clean: down
-  @docker system prune -a
-  @sudo rm -rf ~/data/wordpress/*
-  @sudo rm -rf ~/data/mariadb/*
-
-fclean:
-  @docker stop $$(docker ps -qa)
-  @docker system prune --all --force --volumes
-  @docker network prune --force
-  @docker volume prune --force
-  @sudo rm -rf ~/data/wordpress/*
-  @sudo rm -rf ~/data/mariadb/*
-```
-
-### srcs/.env
-```
-DB_NAME=wordpress
-DB_ROOT=2
-DB_USER=wpuser
-DB_PASS=2
-```
+  + Makefile:                             
+     - Sets up the app  
+     - all = после остановки  
+     - fclean перед сохранением в облако
 
 ### srcs/docker-compose.yml:                
 Calls dockerfiles
