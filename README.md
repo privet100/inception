@@ -309,6 +309,9 @@ CMD ["/usr/sbin/php-fpm8", "-F"]
 три файла `.git`
 
 ### Проверка
+`docker-compose up -d --build` запускаем конфигурацию  
+`https://127.0.0.1`  
+`https://akostrik.42.fr`  
 `docker exec -it wordpress php -m` проверим, все ли модули установились  
 `docker exec -it wordpress php -v` проверим работу php  
 `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php, ожидаем:  
@@ -317,10 +320,6 @@ CMD ["/usr/sbin/php-fpm8", "-F"]
 ...
 10 nobody    0:00 {php-fpm8} php-fpm: pool www
 ```
-`cd project/srcs`   
-`docker-compose up -d --build` запускаем конфигурацию  
-`https://127.0.0.1`  
-`https://akostrik.42.fr`  
 `service nginx stop`  
 `service mariadb stop`  
 `service mysql stop`  
