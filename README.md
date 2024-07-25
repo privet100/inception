@@ -65,37 +65,6 @@
 + srcs/docker-compose.yml:                
   - calls dockerfiles
 
-### srcs/requirements/nginx/conf/nginx.conf 
-```
-server {
-  listen              443 ssl;                           # nginx обрабатывает php-файлы, https = SSL
-  server_name         akostrik.42.fr www.akostrik.42.fr;
-  root                /var/www/;
-  index               index.php;
-  ssl_certificate     /etc/nginx/ssl/akostrik.42.fr.crt;
-  ssl_certificate_key /etc/nginx/ssl/akostrik.42.fr.key;
-  ssl_protocols       TLSv1.2 TLSv1.3;                    # поддерживаемые протоколы tls
-  ssl_session_timeout 10m;                                # опции кэширования 
-  keepalive_timeout   70;                                 # таймауты
-  location / {
-    try_files $uri /index.php?$args;
-    add_header Last-Modified $date_gmt;
-    add_header Cache-Control 'no-store, no-cache';
-    if_modified_since off;
-    expires off;
-    etag off;
-  }
-  location ~ \.php$ {
-    fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    fastcgi_pass wordpress:9000;
-    fastcgi_index index.php;
-    include fastcgi_params;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    fastcgi_param PATH_INFO $fastcgi_path_info;
-  }
-}
-```
-
 ### srcs/requirements/nginx/Dockerfile                
 Builds a Docker image  
 https://www.alpinelinux.org  
