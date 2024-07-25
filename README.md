@@ -30,23 +30,23 @@
   + ```
     #!/bin/bash
     mkdir -p ./srcs
-    touch ./srcs/docker-compose.yml
     mkdir -p ./srcs/requirements/nginx
     mkdir -p ./srcs/requirements/nginx/conf
-    touch ./srcs/requirements/nginx/conf/nginx.conf
     mkdir -p ./srcs/requirements/nginx/tools
-    touch ./srcs/requirements/nginx/Dockerfile
-    touch ./srcs/requirements/nginx/.dockerignore
     mkdir -p ./srcs/requirements/mariadb
     mkdir -p ./srcs/requirements/mariadb/conf
-    touch ./srcs/requirements/mariadb/conf/create_db.sh
     mkdir -p ./srcs/requirements/mariadb/tools
-    touch ./srcs/requirements/mariadb/Dockerfile
-    touch ./srcs/requirements/mariadb/.dockerignore
     mkdir -p ./srcs/requirements/wordpress
     mkdir -p ./srcs/requirements/wordpress/conf
+    touch ./srcs/requirements/mariadb/conf/create_db.sh
+    touch ./srcs/requirements/mariadb/Dockerfile
+    touch ./srcs/docker-compose.yml
+    touch ./srcs/requirements/nginx/conf/nginx.conf
+    touch ./srcs/requirements/nginx/Dockerfile
     touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
     touch ./srcs/requirements/wordpress/Dockerfile
+    touch ./srcs/requirements/mariadb/.dockerignore
+    touch ./srcs/requirements/nginx/.dockerignore
     touch ./srcs/requirements/wordpress/.dockerignore
     ```
   + certificat
