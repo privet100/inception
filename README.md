@@ -12,7 +12,7 @@
     + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов:
       | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
       | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-      | `ssh`   | `TCP`    | `127.0.0.1` | `4246`       | `10.0.2.15` | `22`         |
+      | `ssh`   | `TCP`    | `127.0.0.1` | `4249`       | `10.0.2.15` | `4250`       |
       | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
       | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
     - `sudo ufw enable` 
@@ -23,7 +23,7 @@
     - `/etc/ssh/sshd_config`:         
       `Port 4246                  # на школьном маке 22-й занят ssh хостовой машины`  
       `PermitRootLogin yes`   
-      `PubkeyAuthentication no`  
+      `PubkeyAuthentication no`  (?)
       `PasswordAuthentication yes`  
     - `/etc/init.d/ssh restart`
     - `systemctl restart ssh` (?)
