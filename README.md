@@ -113,7 +113,7 @@ DB_PASS=2
           - wordpress
         ports:
           - "443:443"
-        networks: # сеть доступна по имени (существует и без этого)
+        networks: 
           - inception   
         volumes:
           - ./requirements/nginx/conf/:/etc/nginx/http.d/
@@ -164,7 +164,7 @@ DB_PASS=2
           o: bind
           type: none
           device: /home/akostrik/data/mariadb
-    networks:
+    networks: # сеть доступна по имени (хотя существует и без этого)
         inception:
             driver: bridge
   ```
