@@ -61,8 +61,8 @@
   + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ### Makefile:                             
-Sets up the app
-all = после остановки
+Sets up the app  
+all = после остановки  
 fclean перед сохранением в облако
 ```
 name = inception
