@@ -30,7 +30,6 @@
   + ```
     #!/bin/bash
     mkdir -p ./srcs
-    mkdir -p ./srcs/requirements    │                   
     touch ./srcs/docker-compose.yml
     mkdir -p ./srcs/requirements/nginx
     mkdir -p ./srcs/requirements/nginx/conf
