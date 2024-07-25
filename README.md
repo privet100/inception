@@ -251,15 +251,18 @@ rm -f /tmp/create_db.sql
 ```
 
 ### srcs/requirements/mariadb/Dockerfile
+тут из .env только при build  
+не используем тут: арг из environment-секции внутри сервиса - в окружении запущенного контейнера  
+ещё можно переменнын оеркжегия из docker-compose ?  
+БД из сконфигурированного на пред. слое, user mysql создан при установке БД  
 ```
 FROM alpine:3.19
-ARG DB_NAME DB_USER DB_PASS # из .env только при build (арг из environment-секции внутри сервиса - в окружении запущенного контейнера, из docker-compose ?)
+ARG DB_NAME DB_USER DB_PASS
 RUN apk update && apk add --no-cache mariadb mariadb-client
 RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
-  { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | \
-  tee  /etc/my.cnf.d/docker.cnf; \                  # в файл
+  { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | tee  /etc/my.cnf.d/docker.cnf; \
   sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql # БД из сконфигурированного на пред. слое, user mysql создан при установке БД
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 EXPOSE 3306
 COPY requirements/mariadb/conf/create_db.sh .
 RUN sh create_db.sh && rm create_db.sh
