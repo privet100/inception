@@ -264,7 +264,8 @@ CMD ["/usr/bin/mysqld", "--skip-log-error"]
 ```
 
 ### srcs/requirements/wordpress/conf/wp-config-create.sh 
-Соединит с контейнером БД
+Соединит с контейнером БД  
+экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)  
 ```
 #!bin/sh
 if [ ! -f "/var/www/wp-config.php" ]; then
