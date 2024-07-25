@@ -209,12 +209,14 @@ server {
 ```
 
 ### srcs/requirements/nginx/Dockerfile                
-Builds a Docker image
+Builds a Docker image  
+https://www.alpinelinux.org  
+для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
 ```
-FROM alpine:3.19                                # https://www.alpinelinux.org 
+FROM alpine:3.19 
 RUN apk update && apk upgrade && apk add --no-cache nginx
 EXPOSE 443
-CMD ["nginx", "-g", "daemon off;"]              # для отладки запускаем nginx напрямую (не демон), логи в tty контейнера  
+CMD ["nginx", "-g", "daemon off;"]
 ```
 
 ### srcs/requirements/nginx/tools/akostrik.42.fr
