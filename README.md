@@ -6,9 +6,9 @@
   - software to install: ssh
 + `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
 + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
-+ `/etc/ssh/sshd_config`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
 + ssh
-  + Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
+  - `/etc/ssh/sshd_config`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
+  - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
     | `ssh`   | `TCP`    | `127.0.0.1` | `4249`       | `10.0.2.15` | `22`         |
