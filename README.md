@@ -1,7 +1,7 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
 ### VM
-+ папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD, динамический, 8 гб
++ папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD динамический 8 гб
 + [install debian 12](https://www.debian.org/ "скачать debian")
   - software to install: ssh
 + ssh
@@ -12,17 +12,16 @@
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `su`
-  - `/etc/ssh/ssh_config`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
-  - `sudo ufw enable` 
-  - `sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
+  - `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr (openssh-server ?)
+  - `/etc/ssh/ssh_config`: Port 22, PermitRootLogin yes, PasswordAuthentication yes (?) 
+  - `sudo ufw enable; sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
   - `/etc/init.d/ssh restart`
   - `ssh root@localhost -p 4249` на хостовой
 + ```
   #!/bin/bash
-  apt update
-  apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr
   adduser akostrik
   usermod -aG docker akostrik
+  usermod -aG sudo akostrik
   mkdir -p ./srcs
   mkdir -p ./srcs/requirements/nginx
   mkdir -p ./srcs/requirements/nginx/conf
@@ -42,7 +41,6 @@
   touch ./srcs/requirements/mariadb/.dockerignore
   touch ./srcs/requirements/nginx/.dockerignore
   touch ./srcs/requirements/wordpress/.dockerignore
-  su
   apt update -y; apt install -y wget curl libnss3-tools
   curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
