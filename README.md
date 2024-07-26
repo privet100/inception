@@ -12,7 +12,7 @@
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `su`
-  - `/etc/ssh/ssh_config.d/*.conf`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
+  - `/etc/ssh/ssh_config`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
   - `sudo ufw enable` 
   - `sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
   - `/etc/init.d/ssh restart`
