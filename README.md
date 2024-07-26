@@ -64,9 +64,9 @@
   - calls dockerfiles
 + .env
   ```
-  DOMAIN_NAME=jleslee.42.fr
-  CERT_=./requirements/tools/jleslee.42.fr
-  KEY_=./requirements/tools/jleslee.42.fr
+  DOMAIN_NAME=akostrik.42.fr
+  CERT_=./requirements/tools/jakostrik.42.cert
+  KEY_=./requirements/tools/akostrik.42.fr
   DB_NAME=wordpress
   DB_ROOT=rootpass
   DB_USER=wpuser
