@@ -62,7 +62,7 @@
   - fclean перед сохранением в облако
 + srcs/docker-compose.yml:                
   - calls dockerfiles
-+ .env
++ srcs/env
   ```
   DOMAIN_NAME=akostrik.42.fr
   CERT_=./requirements/tools/jakostrik.42.cert
@@ -74,21 +74,10 @@
   FTP_USR=ftpuser
   FTP_PWD=ftppass
   ```
-
-### srcs/requirements/nginx/Dockerfile                
-Builds a Docker image  
-https://www.alpinelinux.org  
-для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
-```
-FROM alpine:3.19 
-RUN apk update && apk upgrade && apk add --no-cache nginx
-EXPOSE 443
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-### srcs/requirements/nginx/tools/akostrik.42.fr
-
-### srcs/requirements/nginx/tools/akostrik.42.fr
++ .rcs/requirements/nginx/Dockerfile                
+  - Builds a Docker image  
+  - https://www.alpinelinux.org  
+  - для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
 
 ### srcs/requirements/mariadb/conf/create_db.sh
 ```
