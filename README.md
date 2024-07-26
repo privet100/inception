@@ -15,9 +15,7 @@
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `sudo ufw enable` 
-  - `sudo ufw allow 22`
-  - `sudo ufw allow 80`  
-  - `sudo ufw allow 443`
+  - `sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
   - `/etc/init.d/ssh restart`
   - `ssh root@localhost -p 4249` на хостовой
 + ```
