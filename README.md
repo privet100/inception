@@ -4,6 +4,11 @@
 + папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD, динамический, 8 гб
 + [debian](https://www.debian.org/ "скачать debian")
   - software to install: ssh
++
+  ```
+  su
+  usermod -aG sudo akostrik
+  ```
 + `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
 + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
 + ssh
@@ -24,7 +29,6 @@
   apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr
   adduser akostrik
   usermod -aG docker akostrik
-  usermod -aG sudo akostrik
   mkdir -p ./srcs
   mkdir -p ./srcs/requirements/nginx
   mkdir -p ./srcs/requirements/nginx/conf
