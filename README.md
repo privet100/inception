@@ -62,6 +62,18 @@
   - fclean перед сохранением в облако
 + srcs/docker-compose.yml:                
   - calls dockerfiles
++ .env
+  ```
+  DOMAIN_NAME=jleslee.42.fr
+  CERT_=./requirements/tools/jleslee.42.fr
+  KEY_=./requirements/tools/jleslee.42.fr
+  DB_NAME=wordpress
+  DB_ROOT=rootpass
+  DB_USER=wpuser
+  DB_PASS=wppass
+  FTP_USR=ftpuser
+  FTP_PWD=ftppass
+  ```
 
 ### srcs/requirements/nginx/Dockerfile                
 Builds a Docker image  
