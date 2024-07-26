@@ -4,10 +4,8 @@
 + папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD, динамический, 8 гб
 + [debian](https://www.debian.org/ "скачать debian")
   - software to install: ssh
-+ `su`
-+ `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
-+ `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
 + ssh
+  - `su`
   - `/etc/ssh/sshd_config`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
   - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
@@ -54,6 +52,8 @@
   mv akostrik.42.fr-key.pem akostrik.42.fr.key;
   mv akostrik.42.fr.pem akostrik.42.fr.crt
   ```
++ `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
++ `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
 + le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
 + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 + Makefile:                             
