@@ -2,7 +2,7 @@
 
 ### VM
 + папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD, динамический, 8 гб
-+ [debian](https://www.debian.org/ "скачать debian")
++ [install debian 12](https://www.debian.org/ "скачать debian")
   - software to install: ssh
 + ssh
   - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
@@ -12,7 +12,7 @@
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `su`
-  - `/etc/ssh/sshd_config`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
+  - `/etc/ssh/ssh_config.d/*.conf`: Port 22, PermitRootLogin yes, PasswordAuthentication yes  
   - `sudo ufw enable` 
   - `sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
   - `/etc/init.d/ssh restart`
