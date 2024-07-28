@@ -8,7 +8,7 @@
   - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-    | `ssh`   | `TCP`    | `127.0.0.1` | `4249`       | `10.0.2.15` | `22`         |
+    | `ssh`   | `TCP`    | `127.0.0.1` | `4250`       | `10.0.2.15` | `22`         |
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `su`
@@ -16,7 +16,7 @@
   - `/etc/ssh/sshd_config`: Port 22, PasswordAuthentication yes (PermitRootLogin yes ?) 
   - `/etc/init.d/ssh restart`
   - `sudo ufw enable; sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
-  - `ssh root@localhost -p 4249` на хостовой
+  - `ssh root@localhost -p 4250` на хостовой
 + ```
   #!/bin/bash
   adduser akostrik
