@@ -14,8 +14,8 @@
   - `su`
   - `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr` (openssh-server ?)
   - `/etc/ssh/sshd_config`: Port 22, PasswordAuthentication yes (PermitRootLogin yes ?) 
-  - `sudo ufw enable; sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
   - `/etc/init.d/ssh restart`
+  - `sudo ufw enable; sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
   - `ssh root@localhost -p 4249` на хостовой
 + ```
   #!/bin/bash
