@@ -19,7 +19,7 @@
 + ```
   #!/bin/bash
   adduser akostrik
-  usermod -aG docker akostrik
+  usermod -aG docker akostrik (или /usr/sbin/usermod -aG docker akostrik)
   usermod -aG sudo akostrik
   apt update -y; apt install -y wget curl libnss3-tools
   curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
