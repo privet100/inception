@@ -45,7 +45,7 @@
   - fclean перед сохранением в облако
 + srcs/docker-compose.yml                
   - calls dockerfiles
-+ srcs/env
++ srcs/.env
   ```
   DOMAIN_NAME=akostrik.42.fr
   DB_NAME=wordpress
