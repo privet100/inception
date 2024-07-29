@@ -308,7 +308,7 @@ CMD ["/usr/sbin/php-fpm8", "-F"]
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
 https://github.com/codesshaman/inception  
-https://github.com/edvin3i/42_inception 
+https://github.com/edvin3i/42_inception  
 https://github.com/rbiodies/Inception   
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
 [WordPress NGINX,PHP-FPM MariaDB](https://www.php.net/manual/en/install.fpm.configuration.php)  
