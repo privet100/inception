@@ -18,9 +18,16 @@
   - `ssh root@localhost -p 4250` на хостовой
 + ```
   #!/bin/bash
+  su
   adduser akostrik
-  usermod -aG docker akostrik (или /usr/sbin/usermod -aG docker akostrik)
-  usermod -aG sudo akostrik
+  /usr/sbin/usermod -aG docker akostrik (или usermod -aG docker akostrik)
+  /usr/sbin/usermod -aG sudo akostrik (или usermod -aG sudo akostrik)
+  echo "akostrik ALL=(ALL:ALL) ALL" >> /etc/sudoers (?)
+  exit
+  cd ~/.ssh
+  ssh-keygen -t rsa
+  cat ~/.ssh/id_rsa.pub
+  git clone https://github.com/privet100/inception inception
   apt update -y; apt install -y wget curl libnss3-tools
   curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
@@ -30,7 +37,6 @@
   mv akostrik.42.fr-key.pem akostrik.42.fr.key;
   mv akostrik.42.fr.pem akostrik.42.fr.crt
   echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
-  echo "akostrik ALL=(ALL:ALL) ALL" >> /etc/sudoers (?)
   ```
 + le certificat SSL n’a pas été signé par Trusted Authority => une alerte
 + Makefile                             
