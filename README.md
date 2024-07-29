@@ -158,6 +158,7 @@
     - surtout https://sysdig.com/blog/dockerfile-best-practices/ même si vous n'utilisez pas d'image distroless
     - https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
     - Sinon pour les commands infini je pense surtout aux tail -f /dev/random and co
+  + les différences entre RUN CMD ENTRYPOINT
   + CMD = définir une commande par défaut que l'on peut override
     - lorsque tu utilises CMD utilise plutôt CMD ["executable", "params…"] pareil pour les COPY etc c'est plus propre et lisible
     - par exemple: `CMD ["--help"], ENTRYPOINT ["ping"]`
@@ -165,26 +166,23 @@
     - on peux utiliser ENTRYPOINT afin de définir un process par défaut
   + si je run mon image sans lui donner d'argument c'est ping --help qui va se lancer
   + si je run mon image en lui donnant google.fr, c'est ping google.fr qui va se lancer
-  + Tu peux même avoir des trucs genre : ENTRYPOINT ["echo", "Hello"] CMD ["hehe"]
+  + Tu peux avoir des trucs genre : ENTRYPOINT ["echo", "Hello"] CMD ["hehe"]
   + faire un script en entrypoint qui récupère éventuellement les arguments que je pourrais donner avec un docker run, dans lequel je vais pouvoir faire ce dont j'ai besoin au runtime et qui finirait par exemple par un  exec /usr/sbin/php-fpm7.3 --nodaemonize afin de "remplacer" mon script par php-fpm (qui conserverait donc bien le PID 1 et qui pourrais donc catch comme il faut les signaux)
-    - est-ce que tu vas vraiment gagner quelque chose a pouvoir passer des arguments au scrip
-    - pour les parametres de ce que j'ai pu voir la pratique repandue c'est plus avec variables d'env
-    -  ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
-  + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose. Comme une fonction en C tu peux faire un programme avec uniquement un main ou faire des fonctions. Ben docker c'est pareil. Tu utilises docker-compose qui permet d'avoir la possibilité de link simplement tes services donc utilise ça.
+    - est-ce que tu vas gagner quelque chose a pouvoir passer des arguments au scrip
+    - variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
+  + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose
+  + docker-compose permet d'avoir la possibilité de link simplement tes services
   + Tu as pas mal d'image distroless and co. Ici je ne demande pas ça.
-  + le PID 1 sur un systeme c’est systemd si je ne m’abuse par contre dans un container c’est différent il ne peux pas y avoir de systemd je crois
-    - Na mais je ne te demande pas ça à toi spécifiquement (no stress) juste que si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
-  + le PID 1 sur un systeme c’est systemd, dans un container c’est différent, il ne peux pas y avoir de systemd
+  + le PID 1 c’est systemd
+    - dans un container c’est différent il ne peux pas y avoir de systemd je crois
+    - si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
   + voir systemctl sur nginx m'a fait du mal
     - systemctl start nginx dans un container n’est pas possible
-    - possible techniquement mais c'est pas dingue
-  + Les images officielles de nginx, mariadb, etc, sont en effet de très bonnes inspirations
-  + Tu connais les différences entre RUN CMD ENTRYPOINT ?
-  + tu connais le flag init sur docker ?
-  + 'fin faut pas regarder des images docker si tu sais pas définir ce que je viens de demander. Faut manger de la doc avant tout. ça te parle ['sh', 'test.sh'] vs sh /opt/test.sh ? '
-  + faut voir docker compose comme un simple wrapper build au dessus de docker 
+  + Les images officielles de nginx, mariadb, etc, sont de très bonnes inspirations
+  + le flag init sur docker 
+  + ['sh', 'test.sh'] vs sh /opt/test.sh ? '
+  + docker compose = un simple wrapper build au dessus de docker 
   + повтор: les Shared Folders de la VM ou qu'un serveur SSH mal configuré sur la VM peuvent poser problème
-  + повтор: **Est ce qu'il faut avoir accès à login.42.fr sur la machine physique Ou uniquement virtuel?**
   + остановилась: docker-compose il va juste simplifier tes commandes docker pour tout mettre en place comme tu veux.
 (fait attention à l'ordre des services que tu vas deploy ça peut poser des problèmes)
 
