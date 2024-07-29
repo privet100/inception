@@ -1,6 +1,5 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
-### VM
 + папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD динамический 8 гб, CPU 4C, RAM 8GB, HDD 20GB
 + [install debian 12](https://www.debian.org/ "скачать debian")
   - software to install: ssh
@@ -63,14 +62,12 @@
 + srcs/env
   ```
   DOMAIN_NAME=akostrik.42.fr
-  CERT_=./requirements/tools/jakostrik.42.cert
-  KEY_=./requirements/tools/akostrik.42.fr
   DB_NAME=wordpress
   DB_ROOT=rootpass
   DB_USER=wpuser
   DB_PASS=wppass
   ```
-+ .rcs/requirements/nginx/Dockerfile                
++ .srcs/requirements/nginx/Dockerfile                
   - Builds a Docker image  
   - https://www.alpinelinux.org  
   - для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
