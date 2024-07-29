@@ -14,7 +14,7 @@
   - `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr` (openssh-server ?)
   - `/etc/ssh/sshd_config`: Port 22, PasswordAuthentication yes (PermitRootLogin yes ?) 
   - `/etc/init.d/ssh restart`
-  - `sudo ufw enable; sudo ufw allow 22; sudo ufw allow 80; sudo ufw allow 443`
+  - `sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https` (22, 80, 443)
   - `ssh root@localhost -p 4250` на хостовой
 + ```
   #!/bin/bash
@@ -48,9 +48,9 @@
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key;
   mv akostrik.42.fr.pem akostrik.42.fr.crt
+  echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
+  echo "akostrik ALL=(ALL:ALL) ALL" >> /etc/sudoers (?)
   ```
-+ `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
-+ `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
 + le certificat SSL n’a pas été signé par Trusted Authority => une alerte
 + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 + Makefile                             
