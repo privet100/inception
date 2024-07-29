@@ -1,7 +1,7 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
 ### VM
-+ папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD динамический 8 гб
++ папка VM в sgoinfre, оперативка от 512 мб, диск VDI или VHD динамический 8 гб, CPU 4C, RAM 8GB, HDD 20GB
 + [install debian 12](https://www.debian.org/ "скачать debian")
   - software to install: ssh
 + ssh
@@ -52,13 +52,13 @@
   ```
 + `/etc/sudoers`: добавляем `akostrik ALL=(ALL:ALL) ALL`
 + `/etc/hosts`: 127.0.0.1 localhost akostrik.42.fr
-+ le certificat SSL n’a pas été signé par Trusted Authority => une alerte "ce site tente de vous voler des informations"
++ le certificat SSL n’a pas été signé par Trusted Authority => une alerte
 + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
-+ Makefile:                             
++ Makefile                             
   - Sets up the app  
-  - all = после остановки  
+  - all после остановки  
   - fclean перед сохранением в облако
-+ srcs/docker-compose.yml:                
++ srcs/docker-compose.yml                
   - calls dockerfiles
 + srcs/env
   ```
@@ -69,8 +69,6 @@
   DB_ROOT=rootpass
   DB_USER=wpuser
   DB_PASS=wppass
-  FTP_USR=ftpuser
-  FTP_PWD=ftppass
   ```
 + .rcs/requirements/nginx/Dockerfile                
   - Builds a Docker image  
