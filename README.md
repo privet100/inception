@@ -33,7 +33,6 @@
   echo "akostrik ALL=(ALL:ALL) ALL" >> /etc/sudoers (?)
   ```
 + le certificat SSL n’a pas été signé par Trusted Authority => une alerte
-+ пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 + Makefile                             
   - Sets up the app  
   - all после остановки  
@@ -52,22 +51,23 @@
   - Builds a Docker image  
   - https://www.alpinelinux.org  
   - для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
-* ./srcs/requirements/mariadb/Dockerfile
++ ./srcs/requirements/mariadb/Dockerfile
   - БД из сконфигурированного на пред. слое
   - user mysql создан при установке БД  
   - переменные окружения из .env только при build  
-    + другой вариант: из environment-секции внутри сервиса - будут в окружении запущенного контейнера  
-    + из docker-compose ?  
-* ./srcs/requirements/wordpress/conf/wp-config-create.sh 
+    * другой вариант: из environment-секции внутри сервиса - будут в окружении запущенного контейнера  
+    * из docker-compose ?  
++ ./srcs/requirements/wordpress/conf/wp-config-create.sh 
   - Соединит с контейнером БД  
   - экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)  
-* ./srcs/requirements/wordpress/Dockerfile
++ ./srcs/requirements/wordpress/Dockerfile
   - wordpress работает на php
   - версия php (https://www.php.net/) соответствует установленной  
   - php-fpm для взаимодействия с nginx
   - запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
   - конфиг fastcgi в контейнере `www.conf`   
   - CMS может скачивать темы, плагины, сохранять файлы  
++ пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ### Проверка
 `docker-compose up -d --build` запускаем конфигурацию  
