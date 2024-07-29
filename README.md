@@ -21,25 +21,6 @@
   adduser akostrik
   usermod -aG docker akostrik
   usermod -aG sudo akostrik
-  mkdir -p ./srcs
-  mkdir -p ./srcs/requirements/nginx
-  mkdir -p ./srcs/requirements/nginx/conf
-  mkdir -p ./srcs/requirements/nginx/tools
-  mkdir -p ./srcs/requirements/mariadb
-  mkdir -p ./srcs/requirements/mariadb/conf
-  mkdir -p ./srcs/requirements/mariadb/tools
-  mkdir -p ./srcs/requirements/wordpress
-  mkdir -p ./srcs/requirements/wordpress/conf
-  touch ./srcs/requirements/mariadb/conf/create_db.sh
-  touch ./srcs/requirements/mariadb/Dockerfile
-  touch ./srcs/docker-compose.yml
-  touch ./srcs/requirements/nginx/conf/nginx.conf
-  touch ./srcs/requirements/nginx/Dockerfile
-  touch ./srcs/requirements/wordpress/conf/wp-config-create.sh
-  touch ./srcs/requirements/wordpress/Dockerfile
-  touch ./srcs/requirements/mariadb/.dockerignore
-  touch ./srcs/requirements/nginx/.dockerignore
-  touch ./srcs/requirements/wordpress/.dockerignore
   apt update -y; apt install -y wget curl libnss3-tools
   curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
