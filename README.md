@@ -12,9 +12,10 @@
     | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `su`
   - `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr` (openssh-server ?)
+  - `apt update -y; apt install -y wget curl libnss3-tools`
   - `/etc/ssh/sshd_config`: Port 22, PasswordAuthentication yes (PermitRootLogin yes ?) 
   - `/etc/init.d/ssh restart`
-  - `sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https` (22, 80, 443)
+  - `sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https`
   - `ssh root@localhost -p 4250` на хостовой
 + ```
   #!/bin/bash
@@ -23,22 +24,21 @@
   /usr/sbin/usermod -aG docker akostrik (или usermod -aG docker akostrik)
   /usr/sbin/usermod -aG sudo akostrik (или usermod -aG sudo akostrik)
   echo "akostrik ALL=(ALL:ALL) ALL" >> /etc/sudoers (?)
+  echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
   exit
   cd ~/.ssh
   ssh-keygen -t rsa
   cat ~/.ssh/id_rsa.pub
+  cd -
   git clone https://github.com/privet100/inception inception
-  apt update -y; apt install -y wget curl libnss3-tools
   curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
   chmod a+x /usr/local/bin/mkcert
-  cd ./srcs/requirements/nginx/tools
+  cd inception/project/srcs/requirements/nginx/tools
   mkcert akostrik.42.fr
-  mv akostrik.42.fr-key.pem akostrik.42.fr.key;
+  mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
-  echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
   ```
-+ le certificat SSL n’a pas été signé par Trusted Authority => une alerte
 + Makefile                             
   - Sets up the app  
   - all после остановки  
@@ -73,6 +73,7 @@
   - запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
   - конфиг fastcgi в контейнере `www.conf`   
   - CMS может скачивать темы, плагины, сохранять файлы  
++ le certificat SSL n’a pas été signé par Trusted Authority => une alerte
 + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ### Проверка
