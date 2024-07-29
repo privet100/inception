@@ -48,10 +48,10 @@
 + srcs/.env
   ```
   DOMAIN_NAME=akostrik.42.fr
-  DB_NAME=wordpress
-  DB_ROOT=rootpass
+  DB_NAME=wp
+  DB_ROOT=2
   DB_USER=wpuser
-  DB_PASS=wppass
+  DB_PASS=2
   ```
 + ./srcs/requirements/nginx/Dockerfile                
   - Builds a Docker image  
