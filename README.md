@@ -124,6 +124,7 @@
 
 ### Notes 
 * `https://akostrik.42.fr`
+* **убрать .env, test.sh**
 * your volumes will be available in `/home/akostrik/data` folder of the host machine using Docker
 * 'docker network ls' to verify the network 
 * 'docker volume ls', 'docker volume inspect wordpress', 'docker volume inspect mariadb'
@@ -140,8 +141,8 @@
   + everything is functional
   + both WordPress and MariaDB are configured
   + the changes you made previously to the WordPress website should still be here
-* **убрать .env, test.sh**
-* discord
+
+### Discord
   + container nginx passe les requetes a php-fpm pour executer le php
   + link ce volume au containeur nginx => simplifier votre config
   + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp... https://developer.wordpress.org/cli/commands/
