@@ -9,7 +9,7 @@
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
     | `ssh`   | `TCP`    | `127.0.0.1` | `4250`       | `10.0.2.15` | `22`         |
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
-    | `http`  | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
+    | `https` | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `su`
   - `apt update; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr` (openssh-server ?)
   - `apt update -y; apt install -y wget curl libnss3-tools`
