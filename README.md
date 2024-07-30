@@ -99,7 +99,6 @@
   + from the Administration dashboard, edit a page
   + verify on the website that the page has been updated
 * the database is not empty
-* `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null` **!**
 * reboot the VM and launch compose again
   + everything is functional
   + both WordPress and MariaDB are configured
