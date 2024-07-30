@@ -80,7 +80,7 @@
 + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ### Проверка
-* https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C
+* [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
 * `docker-compose up -d --build` запускаем конфигурацию  
 * `https://127.0.0.1`  
 * `https://akostrik.42.fr`  
@@ -121,7 +121,6 @@
   + The pertinence of the directory structure required for this project
   + an explanation of docker-network
   + Read about how daemons work and whether it’s a good idea to use them or not
-
 
 ### Discord
   + container nginx passe les requetes a php-fpm pour executer le php
