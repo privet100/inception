@@ -166,8 +166,9 @@
   + le php-fpm dans le container wordpress doit il être démarré, c'est considéré comme un service, et c'est ce qui permet au serveur nginx de comprendre le php
   + php est censé démarrer sur /run/php/php-fpm7.3.sock mais le dossier /run/php n'existe pas
     - php-fpm c'est ce qui te permet d'executer le code php. nginx doit pouvoir passer la requete qui lui est faite a php-fpm dans le container wordpress
-  + CMD ou ENTRYPOINT, c'est justement une problématique assez connu sur docker
+  + CMD ou ENTRYPOINT
     - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
+    - CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
   + je n’utilise pas docker-compose
     - j’ai crée un network et je crée mes images et enfin mes containers ce qui m’étonne c’est que nginx reste en running mais pas mon container wordpress dans lequel j’ai installé php-fpm
   + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
@@ -175,7 +176,9 @@
     - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
     - Il tournera mais pas en arrière plan du coup…
     - pour moi il tourne ou ne tourne pas, mais en fait l’option daemonize n’agit que sur le foreground ou le background c’est ça ? donc l’option —nodaemonize si specifié ne fait que le mettre au premier plan
-    - c'est un peu le fonctionnement de docker qui impose ce genre de truc, le but c'est de comprendre pourquoi est-ce que ce genre d'options existent
+    - c'est un peu le fonctionnement de docker qui impose ce genre de truc
+    - pourquoi est-ce que ce genre d'options existent
+  + остановилась на Apres sinon, un second conteneur nginx, mais bon
 
 ### Notes
 * **убрать .env, test.sh**
