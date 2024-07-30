@@ -88,7 +88,7 @@
 * `docker exec -it wordpress php -v` проверим работу php  
 * `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php  
   + ожидаем: `1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf` etc
-* `service nginx stop`  
+* `service nginx stop` (?)
 * `service mariadb stop`  
 * `service mysql stop`  
 * `docker-compose down`
