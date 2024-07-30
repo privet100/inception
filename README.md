@@ -81,21 +81,33 @@
 + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
 ### Проверка
-`docker-compose up -d --build` запускаем конфигурацию  
-`https://127.0.0.1`  
-`https://akostrik.42.fr`  
-`docker exec -it wordpress php -m` проверим, все ли модули установились  
-`docker exec -it wordpress php -v` проверим работу php  
-`docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php, ожидаем:  
-```
-1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf
-...
-10 nobody    0:00 {php-fpm8} php-fpm: pool www
-```
-`service nginx stop`  
-`service mariadb stop`  
-`service mysql stop`  
-`docker-compose down`
+* `docker-compose up -d --build` запускаем конфигурацию  
+* `https://127.0.0.1`  
+* `https://akostrik.42.fr`  
+* `docker exec -it wordpress php -m` проверим, все ли модули установились  
+* `docker exec -it wordpress php -v` проверим работу php  
+* `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php  
+  + ожидаем: `1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf` etc
+* `service nginx stop`  
+* `service mariadb stop`  
+* `service mysql stop`  
+* `docker-compose down`
+* your volumes are available in `/home/akostrik/data` folder of the host machine using Docker
+* 'docker network ls' 
+* 'docker volume ls', 'docker volume inspect wordpress', 'docker volume inspect mariadb'
+  + the result contains '/home/akostrik/data/'
+* add a comment using the available WordPress user
+* WordPress database: 2 users, one of them being the administrator
+  + the Admin username must not include admin, administrator, Admin-login, admin-123, etc
+* sign in with the administrator account to access the Administration dashboard
+  + from the Administration dashboard, edit a page
+  + verify on the website that the page has been updated
+* the database is not empty
+* `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null` **!**
+* reboot the VM and launch compose again
+  + everything is functional
+  + both WordPress and MariaDB are configured
+  + the changes you made previously to the WordPress website should still be here
 
 ### VM vs docker
 | VM                                               | Docker                                                           |
@@ -114,25 +126,6 @@
   + an explanation of docker-network
   + Read about how daemons work and whether it’s a good idea to use them or not
 
-### Notes 
-* `https://akostrik.42.fr`
-* **убрать .env, test.sh**
-* your volumes will be available in `/home/akostrik/data` folder of the host machine using Docker
-* 'docker network ls' to verify the network 
-* 'docker volume ls', 'docker volume inspect wordpress', 'docker volume inspect mariadb'
-  + the result contains '/home/akostrik/data/'
-* add a comment using the available WordPress user
-* WordPress database: 2 users, one of them being the administrator
-  + the Admin username must not include admin, administrator, Admin-login, admin-123, etc
-* sign in with the administrator account to access the Administration dashboard
-  + from the Administration dashboard, edit a page
-  + verify on the website that the page has been updated
-* the database is not empty
-* `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null` **!**
-* reboot the VM and launch compose again
-  + everything is functional
-  + both WordPress and MariaDB are configured
-  + the changes you made previously to the WordPress website should still be here
 
 ### Discord
   + container nginx passe les requetes a php-fpm pour executer le php
@@ -189,6 +182,9 @@
     - Il tournera mais pas en arrière plan du coup…
     - pour moi il tourne ou ne tourne pas, mais en fait l’option daemonize n’agit que sur le foreground ou le background c’est ça ? donc l’option —nodaemonize si specifié ne fait que le mettre au premier plan
     - c'est un peu le fonctionnement de docker qui impose ce genre de truc, le but c'est de comprendre pourquoi est-ce que ce genre d'options existent
+
+### Notes
+* **убрать .env, test.sh**
 
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
