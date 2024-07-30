@@ -99,10 +99,6 @@
   + from the Administration dashboard, edit a page
   + verify on the website that the page has been updated
 * the database is not empty
-* reboot the VM and launch compose again
-  + everything is functional
-  + both WordPress and MariaDB are configured
-  + the changes you made previously to the WordPress website should still be here
 
 ### VM vs docker
 | VM                                               | Docker                                                           |
