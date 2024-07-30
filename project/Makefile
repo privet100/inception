@@ -1,9 +1,9 @@
 name = inception
 
 all:
-	mkdir -f ~/data
-	mkdir -f ~/data/mariadb
-	mkdir -f ~/data/wordpress
+        mkdir -f ~/data
+        mkdir -f ~/data/mariadb
+        mkdir -f ~/data/wordpress
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
 
 build:
