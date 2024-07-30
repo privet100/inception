@@ -44,7 +44,6 @@
   mv akostrik.42.fr.pem akostrik.42.fr.crt
   ```
 + Makefile                             
-  - Sets up the app  
   - all после остановки  
   - fclean перед сохранением в облако
 + srcs/docker-compose.yml                
