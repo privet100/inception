@@ -82,9 +82,9 @@
 ### Проверка
 * [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
 * `docker-compose up -d --build` запускаем конфигурацию  
-* `https://127.0.0.1`  
-* `https://akostrik.42.fr`  
-* `docker exec -it wordpress php -m` проверим, все ли модули установились  
+*  wget http://127.0.0.1/index.html --no-check-certificate
+* `https://127.0.0.1`, `https://akostrik.42.fr`  
+* `docker exec -it wordpress php -m` все ли модули установились  
 * `docker exec -it wordpress php -v` проверим работу php  
 * `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php  
   + ожидаем: `1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf` etc
