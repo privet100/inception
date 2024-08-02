@@ -34,8 +34,8 @@
   cat ~/.ssh/id_rsa.pub
   cd -
   git clone https://github.com/privet100/inception inception
-  curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
-  mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+  sudo curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
+  sudo mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
   chmod a+x /usr/local/bin/mkcert
   cd inception/project/srcs/requirements/nginx/tools
   mkcert akostrik.42.fr
