@@ -11,16 +11,16 @@
   - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-    | `ssh`   | `TCP`    | `127.0.0.1` | `4250`       | `10.0.2.15` | `22`         |
+    | `ssh`   | `TCP`    | `127.0.0.1` | `4251`       | `10.0.2.15` | `22`         |
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `https` | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `su`
   - `apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools` (openssh-server ?)
   - `/etc/ssh/sshd_config`: `Port 22`, `PasswordAuthentication yes`
-  - `/etc/sudoers`: `akostrik ALL=(ALL:ALL) ALL`
   - `/etc/init.d/ssh restart`
   - `sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https`
-  - `ssh root@localhost -p 4250` на хостовой
+  - `ssh root@localhost -p 4251` на хостовой
++ `/etc/sudoers`: `akostrik ALL=(ALL:ALL) ALL`
 + ```
   #!/bin/bash
   su
