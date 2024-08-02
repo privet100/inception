@@ -16,7 +16,7 @@
     | `https` | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
   - `su`
   - `apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools` (openssh-server ?)
-  - `/etc/ssh/sshd_config`: Port 22, PasswordAuthentication yes
+  - `/etc/ssh/sshd_config`: `Port 22`, `PasswordAuthentication yes`
   - `/etc/init.d/ssh restart`
   - `sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https`
   - `ssh root@localhost -p 4250` на хостовой
@@ -37,10 +37,11 @@
   sudo curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   sudo mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
   chmod a+x /usr/local/bin/mkcert
-  cd inception/project/srcs/requirements/nginx/tools
+  cd ~/inception/project/srcs/requirements/nginx/tools
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
+  cd ~/inception/project/srcs/requirements/nginx/tools
   ```
 + Makefile                             
   - all после остановки  
