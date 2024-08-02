@@ -17,6 +17,7 @@
   - `su`
   - `apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools` (openssh-server ?)
   - `/etc/ssh/sshd_config`: `Port 22`, `PasswordAuthentication yes`
+  - `/etc/sudoers`: `akostrik ALL=(ALL:ALL) ALL`
   - `/etc/init.d/ssh restart`
   - `sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https`
   - `ssh root@localhost -p 4250` на хостовой
@@ -26,7 +27,6 @@
   adduser akostrik
   /usr/sbin/usermod -aG docker akostrik (или usermod -aG docker akostrik)
   /usr/sbin/usermod -aG sudo akostrik (или usermod -aG sudo akostrik)
-  echo "akostrik ALL=(ALL:ALL) ALL" >> /etc/sudoers (?)
   echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
   exit
   cd ~/.ssh
