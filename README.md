@@ -7,6 +7,7 @@
   - CPU 4C
 + [install debian 12](https://www.debian.org/ "скачать debian")
   - software to install: ssh
+  - user akostrik
 + ssh
   - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (на школьном маке 22 занят ssh хостовой машины):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
@@ -19,12 +20,10 @@
   - `/etc/ssh/sshd_config`: `Port 22`, `PasswordAuthentication yes`
   - `/etc/init.d/ssh restart`
   - `sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https`
-  - `ssh root@localhost -p 4251` на хостовой
+  - `ssh akostrik@localhost -p 4251` на хостовой
 + `/etc/sudoers`: `akostrik ALL=(ALL:ALL) ALL`
 + ```
-  #!/bin/bash
   su
-  adduser akostrik
   /usr/sbin/usermod -aG docker akostrik (или usermod -aG docker akostrik)
   /usr/sbin/usermod -aG sudo akostrik (или usermod -aG sudo akostrik)
   echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
