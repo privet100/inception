@@ -68,8 +68,6 @@
 + Makefile                             
   - all после остановки  
   - fclean перед сохранением в облако
-+ srcs/docker-compose.yml                
-  - calls dockerfiles
 + srcs/.env
   ```
   DOMAIN_NAME=akostrik.42.fr
@@ -79,7 +77,6 @@
   DB_PASS=2
   ```
 + ./srcs/requirements/nginx/Dockerfile                
-  - Builds a Docker image  
   - https://www.alpinelinux.org  
   - для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
 + ./srcs/requirements/mariadb/Dockerfile
