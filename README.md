@@ -22,9 +22,9 @@
     ```
   - `ssh root@localhost -p 4251` на хостовой
 + ```
+  su
   apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
   sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
-  su
   /usr/sbin/usermod -aG docker akostrik (или usermod -aG docker akostrik)
   /usr/sbin/usermod -aG sudo akostrik (или usermod -aG sudo akostrik)
   echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
