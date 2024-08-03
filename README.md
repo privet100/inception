@@ -52,9 +52,11 @@
 * `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php
   + ожидаем: `1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf` etc
 * [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
-*  wget http://127.0.0.1/index.html
-*  wget https://127.0.0.1/index.html --no-check-certificate
-* `sudo start x`, на VM `https://127.0.0.1`, `https://akostrik.42.fr`
+*  `wget http://127.0.0.1/index.html`
+*  `wget https://127.0.0.1/index.html --no-check-certificate`
+*  `curl 'http://127.0.0.1'`
+*  `telnet 'http://127.0.0.1'`
+* `sudo start x`, на VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
 * add a comment using the available WordPress user
 * WordPress database: 2 users, one of them being the administrator
@@ -63,7 +65,7 @@
   + from the Administration dashboard, edit a page
   + verify on the website that the page has been updated
 * the database is not empty
-* + le certificat SSL n’a pas été signé par Trusted Authority => une alerte
+* le certificat SSL n’a pas été signé par Trusted Authority => une alerte
 
 ### Пояснения к файлам
 + Makefile                             
