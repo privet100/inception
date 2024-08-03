@@ -15,18 +15,20 @@
     | `ssh`   | `TCP`    | `127.0.0.1` | `4251`       | `10.0.2.15` | `22`         |
     | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `https` | `TCP`    | `127.0.0.1` | `443`        | `10.0.2.15` | `443`        |
-  - `su`
-  - `apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools` (openssh-server ?)
-  - `/etc/ssh/sshd_config`: `Port 22`, `PasswordAuthentication yes`
-  - `/etc/init.d/ssh restart`
-  - `sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https`
-  - `ssh akostrik@localhost -p 4251` на хостовой
-+ `/etc/sudoers`: `akostrik ALL=(ALL:ALL) ALL`
+  - ```
+    su
+    nano /etc/ssh/sshd_config : Port 22, PasswordAuthentication yes
+    /etc/init.d/ssh restart
+    ```
+  - `ssh root@localhost -p 4251` на хостовой
 + ```
+  apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
+  sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
   su
   /usr/sbin/usermod -aG docker akostrik (или usermod -aG docker akostrik)
   /usr/sbin/usermod -aG sudo akostrik (или usermod -aG sudo akostrik)
   echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
+  nano/etc/sudoers : akostrik ALL=(ALL:ALL) ALL
   exit
   cd ~/.ssh
   ssh-keygen -t rsa
