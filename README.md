@@ -19,15 +19,15 @@
     su
     nano /etc/ssh/sshd_config : Port 22, PasswordAuthentication yes
     /etc/init.d/ssh restart
+    sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
     ```
   - `ssh root@localhost -p 4251` на хостовой
 + ```
   su
   apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
-  sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
   /usr/sbin/usermod -aG docker akostrik (или usermod -aG docker akostrik)
   /usr/sbin/usermod -aG sudo akostrik (или usermod -aG sudo akostrik)
-  echo "127.0.0.1 akostrik.42.fr" >> /etc/hosts
+  /etc/hosts: 127.0.0.1 akostrik.42.fr 
   nano/etc/sudoers : akostrik ALL=(ALL:ALL) ALL
   exit
   cd ~/.ssh
@@ -42,7 +42,9 @@
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
-  cd ~/inception/project/srcs/requirements/nginx/tools
+  shutdown now
+  cd ~/inception/project
+  make
   ```
 + пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
 
