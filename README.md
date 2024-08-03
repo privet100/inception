@@ -55,7 +55,7 @@
 *  `wget http://127.0.0.1/index.html`
 *  `wget https://127.0.0.1/index.html --no-check-certificate`
 *  `curl 'http://127.0.0.1'`
-*  `telnet 'http://127.0.0.1'`
+*  telnet ?
 * `sudo start x`, на VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
 * add a comment using the available WordPress user
