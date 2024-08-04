@@ -186,7 +186,6 @@ https://github.com/codesshaman/inception
 https://github.com/edvin3i/42_inception  
 https://github.com/rbiodies/Inception   
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
-[WordPress NGINX,PHP-FPM MariaDB](https://www.php.net/manual/en/install.fpm.configuration.php)  
 [WordPress NGINX,PHP-FPM MariaDB](https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a)  
 https://tuto.grademe.fr/inception/  
 https://cloud.google.com/architecture/best-practices-for-building-containers  
