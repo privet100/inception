@@ -75,7 +75,6 @@
   - fclean перед сохранением в облако
 + srcs/.env
   ```
-  DOMAIN_NAME=akostrik.42.fr
   DB_NAME=wp
   DB_ROOT=2
   DB_USER=wpuser
