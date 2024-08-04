@@ -54,8 +54,7 @@
 * `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php
   + ожидаем: `1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf` etc
 * [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
-*  `wget http://127.0.0.1/index.html`
-*  `wget https://127.0.0.1/index.html --no-check-certificate`
+*  `wget https://akostrik.42.fr --no-check-certificate`
 *  `curl 'http://127.0.0.1'`
 *  telnet ?
 * `sudo start x`, на VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
