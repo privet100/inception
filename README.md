@@ -21,7 +21,7 @@
     /etc/init.d/ssh restart
     sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
     ```
-  - `ssh root@localhost -p 4252` на хостовой
+  - `ssh akostrik@localhost -p 4252` на хостовой
 + ```
   su
   apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
