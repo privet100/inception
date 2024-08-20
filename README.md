@@ -116,6 +116,13 @@
   + an explanation of docker-network
   + Read about how daemons work and whether it’s a good idea to use them or not
 
+### WP-CLI
+* the command line interface for WordPress
+* allows to interact with your WordPress site from the command line
+* is used for automating tasks, debugging problems, installing/removing plugins along side with themes, managing users and roles, exporting/importing data, run databses queries, ...
+* can save time that will take you to installing a pluging/theme manually, moderate users and their roles, deploy a new WordPress website to a production server, ...
+* helps you react with your WordPress website.
+
 ### Discord
   + container nginx passe les requetes a php-fpm pour executer le php
   + link ce volume au containeur nginx => simplifier votre config
