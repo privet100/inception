@@ -6,17 +6,10 @@ all:
 	mkdir -p ~/data/wordpress
 	@docker-compose -f srcs/docker-compose.yml --env-file srcs/.env up -d
 
-build:
-	mkdir -p ~/data
-	mkdir -p ~/data/mariadb
-	mkdir -p ~/data/wordpress
-	@docker-compose -f srcs/docker-compose.yml --env-file srcs/.env up -d --build
-
 down:
 	@docker-compose -f srcs/docker-compose.yml --env-file srcs/.env down
 
-re:
-	@docker-compose -f srcs/docker-compose.yml --env-file srcs/.env up -d --build
+re: fclean all
 
 clean: down
 	@docker system prune -a
