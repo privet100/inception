@@ -3,13 +3,10 @@
 + VM
   - папка в sgoinfre
     * на время работы перемещать в goinfre, будет быстрее работать
-  - RAM 2 GB
-  - диск VDI или VHD динамический 15 GB
-  - CPU 1C
-+ install [debian 12](https://www.debian.org)
+  - RAM 2 GB, диск VDI или VHD динамический 15 GB, CPU 1C
+  - install [debian 12](https://www.debian.org)
   - software to install: ssh
   - user akostrik
-+ ssh
   - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (22 занят ssh хостовой машины, 443 чтобы с хостовой заходить на сайт):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
@@ -20,7 +17,7 @@
     nano /etc/ssh/sshd_config : Port 22, PasswordAuthentication yes
     /etc/init.d/ssh restart
     ```
-  - `ssh akostrik@localhost -p 4252` на хостовой
++ `ssh akostrik@localhost -p 4252` на хостовой
 + ```
   su
   apt update -y; apt install -y ufw sudo docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
