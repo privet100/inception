@@ -34,7 +34,7 @@
   cd ~/.ssh
   ssh-keygen -t rsa
   cat ~/.ssh/id_rsa.pub - добавить ключ в git
-  cd -
+  cd ~
   git clone https://github.com/privet100/inception inception
   sudo curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   sudo mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
