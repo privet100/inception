@@ -17,9 +17,7 @@ clean: down
 	@sudo rm -rf ~/data/mariadb/*
 
 fclean:
-	@docker stop nginx
-	@docker stop mariadb
-	@docker stop wordpress
+	@docker container ls -aq | xargs --no-run-if-empty docker container rm -f
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
