@@ -6,7 +6,7 @@
   - RAM 2 GB
   - диск VDI или VHD динамический 15 GB
   - CPU 1C
-+ install [debian 12](https://www.debian.org/ "скачать debian") или [Ubuntu 24](https://ubuntu.com/download/desktop)
++ install [debian 12](https://www.debian.org)
   - software to install: ssh
   - user akostrik
 + ssh
