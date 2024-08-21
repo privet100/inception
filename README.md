@@ -9,17 +9,15 @@
   - software to install: ssh
   - user akostrik
 + ssh
-  - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (22 занят ssh хостовой машины) (80 и 443, чтобы с хостовой заходить на сайт):
+  - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (22 занят ssh хостовой машины, 443 чтобы с хостовой заходить на сайт):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
     | `ssh`   | `TCP`    | `127.0.0.1` | `4252`       | `10.0.2.15` | `22`         |
-    | `http`  | `TCP`    | `127.0.0.1` | `8080`       | `10.0.2.15` | `80`         |
     | `https` | `TCP`    | `127.0.0.1` | `1443`       | `10.0.2.15` | `443`        |
   - ```
     su
     nano /etc/ssh/sshd_config : Port 22, PasswordAuthentication yes
     /etc/init.d/ssh restart
-    sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
     ```
   - `ssh akostrik@localhost -p 4252` на хостовой
 + ```
@@ -30,6 +28,7 @@
   /etc/hosts: 127.0.0.1 akostrik.42.fr 
   nano/etc/sudoers : akostrik ALL=(ALL:ALL) ALL
   exit
+  sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
   cd ~/.ssh
   ssh-keygen -t rsa
   cat ~/.ssh/id_rsa.pub
