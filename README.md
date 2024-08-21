@@ -23,16 +23,17 @@
   - `ssh akostrik@localhost -p 4252` на хостовой
 + ```
   su
-  apt update -y; apt install -y ufw docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
-  /usr/sbin/usermod -aG docker akostrik (или usermod -aG docker akostrik)
-  /usr/sbin/usermod -aG sudo akostrik (или usermod -aG sudo akostrik)
-  /etc/hosts: 127.0.0.1 akostrik.42.fr 
-  nano/etc/sudoers : akostrik ALL=(ALL:ALL) ALL
+  apt update -y; apt install -y ufw sudo docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
+  /usr/sbin/usermod -aG docker akostrik
+  /usr/sbin/usermod -aG sudo akostrik
+  nano /etc/hosts: 127.0.0.1 akostrik.42.fr 
+  nano /etc/sudoers: akostrik ALL=(ALL:ALL) ALL
   exit
   sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
+  mkdir ~/.ssh/
   cd ~/.ssh
   ssh-keygen -t rsa
-  cat ~/.ssh/id_rsa.pub
+  cat ~/.ssh/id_rsa.pub - добавить ключ в git
   cd -
   git clone https://github.com/privet100/inception inception
   sudo curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
