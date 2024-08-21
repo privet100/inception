@@ -29,7 +29,7 @@
   nano /etc/hosts: 127.0.0.1 akostrik.42.fr 
   nano /etc/sudoers: akostrik ALL=(ALL:ALL) ALL
   exit
-  sudo ufw enable; sudo ufw allow ssh; sudo ufw allow http; sudo ufw allow https
+  sudo ufw enable; sudo ufw allow ssh; sudo ufw allow https
   mkdir ~/.ssh/
   cd ~/.ssh
   ssh-keygen -t rsa
