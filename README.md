@@ -1,7 +1,8 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
 + VM
-  - папка в sgoinfre, на время работы можно перемещать в goinfre, будет быстрее работать
+  - папка в sgoinfre
+    * на время работы перемещать в goinfre, будет быстрее работать
   - RAM 2 GB
   - диск VDI или VHD динамический 15 GB
   - CPU 1C
