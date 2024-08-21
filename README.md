@@ -43,7 +43,7 @@
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
-  sudo shutdown now
+  sudo shutdown now (или reboot?)
   cd ~/inception/project
   make
   ```
