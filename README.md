@@ -44,7 +44,7 @@
   cd ~/inception/project
   make
   ```
-+ пароли: VM root 2, VM akostrik 2, mariadb akostrik 2 
++ пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
 
 ### Проверка
 * `docker exec -it wordpress php -m` все ли модули установились
