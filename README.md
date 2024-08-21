@@ -2,10 +2,10 @@
 
 + VM
   - папка в sgoinfre, на время работы можно перемещать в goinfre, будет быстрее работать
-  - RAM 8GB
-  - диск VDI или VHD динамический 20GB
-  - CPU 4C
-+ install [debian 12 (временами была проблема - черный экран)](https://www.debian.org/ "скачать debian") или [Ubuntu 24](https://ubuntu.com/download/desktop)
+  - RAM 2 GB
+  - диск VDI или VHD динамический 15 GB
+  - CPU 1C
++ install [debian 12](https://www.debian.org/ "скачать debian") или [Ubuntu 24](https://ubuntu.com/download/desktop)
   - software to install: ssh
   - user akostrik
 + ssh
