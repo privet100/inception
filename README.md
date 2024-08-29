@@ -146,8 +146,16 @@
     - CMD = définir une commande par défaut que l'on peut override
       + CMD ["executable", "params…"], par exemple: `CMD ["--help"]`
     - ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override, définir un process par défaut
-  + si je run mon image sans lui donner d'argument c'est ping --help qui va se lancer
-  + si je run mon image en lui donnant google.fr, c'est ping google.fr qui va se lancer
+  + CMD ou ENTRYPOINT
+    - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
+    - CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
+  + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
+    - il y a une option pour ignorer le daemonize de base ???
+    - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
+    - Il tournera mais pas en arrière plan du coup…
+    - pour moi il tourne ou ne tourne pas, mais en fait l’option daemonize n’agit que sur le foreground ou le background c’est ça ? donc l’option —nodaemonize si specifié ne fait que le mettre au premier plan
+    - c'est un peu le fonctionnement de docker qui impose ce genre de truc
+    - pourquoi est-ce que ce genre d'options existent
   + Tu peux avoir des trucs genre : ENTRYPOINT ["echo", "Hello"] CMD ["hehe"]
   + faire un script en entrypoint qui récupère éventuellement les arguments que je pourrais donner avec un docker run, dans lequel je vais pouvoir faire ce dont j'ai besoin au runtime et qui finirait par exemple par un  exec /usr/sbin/php-fpm7.3 --nodaemonize afin de "remplacer" mon script par php-fpm (qui conserverait donc bien le PID 1 et qui pourrais donc catch comme il faut les signaux)
     - est-ce que tu vas gagner quelque chose a pouvoir passer des arguments au scrip
@@ -168,16 +176,6 @@
   + le php-fpm dans le container wordpress doit il être démarré, c'est considéré comme un service, et c'est ce qui permet au serveur nginx de comprendre le php
   + php est censé démarrer sur /run/php/php-fpm7.3.sock mais le dossier /run/php n'existe pas
     - php-fpm c'est ce qui te permet d'executer le code php. nginx doit pouvoir passer la requete qui lui est faite a php-fpm dans le container wordpress
-  + CMD ou ENTRYPOINT
-    - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
-    - CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
-  + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
-    - il y a une option pour ignorer le daemonize de base ???
-    - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
-    - Il tournera mais pas en arrière plan du coup…
-    - pour moi il tourne ou ne tourne pas, mais en fait l’option daemonize n’agit que sur le foreground ou le background c’est ça ? donc l’option —nodaemonize si specifié ne fait que le mettre au premier plan
-    - c'est un peu le fonctionnement de docker qui impose ce genre de truc
-    - pourquoi est-ce que ce genre d'options existent
   +  oublier nginx de base dans vos images
   +  t c’est au run le problème car le container nginx ne connai pas fastcgi_pass wordpress:9000 en fait faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx et la ça fonctionne
   +  остановилась на
