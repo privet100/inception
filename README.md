@@ -93,6 +93,7 @@
 *  `curl 'http://127.0.0.1'`
 
 ### Защита
+* **убрать .env, test.sh**
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
 * add a comment using the available WordPress user
 * WordPress database: 2 users, one of them being the administrator
@@ -178,8 +179,6 @@
   +  остановилась на
     
 ### Notes
-* **убрать .env, test.sh**
-
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
 https://github.com/codesshaman/inception  
