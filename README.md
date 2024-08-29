@@ -145,10 +145,12 @@
   + les différences entre RUN CMD ENTRYPOINT
     - CMD = définir une commande par défaut que l'on peut override
       + CMD ["executable", "params…"], par exemple: `CMD ["--help"]`
+      + CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
     - ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override, définir un process par défaut
-  + CMD ou ENTRYPOINT
     - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
-    - CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
+  + le PID 1 c’est systemd
+    - dans un container c’est différent il ne peux pas y avoir de systemd je crois
+    - si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
   + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
     - il y a une option pour ignorer le daemonize de base ???
     - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
@@ -161,11 +163,6 @@
     - est-ce que tu vas gagner quelque chose a pouvoir passer des arguments au scrip
     - variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
   + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose
-  + docker-compose permet d'avoir la possibilité de link simplement tes services
-  + Tu as pas mal d'image distroless and co. Ici je ne demande pas ça.
-  + le PID 1 c’est systemd
-    - dans un container c’est différent il ne peux pas y avoir de systemd je crois
-    - si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
   + voir systemctl sur nginx m'a fait du mal
     - systemctl start nginx dans un container n’est pas possible
   + Les images officielles de nginx, mariadb, etc, sont de très bonnes inspirations
