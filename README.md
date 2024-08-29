@@ -36,7 +36,7 @@
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
-  nano /etc/hosts: 127.0.0.1 akostrik.42.fr 
+  sudo nano /etc/hosts: 127.0.0.1 akostrik.42.fr 
   sudo ufw enable; sudo ufw allow ssh; sudo ufw allow https
   sudo shutdown now (или reboot?)
   cd ~/inception/project
