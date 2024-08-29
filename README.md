@@ -12,11 +12,14 @@
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
     | `ssh`   | `TCP`    | `127.0.0.1` | `4254`       | `10.0.2.15` | `22`         |
     | `https` | `TCP`    | `127.0.0.1` | `1443`       | `10.0.2.15` | `443`        |
-  - `su`
-  - `nano /etc/ssh/sshd_config` Port 22, PasswordAuthentication yes
-  - `/etc/init.d/ssh restart`
-+ `ssh akostrik@localhost -p 4254` на хостовой
-+ ```
+  - ```
+    su
+    nano /etc/ssh/sshd_config: Port 22, PasswordAuthentication yes
+    /etc/init.d/ssh restart
+    ```
++ на хостовой
+  ```
+  ssh akostrik@localhost -p 4254
   su
   apt update -y; apt install -y ufw sudo docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
   /usr/sbin/usermod -aG docker akostrik
@@ -38,7 +41,8 @@
   mv akostrik.42.fr.pem akostrik.42.fr.crt
   sudo nano /etc/hosts: 127.0.0.1 akostrik.42.fr 
   sudo ufw enable; sudo ufw allow ssh; sudo ufw allow https
-  sudo shutdown now (или reboot?)
+  sudo reboot
+  ssh akostrik@localhost -p 4254
   cd ~/inception/project
   make
   ```
