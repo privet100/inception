@@ -4,7 +4,7 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: requirements/nginx/Dockerfile
+      dockerfile: nginx/Dockerfile
     container_name: nginx
     depends_on:
       - wordpress
@@ -13,8 +13,8 @@ services:
     networks:
       - inception
     volumes:
-      - ./requirements/nginx/:/etc/nginx/http.d/
-      - ./requirements/nginx/:/etc/nginx/ssl/
+      - ./nginx/:/etc/nginx/http.d/
+      - ./nginx/:/etc/nginx/ssl/
       - wp-volume:/var/www/
     restart: always
 
@@ -39,7 +39,7 @@ services:
   wordpress:
     build:
       context: .
-      dockerfile: requirements/wordpress/Dockerfile
+      dockerfile: wordpress/Dockerfile
       args:
         DB_NAME: ${DB_NAME}
         DB_USER: ${DB_USER}
