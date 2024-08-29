@@ -48,7 +48,7 @@
   sudo startx (if VM is in mode terminal, without GNOME)
   ```
 + VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
-  + le certificat SSL n’a pas été signé par Trusted Authority => une alerte
+  + le certificat SSL n’a pas été signé par Trusted Authority => Accept the risk and continue
 + пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
 
 ### Пояснения к файлам
