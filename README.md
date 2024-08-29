@@ -35,7 +35,7 @@
   sudo curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   sudo mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
   chmod a+x /usr/local/bin/mkcert
-  cd ~/inception/project/srcs/requirements/nginx
+  cd ~/inception/project/srcs/nginx
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
@@ -63,19 +63,19 @@
   DB_USER=wpuser
   DB_PASS=2
   ```
-+ ./srcs/requirements/nginx/Dockerfile                
++ ./srcs/nginx/Dockerfile                
   - https://www.alpinelinux.org  
   - для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
-+ ./srcs/requirements/mariadb/Dockerfile
++ ./srcs/mariadb/Dockerfile
   - БД из сконфигурированного на пред. слое
   - user mysql создан при установке БД  
   - переменные окружения из .env только при build  
     * другой вариант: из environment-секции внутри сервиса - будут в окружении запущенного контейнера  
     * из docker-compose ?  
-+ ./srcs/requirements/wordpress/conf/wp-config-create.sh 
++ ./srcs/wordpress/conf/wp-config-create.sh 
   - Соединит с контейнером БД  
   - экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)  
-+ ./srcs/requirements/wordpress/Dockerfile
++ ./srcs/wordpress/Dockerfile
   - wordpress работает на php
   - версия php (https://www.php.net/) соответствует установленной  
   - php-fpm для взаимодействия с nginx
