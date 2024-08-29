@@ -183,6 +183,7 @@
     - c'est un peu le fonctionnement de docker qui impose ce genre de truc
     - pourquoi est-ce que ce genre d'options existent
   +  oublier nginx de base dans vos images
+  +  t c’est au run le problème car le container nginx ne connai pas fastcgi_pass wordpress:9000 en fait faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx et la ça fonctionne
   +  остановилась на
     
 ### Notes
