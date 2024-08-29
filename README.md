@@ -171,8 +171,6 @@
   + CMD ou ENTRYPOINT
     - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
     - CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
-  + je n’utilise pas docker-compose
-    - j’ai crée un network et je crée mes images et enfin mes containers ce qui m’étonne c’est que nginx reste en running mais pas mon container wordpress dans lequel j’ai installé php-fpm
   + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
     - il y a une option pour ignorer le daemonize de base ???
     - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
