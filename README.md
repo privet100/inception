@@ -45,7 +45,9 @@
   ssh akostrik@localhost -p 4254
   cd ~/inception/project
   make
+  sudo startx
   ```
++ VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
 + пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
 
 ### Проверка
@@ -56,8 +58,6 @@
 * [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
 *  `wget https://akostrik.42.fr --no-check-certificate`
 *  `curl 'http://127.0.0.1'`
-*  telnet ?
-* `sudo startx`, на VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
 * add a comment using the available WordPress user
 * WordPress database: 2 users, one of them being the administrator
