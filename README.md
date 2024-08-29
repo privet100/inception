@@ -10,12 +10,12 @@
   - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (22 занят ssh хостовой машины, 443 чтобы с хостовой заходить на сайт):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
-    | `ssh`   | `TCP`    | `127.0.0.1` | `4252`       | `10.0.2.15` | `22`         |
+    | `ssh`   | `TCP`    | `127.0.0.1` | `4254`       | `10.0.2.15` | `22`         |
     | `https` | `TCP`    | `127.0.0.1` | `1443`       | `10.0.2.15` | `443`        |
   - `su`
   - `nano /etc/ssh/sshd_config` Port 22, PasswordAuthentication yes
   - `/etc/init.d/ssh restart`
-+ `ssh akostrik@localhost -p 4252` на хостовой
++ `ssh akostrik@localhost -p 4254` на хостовой
 + ```
   su
   apt update -y; apt install -y ufw sudo docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
