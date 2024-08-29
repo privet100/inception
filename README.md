@@ -175,8 +175,9 @@
     - pour moi il tourne ou ne tourne pas, mais en fait l’option daemonize n’agit que sur le foreground ou le background c’est ça ? donc l’option —nodaemonize si specifié ne fait que le mettre au premier plan
     - c'est un peu le fonctionnement de docker qui impose ce genre de truc
     - pourquoi est-ce que ce genre d'options existent
-  + остановилась на Apres sinon, un second conteneur nginx, mais bon
-
+  +  oublier nginx de base dans vos images
+  +  остановилась на
+    
 ### Notes
 * **убрать .env, test.sh**
 
