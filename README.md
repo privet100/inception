@@ -23,7 +23,6 @@
   /usr/sbin/usermod -aG sudo akostrik
   nano /etc/sudoers: akostrik ALL=(ALL:ALL) ALL
   exit
-  sudo ufw enable; sudo ufw allow ssh; sudo ufw allow https
   mkdir ~/.ssh/
   cd ~/.ssh
   ssh-keygen -t rsa
@@ -38,6 +37,7 @@
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
   nano /etc/hosts: 127.0.0.1 akostrik.42.fr 
+  sudo ufw enable; sudo ufw allow ssh; sudo ufw allow https
   sudo shutdown now (или reboot?)
   cd ~/inception/project
   make
