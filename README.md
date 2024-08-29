@@ -47,16 +47,9 @@
   make
   sudo startx (if VM is in mode terminal, without GNOME)
   ```
-+ Подключение VS Code хостовой машины к VM
-  - Скачайте расширение "Remote - SSH"
-  - В VS Code откройте меню с помощью сочетания клавиш Command+Shift+P
-  - Введите "Remote-SSH: Connect to Host...", Enter
-  - akostrik@localhost:4254, пароль 2
-  - Слева на панели VS Code откройте папку через Explorer->Open Folder
-  - Снова введите пароль пользователя виртуальной машины
-  - Создайте новый терминал
 + VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
   + le certificat SSL n’a pas été signé par Trusted Authority => Accept the risk and continue
++ Подключение VS Code хостовой машины к VM через расширение "Remote - SSH"
 + пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
 
 ### Пояснения к файлам
