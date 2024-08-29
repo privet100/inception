@@ -72,7 +72,7 @@
   - переменные окружения из .env только при build  
     * другой вариант: из environment-секции внутри сервиса - будут в окружении запущенного контейнера  
     * из docker-compose ?  
-+ ./srcs/wordpress/conf/wp-config-create.sh 
++ ./srcs/wordpress/wp-config-create.sh 
   - Соединит с контейнером БД  
   - экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)  
 + ./srcs/wordpress/Dockerfile
