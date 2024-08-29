@@ -143,11 +143,9 @@
     - https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
     - Sinon pour les commands infini je pense surtout aux tail -f /dev/random and co
   + les différences entre RUN CMD ENTRYPOINT
-  + CMD = définir une commande par défaut que l'on peut override
-    - lorsque tu utilises CMD utilise plutôt CMD ["executable", "params…"] pareil pour les COPY etc c'est plus propre et lisible
-    - par exemple: `CMD ["--help"], ENTRYPOINT ["ping"]`
-  + ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override
-    - on peux utiliser ENTRYPOINT afin de définir un process par défaut
+    - CMD = définir une commande par défaut que l'on peut override
+      + CMD ["executable", "params…"], par exemple: `CMD ["--help"]`
+    - ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override, définir un process par défaut
   + si je run mon image sans lui donner d'argument c'est ping --help qui va se lancer
   + si je run mon image en lui donnant google.fr, c'est ping google.fr qui va se lancer
   + Tu peux avoir des trucs genre : ENTRYPOINT ["echo", "Hello"] CMD ["hehe"]
