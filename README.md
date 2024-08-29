@@ -45,7 +45,7 @@
   ssh akostrik@localhost -p 4254
   cd ~/inception/project
   make
-  sudo startx
+  sudo startx (if VM is in mode terminal, without GNOME)
   ```
 + VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
   + le certificat SSL n’a pas été signé par Trusted Authority => une alerte
