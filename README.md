@@ -12,8 +12,9 @@
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
     | `ssh`   | `TCP`    | `127.0.0.1` | `4252`       | `10.0.2.15` | `22`         |
     | `https` | `TCP`    | `127.0.0.1` | `1443`       | `10.0.2.15` | `443`        |
-  - `sudo nano /etc/ssh/sshd_config` Port 22, PasswordAuthentication yes
-  -  `sudo /etc/init.d/ssh restart`
+  - `su`
+  - `nano /etc/ssh/sshd_config` Port 22, PasswordAuthentication yes
+  - `/etc/init.d/ssh restart`
 + `ssh akostrik@localhost -p 4252` на хостовой
 + ```
   su
