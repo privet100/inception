@@ -12,11 +12,14 @@
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
     | `ssh`   | `TCP`    | `127.0.0.1` | `4254`       | `10.0.2.15` | `22`         |
     | `https` | `TCP`    | `127.0.0.1` | `1443`       | `10.0.2.15` | `443`        |
-  - `su`
-  - `nano /etc/ssh/sshd_config` Port 22, PasswordAuthentication yes
-  - `/etc/init.d/ssh restart`
-+ `ssh akostrik@localhost -p 4254` на хостовой
-+ ```
+  - ```
+    su
+    nano /etc/ssh/sshd_config: Port 22, PasswordAuthentication yes
+    /etc/init.d/ssh restart
+    ```
++ на хостовой
+  ```
+  ssh akostrik@localhost -p 4254
   su
   apt update -y; apt install -y ufw sudo docker docker-compose make openbox xinit kitty firefox-esr wget curl libnss3-tools
   /usr/sbin/usermod -aG docker akostrik
@@ -36,33 +39,18 @@
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
-  nano /etc/hosts: 127.0.0.1 akostrik.42.fr 
+  sudo nano /etc/hosts: 127.0.0.1 akostrik.42.fr 
   sudo ufw enable; sudo ufw allow ssh; sudo ufw allow https
-  sudo shutdown now (или reboot?)
+  sudo reboot
+  ssh akostrik@localhost -p 4254
   cd ~/inception/project
   make
+  sudo startx (if VM is in mode terminal, without GNOME)
   ```
++ VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
+  + le certificat SSL n’a pas été signé par Trusted Authority => Accept the risk and continue
++ Подключение VS Code хостовой машины к VM через расширение "Remote - SSH"
 + пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
-
-### Проверка
-* `docker exec -it wordpress php -m` все ли модули установились
-* `docker exec -it wordpress php -v` проверим работу php
-* `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php
-  + ожидаем: `1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf` etc
-* [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
-*  `wget https://akostrik.42.fr --no-check-certificate`
-*  `curl 'http://127.0.0.1'`
-*  telnet ?
-* `sudo startx`, на VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
-* `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
-* add a comment using the available WordPress user
-* WordPress database: 2 users, one of them being the administrator
-  + the Admin username must not include admin, administrator, Admin-login, admin-123, etc
-* sign in with the administrator account to access the Administration dashboard
-  + from the Administration dashboard, edit a page
-  + verify on the website that the page has been updated
-* the database is not empty
-* le certificat SSL n’a pas été signé par Trusted Authority => une alerte
 
 ### Пояснения к файлам
 + Makefile                             
@@ -95,14 +83,24 @@
   - конфиг fastcgi в контейнере `www.conf`   
   - CMS может скачивать темы, плагины, сохранять файлы  
 
-### VM vs docker
-| VM                                               | Docker                                                           |
-| ------------------------------------------------ | ---------------------------------------------------------------- |
-| a lot of memory space                            | a lot less memory space                                          |
-| long time to boot up                             | quick boot up because it uses the running kernel that you using  |
-| difficult to scale up                            | super easy to scale                                              |
-| low efficiency                                   | high efficiency                                                  |
-| volumes storage cannot be shared across the VM’s | volumes storage can be shared across the host and the containers |
+### Инспектирование
+* `docker exec -it wordpress php -m` все ли модули установились
+* `docker exec -it wordpress php -v` проверим работу php
+* `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php
+  + ожидаем: `1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf` etc
+* [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
+*  `wget https://akostrik.42.fr --no-check-certificate`
+*  `curl 'http://127.0.0.1'`
+
+### Защита
+* `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
+* add a comment using the available WordPress user
+* WordPress database: 2 users, one of them being the administrator
+  + the Admin username must not include admin, administrator, Admin-login, admin-123, etc
+* sign in with the administrator account to access the Administration dashboard
+  + from the Administration dashboard, edit a page
+  + verify on the website that the page has been updated
+* the database is not empty
 * explain
   + how to login into the database
   + How Docker and docker compose work
@@ -111,6 +109,14 @@
   + The pertinence of the directory structure required for this project
   + an explanation of docker-network
   + Read about how daemons work and whether it’s a good idea to use them or not
+* VM vs docker
+  | VM                                               | Docker                                                           |
+  | ------------------------------------------------ | ---------------------------------------------------------------- |
+  | a lot of memory space                            | a lot less memory space                                          |
+  | long time to boot up                             | quick boot up because it uses the running kernel that you using  |
+  | difficult to scale up                            | super easy to scale                                              |
+  | low efficiency                                   | high efficiency                                                  |
+  | volumes storage cannot be shared across the VM’s | volumes storage can be shared across the host and the containers |
 
 ### WP-CLI
 * the command line interface for WordPress
