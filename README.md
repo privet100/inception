@@ -110,6 +110,7 @@
   + The benefit of Docker compared to VMs
   + The pertinence of the directory structure required for this project
   + an explanation of docker-network
+    - By default Compose sets up a single network for your app. Each container for a service joins the default network and is both reachable by other containers on that network, and discoverable by them at a hostname identical to the container name. `networks` позволяет задать имя для этой сети, но и без этого будет работать.
   + Read about how daemons work and whether it’s a good idea to use them or not
 * VM vs docker
   | VM                                               | Docker                                                           |
