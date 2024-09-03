@@ -4,10 +4,10 @@ all:
 	mkdir -p ~/data
 	mkdir -p ~/data/mariadb
 	mkdir -p ~/data/wordpress
-	@docker-compose -f srcs/docker-compose.yml --env-file srcs/.env up -d
+	@docker-compose -f docker-compose.yml --env-file .env up -d
 
 down:
-	@docker-compose -f srcs/docker-compose.yml --env-file srcs/.env down
+	@docker-compose -f docker-compose.yml --env-file .env down
 
 re: fclean all
 
