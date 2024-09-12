@@ -1,5 +1,6 @@
 ![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
 
+
 + VM
   - папка в sgoinfre
     * на время работы перемещать в goinfre, будет быстрее работать
@@ -35,7 +36,7 @@
   sudo curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   sudo mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
   chmod a+x /usr/local/bin/mkcert
-  cd ~/inception/project/srcs/nginx
+  cd ~/inception/project/nginx
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
@@ -56,26 +57,28 @@
 + Makefile                             
   - all после остановки  
   - fclean перед сохранением в облако
-+ srcs/.env
++ docker-compose.yml
+  - сервисы автоматически подключаются к виртуальной сети и могут обращаться друг к другу по имени сервиса (если нет необходимости обращаться к сервису с хостовой машины или из-за её пределов, то порты можно не пробрасывать)
++ .env
   ```
   DB_NAME=wp
   DB_ROOT=2
   DB_USER=wpuser
   DB_PASS=2
   ```
-+ ./srcs/nginx/Dockerfile                
++ nginx/Dockerfile                
   - https://www.alpinelinux.org  
   - для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
-+ ./srcs/mariadb/Dockerfile
++ mariadb/Dockerfile
   - БД из сконфигурированного на пред. слое
   - user mysql создан при установке БД  
   - переменные окружения из .env только при build  
     * другой вариант: из environment-секции внутри сервиса - будут в окружении запущенного контейнера  
     * из docker-compose ?  
-+ ./srcs/wordpress/conf/wp-config-create.sh 
++ wordpress/wp-config-create.sh 
   - Соединит с контейнером БД  
   - экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)  
-+ ./srcs/wordpress/Dockerfile
++ wordpress/Dockerfile
   - wordpress работает на php
   - версия php (https://www.php.net/) соответствует установленной  
   - php-fpm для взаимодействия с nginx
@@ -93,6 +96,7 @@
 *  `curl 'http://127.0.0.1'`
 
 ### Защита
+* **убрать .env, test.sh**
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
 * add a comment using the available WordPress user
 * WordPress database: 2 users, one of them being the administrator
@@ -108,6 +112,7 @@
   + The benefit of Docker compared to VMs
   + The pertinence of the directory structure required for this project
   + an explanation of docker-network
+    - By default Compose sets up a single network for your app. Each container for a service joins the default network and is both reachable by other containers on that network, and discoverable by them at a hostname identical to the container name. `networks` позволяет задать имя для этой сети, но и без этого будет работать.
   + Read about how daemons work and whether it’s a good idea to use them or not
 * VM vs docker
   | VM                                               | Docker                                                           |
@@ -178,8 +183,6 @@
   +  остановилась на
     
 ### Notes
-* **убрать .env, test.sh**
-
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
 https://github.com/codesshaman/inception  
