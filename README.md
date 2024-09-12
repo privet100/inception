@@ -156,7 +156,6 @@
   | low efficiency                                   | high efficiency                                                  |
   | volumes storage cannot be shared across the VM’s | volumes storage can be shared across the host and the containers |
 * PID 1
-  + понимание важно для настраойки и управления контейнерами
   + первый процесс, который запускается в контейнере
   + отвечает за запуск и управление процессами внутри контейнера
   + все другие процессы внутри контейнера получают свои PID от PID 1
@@ -170,6 +169,11 @@
   + не используйте скрипты оболочки в качестве PID 1
     - это может привести к проблемам с управлением процессами
     - можно использовать, если tini или dumb-init служит в качестве PID 1 и корректно обрабатывает системные сигналы
+  + `daemon off` для сервисов, которые по умолчанию запускаются в фоновом режиме
+    - чтобы процесс оставался основным процессом с PID 1 и не запускался в фоне
+  + si le service exit de facon anormale, le container doit pouvoir se restart (d'ou l'interet du PID 1)
+    - `top || ps` vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 
+  + PID 1 = systemd, mais dans un container c’est différent, il ne peux pas y avoir de systemd
 
 ### WP-CLI
 * the command line interface for WordPress
@@ -186,8 +190,6 @@
   + tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
   + on va clone ton projet et le lancer si ça fonctionne c'est bien, sinon c'est 0
   + pas d'entry point avec une boucle infini genre typiquement les scripts qui utilisent tall -f and co
-  + si le service exit de facon anormale, le container doit pouvoir se restart (**d'ou l'interet du PID 1**)
-    - vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 ? `top || ps`
   + t'as le choix de lancer php en daemon puis afficher du vide, ou lancer php puis afficher ses logs
   + docker-compose --env-file
   + est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ?
@@ -201,9 +203,6 @@
       + CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
     - ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override, définir un process par défaut
     - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
-  + le PID 1 c’est systemd
-    - dans un container c’est différent il ne peux pas y avoir de systemd je crois
-    - si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
   + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
     - il y a une option pour ignorer le daemonize de base ???
     - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
@@ -212,12 +211,7 @@
     - c'est un peu le fonctionnement de docker qui impose ce genre de truc
     - pourquoi est-ce que ce genre d'options existent
   + Tu peux avoir des trucs genre : ENTRYPOINT ["echo", "Hello"] CMD ["hehe"]
-  + faire un script en entrypoint qui récupère éventuellement les arguments que je pourrais donner avec un docker run, dans lequel je vais pouvoir faire ce dont j'ai besoin au runtime et qui finirait par exemple par un  exec /usr/sbin/php-fpm7.3 --nodaemonize afin de "remplacer" mon script par php-fpm (qui conserverait donc bien le PID 1 et qui pourrais donc catch comme il faut les signaux)
-    - est-ce que tu vas gagner quelque chose a pouvoir passer des arguments au scrip
-    - variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
-  + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose
-  + voir systemctl sur nginx m'a fait du mal
-    - systemctl start nginx dans un container n’est pas possible
+  + variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
   + Les images officielles de nginx, mariadb, etc, sont de très bonnes inspirations
   + le flag init sur docker 
   + ['sh', 'test.sh'] vs sh /opt/test.sh ? '
