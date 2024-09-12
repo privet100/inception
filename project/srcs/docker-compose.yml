@@ -16,6 +16,7 @@ services:
       - ./nginx/:/etc/nginx/http.d/
       - ./nginx/:/etc/nginx/ssl/
       - wp-volume:/var/www/
+    command: ["nginx", "-g", "daemon off;"]
     restart: always
 
   mariadb:
