@@ -36,7 +36,7 @@
   sudo curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   sudo mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
   chmod a+x /usr/local/bin/mkcert
-  cd ~/inception/project/nginx
+  cd ~/inception/project/srcs/nginx
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
@@ -50,7 +50,8 @@
   ```
 + VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
   + le certificat SSL n’a pas été signé par Trusted Authority => Accept the risk and continue
-+ Подключение VS Code хостовой машины к VM через расширение "Remote - SSH"
++ https://akostrik.42.fr/wp-admin/users.php: два пользователя, один админ, в его имени нет admin и тп
++ Подключение VS Code хостовой машины к VM: расширение _Remote-SSH_
 + пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
 
 ### Пояснения к файлам
@@ -58,7 +59,9 @@
   - all после остановки  
   - fclean перед сохранением в облако
 + docker-compose.yml
-  - сервисы автоматически подключаются к виртуальной сети и могут обращаться друг к другу по имени сервиса (если нет необходимости обращаться к сервису с хостовой машины или из-за её пределов, то порты можно не пробрасывать)
+  - сервисы автоматически подключаются к виртуальной сети и могут обращаться друг к другу по имени сервиса
+    * если нет необходимости обращаться к сервису с хостовой машины или из-за её пределов, то порты можно не пробрасывать
+  - по условию volume в home/akostrik/data
 + .env
   ```
   DB_NAME=wp
@@ -66,25 +69,71 @@
   DB_USER=wpuser
   DB_PASS=2
   ```
-+ nginx/Dockerfile                
-  - https://www.alpinelinux.org  
-  - для отладки запускаем nginx напрямую (не демон), логи в tty контейнера   
++ srcs/nginx/Dockerfile                
+  - логи в tty контейнера (т.к. не демон)
++ srcs/nginx/nginx.conf
+  - сервер обслуживает сайт через HTTPS с поддержкой SSL/TLS
+  - сервер обрабатывает PHP-файлы через FastCGI (вероятно, через PHP-FPM)
+  - включены заголовки для отключения кэширования страниц (полезно при разработке или для динамического контента)
+  - сервер слушает на порту 443 и поддерживает SSL-соединения
+  - сервер отвечает на запросы для доменных имён akostrik.42.fr и www.akostrik.42.fr
+  - /var/www/: корневая директорию для файлов сайта, откуда будут загружаться файлы сайта
+  - index.php = файл по умолчанию (если пользователь запросит директорию без указания файла)
+  - SSL-сертификат для обеспечения HTTPS-соединений, закрытый ключ SSL используется вместе с сертификатом
+  - версии протоколов TLS 1.2 и TLS 1.3 считаются безопасными
+  - SSL-сессия остается активной 10 минут
+  - соединение может оставаться открытым между запросами от одного клиента в течение 70 секунд 
+  - `location /`
+    * для всех запросов, которые идут на корневой путь без указания конкретного файла
+    * nginx пытается найти запрашиваемый файл $uri, если не найден, перенаправляет запрос на index.php, передавая все параметры запроса через $args
+  - `location ~ \.php$ { ... }`
+    * обрабатывает запросы к файлам с расширением .php
+    * это настройка для обработки PHP-скриптов с помощью FastCGI
+    * fastcgi_split_path_info ^(.+\.php)(/.+)$; Разделяет путь к файлу и дополнительные данные после файла (например, /index.php/some/path), что нужно для корректной работы некоторых PHP-приложений
+    * fastcgi_pass wordpress:9000; Передаёт PHP-запросы на сервер FastCGI, который доступен по адресу wordpress и порту 9000. Этот сервер, вероятно, это контейнер с PHP-FPM или сервером, настроенным на обработку PHP
+    * fastcgi_index index.php; Устанавливает index.php как файл по умолчанию для обработки, если не указано конкретное имя файла
+    * include fastcgi_params; Включает стандартный набор параметров для FastCGI, который необходим для правильной работы PHP
+    * fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; Передаёт в FastCGI полный путь к запрашиваемому PHP-файлу
+    * fastcgi_param PATH_INFO $fastcgi_path_info; Передаёт в FastCGI дополнительную информацию из пути после имени PHP-файла
 + mariadb/Dockerfile
   - БД из сконфигурированного на пред. слое
   - user mysql создан при установке БД  
   - переменные окружения из .env только при build  
     * другой вариант: из environment-секции внутри сервиса - будут в окружении запущенного контейнера  
-    * из docker-compose ?  
-+ wordpress/wp-config-create.sh 
-  - Соединит с контейнером БД  
-  - экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)  
+    * из docker-compose ?
+  - RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld;
+  - создание конфигурационного файла MariaDB { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | tee  /etc/my.cnf.d/docker.cnf;
+    * skip-host-cache и skip-name-resolve помогают ускорить работу сервера, отключая кеширование DNS и разрешение имен хостов
+    * bind-address=0.0.0.0 делает сервер доступным для всех IP-адресов, что позволяет подключаться к базе данных извне
+  - `sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf`
+    * настройка конфигурации MariaDB
+    * sed для изменения параметра skip-networking, чтобы разрешить сетевые подключения к базе данных
+  - `mysql_install_db`, которая создает основные структуры данных для MariaDB, инициализируется база данных с помощью команды
+  - `USER mysql` меняет пользователя внутри контейнера на mysql, чтобы процессы базы данных запускались от имени этого пользователя (повышает безопасность)
 + wordpress/Dockerfile
+  - настраивает минимальную среду для запуска WordPress на базе Alpine Linux и PHP
+    * конфигурирует PHP-FPM для работы с веб-сервером
+    * настраивает конфигурацию WordPress для работы с базой данных
   - wordpress работает на php
   - версия php (https://www.php.net/) соответствует установленной  
   - php-fpm для взаимодействия с nginx
   - запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
   - конфиг fastcgi в контейнере `www.conf`   
   - CMS может скачивать темы, плагины, сохранять файлы  
+  - ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS: аргументы сборки
+  - `--no-cache` устанавливает пакеты без кэша, чтобы сэкономить место в образе
+  - устанавливаются PHP и его компоненты (PHP-FPM для работы с FastCGI, расширения для работы с MySQL, JSON, ...)
+  - `sed -i ...` редактируют конфигурационный файл PHP-FPM для изменения настроек: смена адреса прослушивания PHP-FPM с 127.0.0.1:9000 на 9000, что важно для корректной работы с Nginx
+    * чтобы PHP-FPM мог принимать соединения не только по IP-адресу 127.0.0.1 (локальная машина), но и через Unix-сокет или другие интерфейсы, которые настроены на взаимодействие внутри контейнера
+    * Nginx и PHP-FPM находятся в разных контейнерах: когда PHP-FPM слушает только на 127.0.0.1, это означает, что он принимает запросы только от того же контейнера, а использование просто 9000 позволяет принимать запросы на всех интерфейсах, что важно для взаимодействия с другими контейнерами
+    * в Docker-сетапах или на серверах может использоваться не только TCP-сокет (адрес 127.0.0.1:9000), но и Unix-сокет (например, /var/run/php-fpm.sock). Unix-сокеты часто быстрее для обмена данными между локальными процессами. Оставление только порта 9000 даёт возможность гибче настраивать способ связи.
+    * внутренние сети для соединения между контейнерами. Если PHP-FPM привязан к 127.0.0.1, другие контейнеры не смогут подключиться. Оставление только порта без привязки к IP позволяет использовать Docker-сеть, что делает сервис доступным для других контейнеров.
+  - `sed -i ...` редактируют конфигурационный файл PHP-FPM для изменения настроек: устанавливаются владельцы и группа для сокета listen.owner и listen.group, чтобы процессы работали с правильными правами
+  - в `/var/www` будут помещены файлы WordPress и где будет происходить работа
+  - `wp-config-create.sh` для создания конфигурационного файла wp-config.php для WordPress
++ wordpress/wp-config-create.sh 
+  - соединит с контейнером БД  
+  - экранируем \, чтобы в $table_prefix не записалась пустая строка (т.к. в bash нет такой переменной)  
 
 ### Инспектирование
 * `docker exec -it wordpress php -m` все ли модули установились
@@ -94,6 +143,14 @@
 * [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
 *  `wget https://akostrik.42.fr --no-check-certificate`
 *  `curl 'http://127.0.0.1'`
+* проверка после внесения изменений:
+  + `docker-compose up` убедитесь, что контейнеры запускаются корректно
+  + `docker-compose ps` проверьте, что контейнеры работают и находятся в статусе running
+  + `docker-compose logs` логи контейнеров
+  + `docker-compose exec nginx nginx -t` убедитесь, что nginx.conf не содержит синтаксических ошибок
+  + проверьте, что все ключевые функции вашего веб-приложения работают корректно. Например, если у вас есть форма на сайте, убедитесь, что она корректно отправляет данные и обрабатывает их.
+  + убедитесь, что контейнеры могут взаимодействовать друг с другом (например Nginx корректно передает запросы на PHP-FPM или другой backend-сервис)
+  + убедитесь, что бд доступна и взаимодействует с вашим приложением, попробуйте подключиться к базе данных из контейнера приложения
 
 ### Защита
 * **убрать .env, test.sh**
@@ -122,6 +179,25 @@
   | difficult to scale up                            | super easy to scale                                              |
   | low efficiency                                   | high efficiency                                                  |
   | volumes storage cannot be shared across the VM’s | volumes storage can be shared across the host and the containers |
+* PID 1
+  + первый процесс, который запускается в контейнере
+  + отвечает за запуск и управление процессами внутри контейнера
+  + все другие процессы внутри контейнера получают свои PID от PID 1
+  + если PID 1 завершится, контейнер остановится
+  + обрабатывает системные сигналы (SIGTERM, ...)
+    - если ваш основной процесс (например, веб-сервер) работает под PID 1, он должен корректно обрабатывать такие сигналы для правильного завершения работы
+  + должен быть правильно очищать дочерние процессы, чтобы избежать зомби-процессов
+  + остальные должнен быть настроены так, чтобы PID 1 был их родителем
+  + CMD в Dockerfile позволит Docker назначить PID 1 вашему основному процессу
+    - nginx должен быть основным процессом в контейнере
+  + не используйте скрипты оболочки в качестве PID 1
+    - это может привести к проблемам с управлением процессами
+    - можно использовать, если tini или dumb-init служит в качестве PID 1 и корректно обрабатывает системные сигналы
+  + `daemon off` для сервисов, которые по умолчанию запускаются в фоновом режиме
+    - чтобы процесс оставался основным процессом с PID 1 и не запускался в фоне
+  + si le service exit de facon anormale, le container doit pouvoir se restart (d'ou l'interet du PID 1)
+    - `top || ps` vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 
+  + PID 1 = systemd, mais dans un container c’est différent, il ne peux pas y avoir de systemd
 
 ### WP-CLI
 * the command line interface for WordPress
@@ -137,25 +213,18 @@
   + automatiser le plus possible via tes containers
   + tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
   + on va clone ton projet et le lancer si ça fonctionne c'est bien, sinon c'est 0
-  + pas d'entry point avec une boucle infini genre typiquement les scripts qui utilisent tall -f and co
-  + si le service exit de facon anormale, le container doit pouvoir se restart (**d'ou l'interet du PID 1**)
-    - vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 ? `top || ps`
   + t'as le choix de lancer php en daemon puis afficher du vide, ou lancer php puis afficher ses logs
-  + docker-compose --env-file
+  + https://sysdig.com/blog/dockerfile-best-practices/
+  + https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
+  + vous n'utilisez pas d'image distroless
   + est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ?
     - l'entrypoint peut bien être modifié au runtime, en cli ou via docker-compose (https://www.bmc.com/blogs/docker-cmd-vs-entrypoint) 
-    - surtout https://sysdig.com/blog/dockerfile-best-practices/ même si vous n'utilisez pas d'image distroless
-    - https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
-    - Sinon pour les commands infini je pense surtout aux tail -f /dev/random and co
   + les différences entre RUN CMD ENTRYPOINT
     - CMD = définir une commande par défaut que l'on peut override
       + CMD ["executable", "params…"], par exemple: `CMD ["--help"]`
       + CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
     - ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override, définir un process par défaut
     - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
-  + le PID 1 c’est systemd
-    - dans un container c’est différent il ne peux pas y avoir de systemd je crois
-    - si tu as un doute sur un truc dans le sujet faut pas hésiter à chercher c'est tout
   + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
     - il y a une option pour ignorer le daemonize de base ???
     - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
@@ -164,12 +233,7 @@
     - c'est un peu le fonctionnement de docker qui impose ce genre de truc
     - pourquoi est-ce que ce genre d'options existent
   + Tu peux avoir des trucs genre : ENTRYPOINT ["echo", "Hello"] CMD ["hehe"]
-  + faire un script en entrypoint qui récupère éventuellement les arguments que je pourrais donner avec un docker run, dans lequel je vais pouvoir faire ce dont j'ai besoin au runtime et qui finirait par exemple par un  exec /usr/sbin/php-fpm7.3 --nodaemonize afin de "remplacer" mon script par php-fpm (qui conserverait donc bien le PID 1 et qui pourrais donc catch comme il faut les signaux)
-    - est-ce que tu vas gagner quelque chose a pouvoir passer des arguments au scrip
-    - variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
-  + Le principe de docker c'est pas d'avoir 50 services pour tout faire mais un seul qui fait une chose
-  + voir systemctl sur nginx m'a fait du mal
-    - systemctl start nginx dans un container n’est pas possible
+  + variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
   + Les images officielles de nginx, mariadb, etc, sont de très bonnes inspirations
   + le flag init sur docker 
   + ['sh', 'test.sh'] vs sh /opt/test.sh ? '
