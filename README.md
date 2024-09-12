@@ -100,7 +100,16 @@
   - user mysql создан при установке БД  
   - переменные окружения из .env только при build  
     * другой вариант: из environment-секции внутри сервиса - будут в окружении запущенного контейнера  
-    * из docker-compose ?  
+    * из docker-compose ?
+  - RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld;
+  - создание конфигурационного файла MariaDB { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | tee  /etc/my.cnf.d/docker.cnf;
+    * skip-host-cache и skip-name-resolve помогают ускорить работу сервера, отключая кеширование DNS и разрешение имен хостов
+    * bind-address=0.0.0.0 делает сервер доступным для всех IP-адресов, что позволяет подключаться к базе данных извне
+  - `sed -i "s|skip-networking|skip-networking=0|g" /etc/my.cnf.d/mariadb-server.cnf`
+    * настройка конфигурации MariaDB
+    * sed для изменения параметра skip-networking, чтобы разрешить сетевые подключения к базе данных
+  - `mysql_install_db`, которая создает основные структуры данных для MariaDB, инициализируется база данных с помощью команды
+  - `USER mysql` меняет пользователя внутри контейнера на mysql, чтобы процессы базы данных запускались от имени этого пользователя (повышает безопасность)
 + wordpress/Dockerfile
   - настраивает минимальную среду для запуска WordPress на базе Alpine Linux и PHP
     * выполняет установку PHP
