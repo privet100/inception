@@ -50,7 +50,7 @@
   ```
 + VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
   + le certificat SSL n’a pas été signé par Trusted Authority => Accept the risk and continue
-+ https://akostrik.42.fr/wp-admin/users.php: два пользователя
++ https://akostrik.42.fr/wp-admin/users.php: два пользователя, один админ, в его имени нет admin и тп
 + Подключение VS Code хостовой машины к VM: расширение _Remote-SSH_
 + пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
 
@@ -61,6 +61,7 @@
 + docker-compose.yml
   - сервисы автоматически подключаются к виртуальной сети и могут обращаться друг к другу по имени сервиса
     * если нет необходимости обращаться к сервису с хостовой машины или из-за её пределов, то порты можно не пробрасывать
+  - по условию volume в home/akostrik/data
 + .env
   ```
   DB_NAME=wp
