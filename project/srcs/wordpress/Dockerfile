@@ -8,5 +8,6 @@ RUN apk update && apk upgrade && apk add --no-cache php${PHP_VERSION} php${PHP_V
     rm -f /var/cache/apk/*
 WORKDIR /var/www
 RUN wget https://wordpress.org/latest.zip && unzip latest.zip && cp -rf wordpress/* . && rm -rf wordpress latest.zip
+#COPY ./wordpress/wp-config.php .
 COPY ./wordpress/wp-config-create.sh .
-RUN sh wp-config-create.sh && rm wp-config-create.sh && chmod -R 0777 wp-content/
+RUN sh wp-config-create.sh && rm wp-config-create.sh
