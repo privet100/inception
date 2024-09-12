@@ -50,7 +50,8 @@
   ```
 + VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
   + le certificat SSL n’a pas été signé par Trusted Authority => Accept the risk and continue
-+ Подключение VS Code хостовой машины к VM через расширение "Remote - SSH"
++ https://akostrik.42.fr/wp-admin/users.php: два пользователя
++ Подключение VS Code хостовой машины к VM: расширение _Remote-SSH_
 + пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
 
 ### Пояснения к файлам
