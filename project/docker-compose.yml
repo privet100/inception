@@ -31,6 +31,7 @@ services:
       - "3306:3306"
     volumes:
       - db-volume:/var/lib/mysql
+    command: ["/usr/bin/mysqld", "--skip-log-error"]
     restart: always
 
   wordpress:
@@ -46,6 +47,7 @@ services:
       - mariadb
     volumes:
       - wp-volume:/var/www/
+    command: ["/usr/sbin/php-fpm8", "-F"]
     restart: always
 
 volumes:
@@ -53,10 +55,10 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /home/${USER}/data/wordpress
+      device: ~/data/wordpress
 
   db-volume:
     driver_opts:
       o: bind
       type: none
-      device: /home/${USER}/data/mariadb
+      device: ~/data/mariadb

@@ -14,4 +14,3 @@ EXPOSE 3306
 COPY mariadb/create_db.sh .
 RUN sh create_db.sh && rm create_db.sh
 USER mysql
-CMD ["/usr/bin/mysqld", "--skip-log-error"]
