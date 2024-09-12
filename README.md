@@ -36,7 +36,7 @@
   sudo curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest| grep browser_download_url  | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
   sudo mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
   chmod a+x /usr/local/bin/mkcert
-  cd ~/inception/project/nginx
+  cd ~/inception/project/srcs/nginx
   mkcert akostrik.42.fr
   mv akostrik.42.fr-key.pem akostrik.42.fr.key
   mv akostrik.42.fr.pem akostrik.42.fr.crt
@@ -69,9 +69,9 @@
   DB_USER=wpuser
   DB_PASS=2
   ```
-+ nginx/Dockerfile                
++ srcs/nginx/Dockerfile                
   - логи в tty контейнера (т.к. не демон)
-+ nginx/nginx.conf
++ srcs/nginx/nginx.conf
   - сервер обслуживает сайт через HTTPS с поддержкой SSL/TLS
   - сервер обрабатывает PHP-файлы через FastCGI (вероятно, через PHP-FPM)
   - включены заголовки для отключения кэширования страниц (полезно при разработке или для динамического контента)
@@ -190,14 +190,12 @@
   + automatiser le plus possible via tes containers
   + tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
   + on va clone ton projet et le lancer si ça fonctionne c'est bien, sinon c'est 0
-  + pas d'entry point avec une boucle infini genre typiquement les scripts qui utilisent tall -f and co
   + t'as le choix de lancer php en daemon puis afficher du vide, ou lancer php puis afficher ses logs
-  + docker-compose --env-file
+  + https://sysdig.com/blog/dockerfile-best-practices/
+  + https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
+  + vous n'utilisez pas d'image distroless
   + est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ?
     - l'entrypoint peut bien être modifié au runtime, en cli ou via docker-compose (https://www.bmc.com/blogs/docker-cmd-vs-entrypoint) 
-    - surtout https://sysdig.com/blog/dockerfile-best-practices/ même si vous n'utilisez pas d'image distroless
-    - https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
-    - Sinon pour les commands infini je pense surtout aux tail -f /dev/random and co
   + les différences entre RUN CMD ENTRYPOINT
     - CMD = définir une commande par défaut que l'on peut override
       + CMD ["executable", "params…"], par exemple: `CMD ["--help"]`
