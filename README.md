@@ -194,6 +194,8 @@
   + from the Administration dashboard, edit a page
   + verify on the website that the page has been updated
 * the database is not empty
+
+### Теория
 * explain
   + how to login into the database
   + How Docker and docker compose work
@@ -230,6 +232,20 @@
   + si le service exit de facon anormale, le container doit pouvoir se restart (d'ou l'interet du PID 1)
     - `top || ps` vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 
   + PID 1 = systemd, mais dans un container c’est différent, il ne peux pas y avoir de systemd
+* WordPress
+  + PHP-приложение
+  + написанно на PHP, работает на PHP
+  + взаимодействует с бд
+  + генерирует динамический контент для веб-страниц
+  + выполняет задачи на стороне сервера (генерация HTML, работа с бд,управление контентом)
+  + PHP (Hypertext Preprocessor) — серверный язык программирования
+    -  используется для создания динамических веб-страниц
+  + как работает
+    - Nginx принимает запросы от пользователей и передают в PHP 
+    - PHP-скрипты обрабаьывают запросы (отображение постов, страниц, комментариев)
+    - PHP выполняет процессы FastCGI с помощью php-fpm
+    - PHP взаимодействует с бд, получает/обновляет данные
+    - бд хранит контент сайта (посты, страницы, настройки, ...)
 
 ### WP-CLI
 * the command line interface for WordPress
