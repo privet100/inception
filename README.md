@@ -88,16 +88,12 @@
   - `location /` для запросов на корневой путь, пытается найти файл $uri, если не найден, перенаправляет запрос на index.php с параметрами запроса в $args
   - `location ~ \.php$ { ... }` обработка php-файлов 
     * nginx не интерпретирует PHP напрямую
-    * nginx передаёт их на сервер FastCGI (например, PHP-FPM)
-    * cервер FastCGI исполняет php-код
+    * `fastcgi_split_path_info ^(.+\.php)(/.+)$` разделяет путь к файлу и доп данные после файла (например /index.php/some/path) для корректной работы некоторых PHP-приложений
+    * nginx передаёт путь к исполняемому PHP-файлу на сервер FastCGI (а именно PHP-FPM), доступный по wordpress:9000 (контейнер с PHP-FPM) ($document_root корневая директория сайта, $fastcgi_script_name запрашиваемый файл)
+    * `fastcgi_param PATH_INFO $fastcgi_path_info` передаёт в FastCGI доп инфо из пути после имени PHP-файла
+    * cервер FastCGI исполняет php-код (index.php по умолчанию если файл не указан)
     * cервер FastCGI возвращает результат обратно через Nginx в браузер клиента
-  - fastcgi_split_path_info ^(.+\.php)(/.+)$; разделяет путь к файлу и дополнительные данные после файла (например, /index.php/some/path), для корректной работы некоторых PHP-приложений
-  - fastcgi_pass wordpress:9000; передаёт PHP-запросы на сервер FastCGI доступный по wordpress:9000 (контейнер с PHP-FPM)
-  - fastcgi_index index.php; файл по умолчанию для обработки запросов к директориям, если файл не указан
   - include fastcgi_params;: Включает стандартные параметры для работы с FastCGI (например, переменные окружения, пути, и т.д.). Эти параметры передаются в FastCGI-сервер
-  - fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; передаёт в FastCGI полный путь к запрашиваемому PHP-файлу
-  - fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;: Передаёт путь к исполняемому PHP-файлу в FastCGI-сервер. Здесь используется переменная $document_root, которая содержит корневую директорию сайта, и переменная $fastcgi_script_name, которая представляет собой запрашиваемый файл
-  - fastcgi_param PATH_INFO $fastcgi_path_info; передаёт в FastCGI дополнительную информацию из пути после имени PHP-файла
 + **mariadb/Dockerfile**
   - БД из сконфигурированного на пред. слое
   - user mysql создан при установке БД  
