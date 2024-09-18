@@ -336,7 +336,7 @@
     - faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée
     - et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx
     - et la ça fonctionne
-  +   
+  + stop: Si c'est fait correctement si. Mais si c'est pas fait correctement ça peut poser des problèmes donc dans le doute vaut mieux éviter puisque TLS est suposé être obligatoire sur tout les sites du monde entier ;p
 
 ### Не понимаю
 * поменять ARG и args на ENV и environmaent
