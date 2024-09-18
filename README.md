@@ -1,4 +1,4 @@
-![Screenshot from 2024-05-31 21-42-58](https://github.com/privet100/inception/assets/22834202/1cc5a6b3-0b96-43fe-8c03-c92e7ef5c222)
+![Screenshot from 2024-09-18 11-54-11](https://github.com/user-attachments/assets/6b9eafa6-a05d-4535-a822-82351263d4c0)
 
 + VM
   - папка в sgoinfre
