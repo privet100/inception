@@ -336,7 +336,15 @@
     - faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée
     - et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx
     - et la ça fonctionne
-  + stop: Si c'est fait correctement si. Mais si c'est pas fait correctement ça peut poser des problèmes donc dans le doute vaut mieux éviter puisque TLS est suposé être obligatoire sur tout les sites du monde entier ;p
+  + si tu vois service XXXX start dans un image docker c'est 0
+  + c'est parce qu'on veut que le PID 1 soit directement, par exemple, "nginx", et pas une intermédiaire comme "service" ou "etc/init.d/[service]" 
+    - faut pas utiliser ton container docker comme une VM
+    - c'est pour pouvoir utiliser docker correctement
+    - genre si tu fais du monitoring ou autre, si tu commences à utiliser des boucles infini, .. Ben le moment où tu aura un soucis je te souhaite bien du courage pour retrouver le problème
+  + c'est la base du projet d'apprendre à utiliser un network interne à ton infra. 
+    - --link est ultra deprecated
+  + le jour où tu vas utiliser une image distroless tu vas te dire que c'est trop bien docker en fait
+  + comment vous avez fait pr  créer un user, une DB sans avoir a utiliser un service mysql start
 
 ### Не понимаю
 * поменять ARG и args на ENV и environmaent
