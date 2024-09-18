@@ -124,9 +124,10 @@
     - конфигурирует PHP-FPM для работы с веб-сервером
     - настраивает конфигурацию WordPress для работы с базой данных
   + wordpress работает на php
-  + версия php (https://www.php.net/) соответствует установленной  
+  + версия php (https://www.php.net/) должна соответствовать установленной  
   + php-fpm для взаимодействия с nginx
-  + запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000 (путь /etc/php8/php-fpm.d/ зависит от версии php)   
+  + запустить fastcgi через сокет php-fpm, fastcgi слушает на 9000
+  + `/etc/php8/php-fpm.d/` зависит от версии php   
   + конфиг fastcgi в контейнере `www.conf`   
   + CMS может скачивать темы, плагины, сохранять файлы  
   + ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS: аргументы сборки
