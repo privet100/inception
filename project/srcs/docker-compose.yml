@@ -1,5 +1,18 @@
 version: '3'
 
+volumes:
+  wp-volume:
+    driver_opts:
+      o: bind
+      type: none
+      device: ~/data/wordpress
+
+  db-volume:
+    driver_opts:
+      o: bind
+      type: none
+      device: ~/data/mariadb
+
 services:
   nginx:
     build:
@@ -49,16 +62,3 @@ services:
       - wp-volume:/var/www/
     command: ["/usr/sbin/php-fpm8", "-F"]
     restart: always
-
-volumes:
-  wp-volume:
-    driver_opts:
-      o: bind
-      type: none
-      device: ~/data/wordpress
-
-  db-volume:
-    driver_opts:
-      o: bind
-      type: none
-      device: ~/data/mariadb
