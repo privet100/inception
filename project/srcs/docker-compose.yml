@@ -40,8 +40,6 @@ services:
         DB_PASS: ${DB_PASS}
         DB_ROOT: ${DB_ROOT}
     container_name: mariadb
-    ports:
-      - "3306:3306"
     volumes:
       - db-volume:/var/lib/mysql
     command: ["/usr/bin/mysqld", "--skip-log-error"]
