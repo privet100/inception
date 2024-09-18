@@ -369,13 +369,13 @@
 * setting up a website with WordPress in a VPS server or a Cloud server 
 
 ### Notes
-https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a  
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
 https://github.com/codesshaman/inception  
 https://github.com/edvin3i/42_inception  
 https://github.com/rbiodies/Inception   
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
+// https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a   
 [WordPress NGINX,PHP-FPM MariaDB](https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a)  
 https://tuto.grademe.fr/inception/  
 https://cloud.google.com/architecture/best-practices-for-building-containers  
