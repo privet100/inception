@@ -1,5 +1,7 @@
 ![Screenshot from 2024-09-18 11-54-11](https://github.com/user-attachments/assets/6b9eafa6-a05d-4535-a822-82351263d4c0)
 
+![Screenshot from 2024-09-18 19-04-45](https://github.com/user-attachments/assets/cf0a1e7c-3103-40a0-bf79-4239779de40a)
+
 + VM
   - папка в sgoinfre
     * на время работы перемещать в goinfre, будет быстрее работать
