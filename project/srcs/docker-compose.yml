@@ -42,6 +42,8 @@ services:
     container_name: mariadb
     volumes:
       - db-volume:/var/lib/mysql
+    env_file:
+      - .env
     command: ["/usr/bin/mysqld", "--skip-log-error"]
     restart: always
 
@@ -49,14 +51,16 @@ services:
     build:
       context: .
       dockerfile: wordpress/Dockerfile
-    environment:
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
     container_name: wordpress
     depends_on:
       - mariadb
     volumes:
       - wp-volume:/var/www/
+    env_file:
+      - .env
     command: ["/usr/sbin/php-fpm8", "-F"]
     restart: always
