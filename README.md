@@ -308,44 +308,31 @@
 * helps you react with your WordPress website.
 
 ### Discord
-  + container nginx passe les requetes a php-fpm pour executer le php
   + link ce volume au containeur nginx => simplifier votre config
-  + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp... https://developer.wordpress.org/cli/commands/
+  + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp https://developer.wordpress.org/cli/commands/
   + automatiser le plus possible via tes containers
   + tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
   + on va clone ton projet et le lancer si ça fonctionne c'est bien, sinon c'est 0
-  + t'as le choix de lancer php en daemon puis afficher du vide, ou lancer php puis afficher ses logs
   + https://sysdig.com/blog/dockerfile-best-practices/
   + https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
-  + vous n'utilisez pas d'image distroless
   + est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ?
     - l'entrypoint peut bien être modifié au runtime, en cli ou via docker-compose (https://www.bmc.com/blogs/docker-cmd-vs-entrypoint) 
-  + les différences entre RUN CMD ENTRYPOINT
-    - CMD = définir une commande par défaut que l'on peut override
-      + CMD ["executable", "params…"], par exemple: `CMD ["--help"]`
-      + CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
-    - ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override, définir un process par défaut
+  + RUN / CMD / ENTRYPOINT
+    - CMD = une commande par défaut que l'on peut override
+      + une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
+    - ENTRYPOINT = un exécutable comme point d'entrée que l'on ne peut donc pas override, un process par défaut
     - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
-  + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
-    - il y a une option pour ignorer le daemonize de base ???
-    - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
-    - Il tournera mais pas en arrière plan du coup…
-    - pour moi il tourne ou ne tourne pas, mais en fait l’option daemonize n’agit que sur le foreground ou le background c’est ça ? donc l’option —nodaemonize si specifié ne fait que le mettre au premier plan
-    - c'est un peu le fonctionnement de docker qui impose ce genre de truc
-    - pourquoi est-ce que ce genre d'options existent
-  + Tu peux avoir des trucs genre : ENTRYPOINT ["echo", "Hello"] CMD ["hehe"]
   + variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
   + Les images officielles de nginx, mariadb, etc, sont de très bonnes inspirations
   + le flag init sur docker 
   + ['sh', 'test.sh'] vs sh /opt/test.sh ? '
-  + docker compose = un simple wrapper build au dessus de docker 
   + повтор: les Shared Folders de la VM ou qu'un serveur SSH mal configuré sur la VM peuvent poser problème
-  + le php-fpm dans le container wordpress doit il être démarré, c'est considéré comme un service, et c'est ce qui permet au serveur nginx de comprendre le php
   + php est censé démarrer sur /run/php/php-fpm7.3.sock mais le dossier /run/php n'existe pas
-    - php-fpm c'est ce qui te permet d'executer le code php. nginx doit pouvoir passer la requete qui lui est faite a php-fpm dans le container wordpress
+    - php-fpm c'est ce qui te permet d'executer le code php
+    - nginx doit pouvoir passer la requete qui lui est faite a php-fpm dans le container wordpress
   +  oublier nginx de base dans vos images
   +  t c’est au run le problème car le container nginx ne connai pas fastcgi_pass wordpress:9000 en fait faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx et la ça fonctionne
-  +  остановилась на
+  +   
     
 ### Notes
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
