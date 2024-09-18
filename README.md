@@ -89,9 +89,9 @@
     * `~` будет регулярное выражение
     * `\.php$` файлы `*.php`
     * nginx не интерпретирует PHP напрямую
-    * `fastcgi_split_path_info ^(.+\.php)(/.+)$` разделяет путь к файлу и доп данные после (например /index.php/some/path) (для работы некоторых PHP-приложений)
     * nginx извлекает из URI имя исполняемого скрипта относительно корня сайта и автоматически присваивает его `$fastcgi_script_name`
-    * например если пользователь запрашивает `https://example.com/index.php`, то `$fastcgi_script_name` = `/index.php`
+    * `fastcgi_split_path_info ^(.+\.php)(/.+)$` разделяет путь к файлу и данные после (например /index.php/some/path) (для работы некоторых PHP-приложений)
+    * например пользователь запрашивает `https://example.com/index.php` => `$fastcgi_script_name` = `/index.php`
     * nginx передаёт путь к исполняемому PHP-файлу на PHP-FPM (сервер FastCGI), доступный по wordpress:9000 (контейнер с PHP-FPM)
     * `$document_root` берётся автоматически из `root /var/www`
     * `fastcgi_param PATH_INFO $fastcgi_path_info` передаёт в FastCGI доп инфо из пути после имени PHP-файла
