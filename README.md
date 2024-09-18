@@ -330,11 +330,16 @@
   + php est censé démarrer sur /run/php/php-fpm7.3.sock mais le dossier /run/php n'existe pas
     - php-fpm c'est ce qui te permet d'executer le code php
     - nginx doit pouvoir passer la requete qui lui est faite a php-fpm dans le container wordpress
-  +  oublier nginx de base dans vos images
-  +  t c’est au run le problème car le container nginx ne connai pas fastcgi_pass wordpress:9000 en fait faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx et la ça fonctionne
+  + oublier nginx de base dans vos images
+  + c’est au run le problème
+    - le container nginx ne connai pas fastcgi_pass wordpress:9000
+    - faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée
+    - et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx
+    - et la ça fonctionne
   +   
     
 ### Notes
+https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a  
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
 https://github.com/codesshaman/inception  
