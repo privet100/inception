@@ -80,9 +80,9 @@
   ```
 
 ### Контейнер Nginx
-* веб-сервер
-* фронтенд-сервер
-* получает HTTP-запрос
+* nginx веб-сервер, фронтенд-сервер
+* PHP-FPM сервер FastCGI, backend-сервис
+* nginx получает HTTP-запрос
   + если запрошен статический файл (`/wp-content/uploads/image.jpg`), то nginx находит его в wp-volume и возвращает клиенту
     - nginx имеет доступ к статическим файлам WordPress в wp-volume (index.php, style.css, PHP-скрипты, темы, плагины, загруженные изображения, ...)
   + если запрошен `/index.php`, PHP-скрипт, страница с динамическим содержанием, то nginx передаёт обработку контейнеру PHP-FPM
@@ -109,7 +109,7 @@
     - nginx извлекает из URI имя исполняемого скрипта относительно корня сайта и автоматически присваивает его `$fastcgi_script_name`
     - `fastcgi_split_path_info ^(.+\.php)(/.+)$` разделяет путь к файлу и данные после (например /index.php/some/path) (для работы некоторых PHP-приложений)
     - например пользователь запрашивает `https://example.com/index.php` => `$fastcgi_script_name` = `/index.php`
-    - nginx передаёт путь к исполняемому PHP-файлу на PHP-FPM (сервер FastCGI), доступный по wordpress:9000 (контейнер с PHP-FPM)
+    - nginx передаёт путь к исполняемому PHP-файлу на PHP-FPM, доступный по wordpress:9000
     - `$document_root` берётся автоматически из `root /var/www`
     - `fastcgi_param PATH_INFO $fastcgi_path_info` передаёт в FastCGI доп инфо из пути после имени PHP-файла
     - nginx передаёт в FastCGI-сервер `include fastcgi_params` стандартные параметры для работы с FastCGI (переменные окружения, пути, ...) 
@@ -218,21 +218,23 @@
   + внутри одной сети Docker контейнеры могут общаться напрямую по внутренним IP-адресам и портам без необходимости явного проброса портов на хост-машину
   + проброс портов через директиву ports нужен только для доступа к сервису извне Docker (например, с хост-машины)
 
-### Инспектирование
+### Проверка
+* `docker-compose config` проверить итоговую конфигурацию контейнеров`
 * `docker exec -it wordpress php -m` все ли модули установились
 * `docker exec -it wordpress php -v` проверим работу php
 * `docker exec -it wordpress ps aux | grep 'php'` прослушаем сокет php
   + ожидаем: `1 project   0:00 {php-fpm8} php-fpm: master process (/etc/php8/php-fpm.conf` etc
 * [Инспектировать](https://github.com/privet100/general-culture/blob/main/docker.md#%D0%B8%D0%BD%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C)
-*  `wget https://akostrik.42.fr --no-check-certificate`
-*  `curl 'http://127.0.0.1'`
+* `wget https://akostrik.42.fr --no-check-certificate`
+* `curl 'http://127.0.0.1'`
 * проверка после внесения изменений:
   + `docker-compose up` убедитесь, что контейнеры запускаются корректно
   + `docker-compose ps` проверьте, что контейнеры работают и находятся в статусе running
   + `docker-compose logs` логи контейнеров
   + `docker-compose exec nginx nginx -t` убедитесь, что nginx.conf не содержит синтаксических ошибок
-  + проверьте, что все ключевые функции вашего веб-приложения работают корректно. Например, если у вас есть форма на сайте, убедитесь, что она корректно отправляет данные и обрабатывает их.
-  + убедитесь, что контейнеры могут взаимодействовать друг с другом (например Nginx корректно передает запросы на PHP-FPM или другой backend-сервис)
+  + проверьте, что ключевые функции вашего веб-приложения работают корректно
+    - если есть форма на сайте, убедитесь, что она корректно отправляет данные и обрабатывает их
+  + убедитесь, что контейнеры могут взаимодействовать друг с другом (например Nginx корректно передает запросы на PHP-FPM)
   + убедитесь, что бд доступна и взаимодействует с вашим приложением, попробуйте подключиться к базе данных из контейнера приложения
 
 ### Защита
@@ -306,45 +308,66 @@
 * helps you react with your WordPress website.
 
 ### Discord
-  + container nginx passe les requetes a php-fpm pour executer le php
   + link ce volume au containeur nginx => simplifier votre config
-  + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp... https://developer.wordpress.org/cli/commands/
+  + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp https://developer.wordpress.org/cli/commands/
   + automatiser le plus possible via tes containers
   + tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
   + on va clone ton projet et le lancer si ça fonctionne c'est bien, sinon c'est 0
-  + t'as le choix de lancer php en daemon puis afficher du vide, ou lancer php puis afficher ses logs
   + https://sysdig.com/blog/dockerfile-best-practices/
   + https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
-  + vous n'utilisez pas d'image distroless
   + est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ?
     - l'entrypoint peut bien être modifié au runtime, en cli ou via docker-compose (https://www.bmc.com/blogs/docker-cmd-vs-entrypoint) 
-  + les différences entre RUN CMD ENTRYPOINT
-    - CMD = définir une commande par défaut que l'on peut override
-      + CMD ["executable", "params…"], par exemple: `CMD ["--help"]`
-      + CMD c'est simplement une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
-    - ENTRYPOINT = définir un exécutable comme point d'entrée que l'on ne peut donc pas override, définir un process par défaut
+  + RUN / CMD / ENTRYPOINT
+    - CMD = une commande par défaut que l'on peut override
+      + une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
+    - ENTRYPOINT = un exécutable comme point d'entrée que l'on ne peut donc pas override, un process par défaut
     - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
-  + pour le container wordpress a t on le droit d’utiliser une image de debian buster avec php-fpm ?
-    - il y a une option pour ignorer le daemonize de base ???
-    - pourquoi ignorer le daemonize de base ? faudrait il pas qu’il tourne pour écouter le port ?
-    - Il tournera mais pas en arrière plan du coup…
-    - pour moi il tourne ou ne tourne pas, mais en fait l’option daemonize n’agit que sur le foreground ou le background c’est ça ? donc l’option —nodaemonize si specifié ne fait que le mettre au premier plan
-    - c'est un peu le fonctionnement de docker qui impose ce genre de truc
-    - pourquoi est-ce que ce genre d'options existent
-  + Tu peux avoir des trucs genre : ENTRYPOINT ["echo", "Hello"] CMD ["hehe"]
   + variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
   + Les images officielles de nginx, mariadb, etc, sont de très bonnes inspirations
   + le flag init sur docker 
   + ['sh', 'test.sh'] vs sh /opt/test.sh ? '
-  + docker compose = un simple wrapper build au dessus de docker 
   + повтор: les Shared Folders de la VM ou qu'un serveur SSH mal configuré sur la VM peuvent poser problème
-  + le php-fpm dans le container wordpress doit il être démarré, c'est considéré comme un service, et c'est ce qui permet au serveur nginx de comprendre le php
   + php est censé démarrer sur /run/php/php-fpm7.3.sock mais le dossier /run/php n'existe pas
-    - php-fpm c'est ce qui te permet d'executer le code php. nginx doit pouvoir passer la requete qui lui est faite a php-fpm dans le container wordpress
-  +  oublier nginx de base dans vos images
-  +  t c’est au run le problème car le container nginx ne connai pas fastcgi_pass wordpress:9000 en fait faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx et la ça fonctionne
-  +  остановилась на
-    
+    - php-fpm c'est ce qui te permet d'executer le code php
+    - nginx doit pouvoir passer la requete qui lui est faite a php-fpm dans le container wordpress
+  + oublier nginx de base dans vos images
+  + c’est au run le problème
+    - le container nginx ne connai pas fastcgi_pass wordpress:9000
+    - faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée
+    - et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx
+    - et la ça fonctionne
+  +   
+
+### Не понимаю
+* поменять ARG и args на ENV и environmaent
+* создать wp-config.php без скрипта
+* распределить действия 
+  + Makefile
+    - автоматизация рутинных задач
+    - упрощённое выполнение часто используемых команд
+    - помогает объединить команды из Docker и скриптов в цели
+    - Сборка и запуск контейнеров через Docker Compose
+    - Линтинг и тестирование кода
+    - Деплой приложения
+    - Очистка (например, удаление собранных артефактов)
+  + docker-compose
+    - координация контейнеров и их окружения
+    - описать сервисы для работы приложения и их конфигурации
+    - определение контейнеров
+    - настройка сетей, томов, окружения для сервисов
+    - координация запуска и остановки сервисов вместе
+  + Dockefile
+    - собирать контейнер
+    - создание рабочей среды, установки зависимостей, сборки приложения
+    - установка зависимостей (например RUN apt-get install)
+    - копирование исходного кода в контейнер
+    - определение команды по умолчанию для запуска приложения
+  + скрипты
+    - специфические задачи, сложные для описания в Makefile или Dockerfile (тестирование, миграция базы данных, сборка артефактов, настройка окружения)
+
+### Где используется эта техника
+* setting up a website with WordPress in a VPS server or a Cloud server 
+
 ### Notes
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
 https://github.com/Forstman1/inception-42    
@@ -352,6 +375,7 @@ https://github.com/codesshaman/inception
 https://github.com/edvin3i/42_inception  
 https://github.com/rbiodies/Inception   
 https://github.com/SavchenkoDV/inception_School21_Ecole42  
+// https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a   
 [WordPress NGINX,PHP-FPM MariaDB](https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a)  
 https://tuto.grademe.fr/inception/  
 https://cloud.google.com/architecture/best-practices-for-building-containers  
