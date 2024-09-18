@@ -337,7 +337,14 @@
     - et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx
     - et la ça fonctionne
   +   
-    
+
+### Не понимаю
+* поменять ARG и args на ENV и environmaent
+* создать wp-config.php без скрипта
+
+### Где используется эта техника
+* setting up a website with WordPress in a VPS server or a Cloud server 
+
 ### Notes
 https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a  
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
