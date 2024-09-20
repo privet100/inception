@@ -249,8 +249,6 @@ nginx
   + from the Administration dashboard, edit a page
   + verify on the website that the page has been updated
 * the database is not empty
-
-### Теория
 * explain
   + how to login into the database
   + How Docker and docker compose work
@@ -260,33 +258,8 @@ nginx
   + an explanation of docker-network
     - By default Compose sets up a single network for your app. Each container for a service joins the default network and is both reachable by other containers on that network, and discoverable by them at a hostname identical to the container name. `networks` позволяет задать имя для этой сети, но и без этого будет работать.
   + Read about how daemons work and whether it’s a good idea to use them or not
-* VM vs docker
-  | VM                                               | Docker                                                           |
-  | ------------------------------------------------ | ---------------------------------------------------------------- |
-  | a lot of memory space                            | a lot less memory space                                          |
-  | long time to boot up                             | quick boot up because it uses the running kernel that you using  |
-  | difficult to scale up                            | super easy to scale                                              |
-  | low efficiency                                   | high efficiency                                                  |
-  | volumes storage cannot be shared across the VM’s | volumes storage can be shared across the host and the containers |
-* PID 1
-  + первый процесс, который запускается в контейнере
-  + отвечает за запуск и управление процессами внутри контейнера
-  + все другие процессы внутри контейнера получают свои PID от PID 1
-  + если PID 1 завершится, контейнер остановится
-  + обрабатывает системные сигналы (SIGTERM, ...)
-    - если ваш основной процесс (например, веб-сервер) работает под PID 1, он должен корректно обрабатывать такие сигналы для правильного завершения работы
-  + должен быть правильно очищать дочерние процессы, чтобы избежать зомби-процессов
-  + остальные должнен быть настроены так, чтобы PID 1 был их родителем
-  + CMD в Dockerfile позволит Docker назначить PID 1 вашему основному процессу
-    - nginx должен быть основным процессом в контейнере
-  + не используйте скрипты оболочки в качестве PID 1
-    - это может привести к проблемам с управлением процессами
-    - можно использовать, если tini или dumb-init служит в качестве PID 1 и корректно обрабатывает системные сигналы
-  + `daemon off` для сервисов, которые по умолчанию запускаются в фоновом режиме
-    - чтобы процесс оставался основным процессом с PID 1 и не запускался в фоне
-  + si le service exit de facon anormale, le container doit pouvoir se restart (d'ou l'interet du PID 1)
-    - `top || ps` vérifier que notre service à l'intérieur de notre container tourne bien en tant que PID 1 
-  + PID 1 = systemd, mais dans un container c’est différent, il ne peux pas y avoir de systemd
+
+### Теория
 * WordPress
   + PHP-приложение
   + написанно на PHP, работает на PHP
