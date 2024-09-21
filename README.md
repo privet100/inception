@@ -222,21 +222,25 @@ DB_PASS=2
     - user mysql создан при установке БД  
 
 ### Расположение файлов и папок
-на хостовой                                          | в контейнере                             | alias
+на хостовой                                          | в контейнере                             | -
 -----------------------------------------------------|------------------------------------------|------- 
-.                                                    | **в контейнере nginx:**                  | 
+-                                                    | **в контейнере nginx:**                  | 
 ~/data/wordpress                                     | /var/www/                                | wp-volume, root
 inception/project/srcs/nginx                         | /etc/nginx/http.d                        |
 inception/project/srcs/nginx                         | /etc/nginx/ssl                           |
 inception/project/srcs/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
-.                                                    | **в контейнере wordpress:**              | 
+-                                                    | **в контейнере wordpress:**              | 
 ~/data/wordpress                                     | /var/www/                                | wp-volume, WORKDIR
-.                                                    | /etc/php8/php-fpm.d/www.conf             |
-.                                                    | /var/cache/apk/*                         |
+-                                                    | /etc/php8/php-fpm.d/www.conf             |
+-                                                    | /var/cache/apk/*                         |
 inception/project/srcs/wordpress/wp-config-create.sh |                                          |
-.                                                    | /var/www/wp-config-create.sh             |
-.                                                    | **в контейнере mariadb:**                | 
-~/data/maria                                         | var/lib/mysql      в контейнере mariadb  | db-volume
+-                                                    | /var/www/wp-config-create.sh             | tmp-file
+-                                                    | **в контейнере mariadb:**                | 
+~/data/maria                                         | var/lib/mysql      в контейнере mariadb  | db-volume, datadir
+-                                                    | /var/lib/mysql/mysql                     |
+-                                                    | /usr                                     | basedir
+-                                                    | var/lib/mysql/wordpress                  | 
+-                                                    | /tmp/create_db.sql                       | tmp-file
 
 ### Проверка
 * `docker-compose config` проверить итоговую конфигурацию контейнеров`
