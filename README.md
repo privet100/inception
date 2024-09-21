@@ -346,6 +346,7 @@ nginx
 + oublis pas qu’il faut faire tourner en foreground sinon ton container s’arrete
 + -F, --nodaemonize : force to stay in foreground, and ignore daemonize option from config file. If you are running php-fpm in a docker container, there is a good chance you are running the process as root. php-fpm won't start as root without an extra flag:
 + -R, --allow-to-run-as-root : Allow pool to run as root (disabled by default)
++ остановилась: mais si tu es subscribe tu peux tjrs le faire
 
 ### Не понимаю
 * поменять ARG и args на ENV и environmaent
