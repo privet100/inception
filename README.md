@@ -209,9 +209,6 @@ nginx
 ## Контейнер mariadb
 * **Dockerfile**
   + БД из сконфигурированного на пред. слое
-  + переменные окружения из .env только при build  
-    - другой вариант: из environment-секции внутри сервиса - будут в окружении запущенного контейнера  
-    - из docker-compose ?
   + MariaDB/MySQL/docker.cnf конфиг MariaDB { echo '[mysqld]'; echo 'skip-host-cache'; echo 'skip-name-resolve'; echo 'bind-address=0.0.0.0'; } | tee  /etc/my.cnf.d/docker.cnf;
     - настройка сервера базы данных
     - [mysqld] настройки применяются к серверной части MySQL/MariaDB
