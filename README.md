@@ -222,13 +222,13 @@ DB_PASS=2
     - user mysql создан при установке БД  
 
 ### Расположение папкок
-расположение на хостовой      | расположение в контейнере           | alias
-------------------------------|-------------------------------------|------- 
-~/data/wordpress              | /var/www/     в контейнере nginx    | wp-volume
-~/data/wordpress              | /var/www/     в контейнере wordpress| wp-volume
-~/data/maria                  | var/lib/mysql в контейнере mariadb  | db-volume
-./nginx                       | /etc/nginx/http.d/ в контейнере nginx
-./nginx                       | /etc/nginx/ssl/    в контейнере nginx
+расположение на хостовой      | расположение в контейнере                | alias
+------------------------------|------------------------------------------|------- 
+~/data/wordpress              | /var/www/          в контейнере nginx    | wp-volume
+~/data/wordpress              | /var/www/          в контейнере wordpress| wp-volume, root
+~/data/maria                  | var/lib/mysql      в контейнере mariadb  | db-volume
+inception/project/srcs/nginx  | /etc/nginx/http.d  в контейнере nginx
+inception/project/srcs/nginx  | /etc/nginx/ssl     в контейнере nginx
 
 ### Проверка
 * `docker-compose config` проверить итоговую конфигурацию контейнеров`
