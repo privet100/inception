@@ -53,33 +53,35 @@
 + Подключение VS Code хостовой машины к VM: расширение _Remote-SSH_
 + пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
 
-### Относится ко всем контейнерам
-* **Makefile**                             
-  + all после остановки  
-  + fclean перед сохранением в облако
-  + `-d` = detached mode = фоновый режим, контейнеры запущены в фоновом режиме, без привязки к терминалу
-* **docker-compose.yml**
-  + сервисы автоматически подключаются к виртуальной сети
-    - могут обращаться друг к другу по имени сервиса
-    - если не будем обращаться к сервису с хостовой машины или из-за её пределов, то порты можно не пробрасывать
-  + args (build arguments)
-    - передаются на этапе сборки образа с помощью Dockerfile, доступны только на этапе сборки контейнера (build), но не сохраняются в контейнере после сборки
-    - применяются в docker-compose:args или Dockerfile:ARG
-    - например версии зависимостей, конфигурации для сборки, ...
-    - DB_NAME, DB_USER, DB_PASS на этапе сборки не обязательны, WordPress не требует их, чтобы собрать контейнер
-  + environment (переменные окружения)
-    - переменные доступны во время работы контейнера
-    - например ключи доступа, пароли, порты, ...
-    - DB_NAME, DB_USER, DB_PASS нужны нужны в процессе выполнения контейнера WordPress для подключения к базе данных во время работы приложения, когда контейнер запущен, но не на этапе сборки
-+ **.env**
-  ```
-  DB_NAME=wp
-  DB_ROOT=2
-  DB_USER=wpuser
-  DB_PASS=2
-  ```
+### Makefile 
+* all после остановки  
+* fclean перед сохранением в облако
+* `-d` = detached mode = фоновый режим, контейнеры запущены в фоновом режиме, без привязки к терминалу
 
-### Контейнер Nginx
+### docker-compose.yml
+* сервисы автоматически подключаются к виртуальной сети
+  + могут обращаться друг к другу по имени сервиса
+  + если не будем обращаться к сервису с хостовой машины или из-за её пределов, то порты можно не пробрасывать
+* args (build arguments)
+  + передаются на этапе сборки образа с помощью Dockerfile, доступны только на этапе сборки контейнера (build), но не сохраняются в контейнере после сборки
+  + применяются в docker-compose:args или Dockerfile:ARG
+  + например версии зависимостей, конфигурации для сборки, ...
+  + DB_NAME, DB_USER, DB_PASS на этапе сборки не обязательны, WordPress не требует их, чтобы собрать контейнер
+* environment (переменные окружения)
+  + переменные доступны во время работы контейнера
+  + например ключи доступа, пароли, порты, ...
+  + DB_NAME, DB_USER, DB_PASS нужны нужны в процессе выполнения контейнера WordPress для подключения к базе данных во время работы приложения, когда контейнер запущен, но не на этапе сборки
+* - daemon 0ff = lancer nginx en premier plan pour que le container ne se stop pas
+
+### .env
+```
+DB_NAME=wp
+DB_ROOT=2
+DB_USER=wpuser
+DB_PASS=2
+```
+
+### Контейнер Nginx avec TLS v1.2
 * nginx веб-сервер, фронтенд-сервер
 * php-fpm сервер FastCGI, backend-сервис
 * **Dockerfile**                
@@ -90,8 +92,11 @@ nginx
 * должен быть основным процессом в контейнере
 * слушает на порту 443
 * поддерживает SSL/TLS-соединения
-* отвечает на запросы для доменных имён akostrik.42.fr и www.akostrik.42.fr
-* index.php если запроена директорию без указания файла
+* la connexion se fera depuis akostrik.42.fr
+  + отвечает на запросы для доменных имён akostrik.42.fr и www.akostrik.42.fr
+* `/var/www/` le dossier où se trouvera WordPress et donc sa première page à afficher
+* `index.php` quelle page afficher en premier
+   index index.php index.html index.htm;
 * SSL-сертификат для HTTPS-соединений, закрытый ключ SSL используется с сертификатом
 * версии протоколов TLS 1.2 и TLS 1.3 считаются безопасными
 * SSL-сессия остается активной 10 минут
@@ -106,15 +111,19 @@ nginx
 * `location /`
   + пытается найти файл $uri
   + если не найден, перенаправляет запрос на index.php с параметрами запроса в $args
+  + nginx renvoye n’importe quelle requête que nous ne connaissons pas sur un 404 error
+  + nous essayons d’ouvrir le fichier renseigné, si c’est un échec nous renverrons 404
 * `location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$` - запрошен статический файл
+  + for file argument, nginx checks its existence before moving on to next argument (for uri  argument, it doesn't)
   + nginx находит его в wp-volume и возвращает клиенту
     - nginx имеет доступ к статическим файлам WordPress в wp-volume (index.php, style.css, php-скрипты, темы, плагины, загруженные изображения, ...) (это прописано в docker-compose)
     - например `/wp-content/uploads/image.jpg`
   + `expires max` заголовок HTTP Expires и максимальное время кэширования для статических файлов (до 10 лет)
   + браузер клиента будет кэшировать эти файлы, чтобы не запрашивать их у сервера при каждом обращении
     - если файлы изменяются, их версионируют (например, style.css?v=2), чтобы заставить браузеры снова запросить их
-  + `log_not_found off` отключает запись в лог, если сервер не находит файл
+  + Nous devons d'abord demander à NGINX de renvoyer n’importe quelle requête que nous ne connaissons pas sur un 404 error.
 * `location ~ \.php$ { ... }`
+  + où il renvoie le code php
   + `fastcgi_split_path_info ^(.+\.php)(/.+)$` разделяет путь к файлу и данные после (для работы некоторых PHP-приложений)
     - `$fastcgi_script_name` = имя исполняемого скрипта относительно корня сайта из URI 
     - например `https://example.com/index.php/some/path` => `$fastcgi_script_name` = `/index.php`
@@ -126,7 +135,7 @@ nginx
   + php-fpm исполняет php-код
   + php-fpm возвращает результат через Nginx в браузер клиента
 
-### Контейнер wordpress
+### Контейнер wordpress avec php-fpm configuré
 * wordpress работает на php
 * **Dockerfile**
   + ARG: переменные доступны на этапе _сборки_ 
