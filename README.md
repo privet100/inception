@@ -224,18 +224,18 @@ DB_PASS=2
 ### Расположение файлов и папок
 на хостовой                                          | в контейнере                             | alias
 -----------------------------------------------------|------------------------------------------|------- 
-                                                     | **в контейнере nginx:**                  | 
+.                                                    | **в контейнере nginx:**                  | 
 ~/data/wordpress                                     | /var/www/                                | wp-volume, root
 inception/project/srcs/nginx                         | /etc/nginx/http.d                        |
 inception/project/srcs/nginx                         | /etc/nginx/ssl                           |
 inception/project/srcs/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
-                                                     | **в контейнере wordpress:**              | 
+.                                                    | **в контейнере wordpress:**              | 
 ~/data/wordpress                                     | /var/www/                                | wp-volume, WORKDIR
-                                                     | /etc/php8/php-fpm.d/www.conf             |
-                                                     | /var/cache/apk/*                         |
+.                                                    | /etc/php8/php-fpm.d/www.conf             |
+.                                                    | /var/cache/apk/*                         |
 inception/project/srcs/wordpress/wp-config-create.sh |                                          |
-                                                     | /var/www/wp-config-create.sh             |
-                                                     | **в контейнере mariadb:**                | 
+.                                                    | /var/www/wp-config-create.sh             |
+.                                                    | **в контейнере mariadb:**                | 
 ~/data/maria                                         | var/lib/mysql      в контейнере mariadb  | db-volume
 
 ### Проверка
