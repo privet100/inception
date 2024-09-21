@@ -222,11 +222,11 @@ DB_PASS=2
     - user mysql создан при установке БД  
 
 ### Расположение файлов и папок
-на хостовой                                          | в контейнере                             | -
+локалтная папка на хостовой                          | путь в контейнере                        | -
 -----------------------------------------------------|------------------------------------------|------- 
 ,                                                    | **в контейнере nginx:**                  | 
 ~/data/wordpress                                     | /var/www/                                | wp-volume, root
-inception/project/srcs/nginx                         | /etc/nginx/http.d                        |
+inception/project/srcs/nginx                         | /etc/nginx/http.d                        | позволяет редактировать конфиг Nginx на лок машине, изменения сразу  применены в контейнере, без необходимости пересобирать контейнер 
 inception/project/srcs/nginx                         | /etc/nginx/ssl                           |
 inception/project/srcs/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
 ,                                                    | **в контейнере wordpress:**              | 
