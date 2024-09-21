@@ -278,22 +278,6 @@ nginx
     - By default Compose sets up a single network for your app. Each container for a service joins the default network and is both reachable by other containers on that network, and discoverable by them at a hostname identical to the container name. `networks` позволяет задать имя для этой сети, но и без этого будет работать.
   + Read about how daemons work and whether it’s a good idea to use them or not
 
-### Теория
-* WordPress
-  + PHP-приложение
-  + написанно на PHP, работает на PHP
-  + взаимодействует с бд
-  + генерирует динамический контент для веб-страниц
-  + выполняет задачи на стороне сервера (генерация HTML, работа с бд,управление контентом)
-  + PHP (Hypertext Preprocessor) — серверный язык программирования
-    -  используется для создания динамических веб-страниц
-  + как работает
-    - Nginx принимает запросы от пользователей и передают в PHP 
-    - PHP-скрипты обрабаьывают запросы (отображение постов, страниц, комментариев)
-    - PHP выполняет процессы FastCGI с помощью php-fpm
-    - PHP взаимодействует с бд, получает/обновляет данные
-    - бд хранит контент сайта (посты, страницы, настройки, ...)
-
 ### WP-CLI
 * the command line interface for WordPress
 * allows to interact with your WordPress site from the command line
