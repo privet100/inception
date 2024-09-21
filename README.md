@@ -278,13 +278,6 @@ nginx
     - By default Compose sets up a single network for your app. Each container for a service joins the default network and is both reachable by other containers on that network, and discoverable by them at a hostname identical to the container name. `networks` позволяет задать имя для этой сети, но и без этого будет работать.
   + Read about how daemons work and whether it’s a good idea to use them or not
 
-### WP-CLI
-* the command line interface for WordPress
-* allows to interact with your WordPress site from the command line
-* is used for automating tasks, debugging problems, installing/removing plugins along side with themes, managing users and roles, exporting/importing data, run databses queries, ...
-* can save time that will take you to installing a pluging/theme manually, moderate users and their roles, deploy a new WordPress website to a production server, ...
-* helps you react with your WordPress website.
-
 ### Discord
 + link ce volume au containeur nginx => simplifier votre config
 + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp https://developer.wordpress.org/cli/commands/
@@ -361,6 +354,7 @@ nginx
 
 ### Notes
 [docker](https://github.com/privet100/general-culture/blob/main/docker.md)  
+[docker](https://github.com/privet100/general-culture/blob/main/wordpress.md)  
 https://github.com/Forstman1/inception-42    
 https://github.com/codesshaman/inception  
 https://github.com/edvin3i/42_inception  
