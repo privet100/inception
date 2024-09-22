@@ -219,28 +219,35 @@ DB_PASS=2
   + `USER mysql` меняет пользователя внутри контейнера на mysql
     - процессы бд запускатися от имени этого пользователя
     - это повышает безопасность
-    - user mysql создан при установке БД  
+    - user mysql создан при установке БД
+* init.sql
+  + роль в инициализации базы данных
+  + содержит SQL-запросы, которые автоматически выполняются при создании и запуске контейнера базы данных
+    - создание таблиц, индексов, других объектов базы данных (CREATE TABLE users ...) 
+    - вставкиа начальных данных в таблицы (INSERT INTO users (username, password) VALUES ('admin', 'password123'))
+    - создание пользователей базы данных и назначения им прав доступа (CREATE USER my_user WITH PASSWORD 'my_password'; GRANT ALL PRIVILEGES ON DATABASE my_database TO my_user;)
+    - при первом запуске контейнера Docker автоматически запускает SQL-скрипты, находящиеся в /docker-entrypoint-initdb.d/ (init.sql, ...) для инициализации базы данных
 
 ### Расположение файлов и папок
-на VM                                                          | а контейнере                             | alias
----------------------------------------------------------------|------------------------------------------|------- 
-,                                                              | **в контейнере nginx:**                  | 
-~/data/wordpress                                               | /var/www/                                | wp-volume, root
-~/goinfre/inception/project/srcs/nginx                         | /etc/nginx/http.d                        | редактировать nginx.conf на VM, изменения сразу в контейнере без пересборки 
-~/goinfre/inception/project/srcs/nginx                         | /etc/nginx/ssl                           |
-~/goinfre/inception/project/srcs/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
-,                                                              | **в контейнере wordpress:**              | 
-~/data/wordpress                                               | /var/www/                                | wp-volume, WORKDIR
-,                                                              | /etc/php8/php-fpm.d/www.conf             |
-,                                                              | /var/cache/apk/*                         |
-~/goinfre/inception/project/srcs/wordpress/wp-config-create.sh |                                          |
-,                                                              | /var/www/wp-config-create.sh             | tmp-file
-,                                                              | **в контейнере mariadb:**                | 
-~/data/maria                                                   | /var/lib/mysql      в контейнере mariadb  | db-volume, datadir
-,                                                              | /var/lib/mysql/mysql                     |
-,                                                              | /usr                                     | basedir
-,                                                              | /var/lib/mysql/wordpress                  | 
-,                                                              | /tmp/create_db.sql                       | tmp-file
+на VM                                                | в контейнере                             | alias
+-----------------------------------------------------|------------------------------------------|------- 
+,                                                    | **в контейнере nginx:**                  | 
+~/data/wordpress                                     | /var/www/                                | wp-volume, root
+inception/project/srcs/nginx/nginx.conf              | /etc/nginx/http.d/nginx.conf             | редактировать nginx.conf на VM, изменения сразу в контейнере без пересборки 
+inception/project/srcs/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
+,                                                    | **в контейнере wordpress:**              | 
+~/data/wordpress                                     | /var/www/                                | wp-volume, WORKDIR
+,                                                    | /etc/php8/php-fpm.d/www.conf             |
+,                                                    | /var/cache/apk/*                         |
+inception/project/srcs/wordpress/wp-config-create.sh | /var/www/wp-config-create.sh             | 
+,                                                    | **в контейнере mariadb:**                | 
+~/data/maria                                         | /var/lib/mysql                           | db-volume, datadir
+,                                                    | /var/lib/mysql/mysql                     |
+,                                                    | /usr                                     | basedir
+,                                                    | /var/lib/mysql/wordpress                 | 
+inception/project/srcs/wordpress/create_db.sh        |                                          | 
+,                                                    | /tmp/create_db.sql                       | 
+,                                                    | init.sql                                 |
 
 ### Проверка
 * `docker-compose config` проверить итоговую конфигурацию контейнеров`
