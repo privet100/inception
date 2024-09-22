@@ -242,10 +242,10 @@ inception/project/srcs/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.4
 ,                                                    | /var/cache/apk/*                         |
 inception/project/srcs/wordpress/wp-config-create.sh | /var/www/wp-config-create.sh             | 
 ,                                                    | **в контейнере mariadb:**                | 
-~/data/maria                                         | /var/lib/mysql                           | db-volume, datadir
-,                                                    | /var/lib/mysql/mysql                     |
-,                                                    | /usr                                     | basedir
-,                                                    | /var/lib/mysql/wordpress                 | 
+~/data/maria                                         | /var/lib/mysql                           | db-volume, datadir, данные MySQL
+~/data/maria/mysql                                   | /var/lib/mysql/mysql                     | 
+~/data/maria/wordpress                               | /var/lib/mysql/wordpress                 | 
+,                                                    | /usr                                     | basedir, каталог для установки MySQL
 inception/project/srcs/wordpress/create_db.sh        |                                          | 
 ,                                                    | /tmp/create_db.sql                       | 
 ,                                                    | init.sql                                 |
