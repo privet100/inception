@@ -87,9 +87,10 @@ DB_PASS=2
 ### Контейнер Nginx avec TLS v1.2
 * nginx веб-сервер, фронтенд-сервер
 * php-fpm сервер FastCGI, backend-сервис
-* Dockerfile: логи в tty контейнера (т.к. не демон)
+* Dockerfile
+  + логи в tty контейнера (т.к. не демон)
+  + nginx должен быть основным процессом в контейнере
 * **nginx.conf**:
-* nginx должен быть основным процессом в контейнере
 * слушает на порту 443
 * поддерживает SSL/TLS-соединения
 * la connexion se fera depuis akostrik.42.fr
