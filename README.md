@@ -222,25 +222,25 @@ DB_PASS=2
     - user mysql создан при установке БД  
 
 ### Расположение файлов и папок
-локалтная папка на хостовой                          | путь в контейнере                        | -
------------------------------------------------------|------------------------------------------|------- 
-,                                                    | **в контейнере nginx:**                  | 
-~/data/wordpress                                     | /var/www/                                | wp-volume, root
-inception/project/srcs/nginx                         | /etc/nginx/http.d                        | позволяет редактировать конфиг Nginx на лок машине, изменения сразу  применены в контейнере, без необходимости пересобирать контейнер 
-inception/project/srcs/nginx                         | /etc/nginx/ssl                           |
-inception/project/srcs/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
-,                                                    | **в контейнере wordpress:**              | 
-~/data/wordpress                                     | /var/www/                                | wp-volume, WORKDIR
-,                                                    | /etc/php8/php-fpm.d/www.conf             |
-,                                                    | /var/cache/apk/*                         |
-inception/project/srcs/wordpress/wp-config-create.sh |                                          |
-,                                                    | /var/www/wp-config-create.sh             | tmp-file
-,                                                    | **в контейнере mariadb:**                | 
-~/data/maria                                         | var/lib/mysql      в контейнере mariadb  | db-volume, datadir
-,                                                    | /var/lib/mysql/mysql                     |
-,                                                    | /usr                                     | basedir
-,                                                    | var/lib/mysql/wordpress                  | 
-,                                                    | /tmp/create_db.sql                       | tmp-file
+на хостовой                                                    | на VM                                    | alias
+---------------------------------------------------------------|------------------------------------------|------- 
+,                                                              | **в контейнере nginx:**                  | 
+~/data/wordpress                                               | /var/www/                                | wp-volume, root
+~/goinfre/inception/project/srcs/nginx                         | /etc/nginx/http.d                        | редактировать nginx.conf на VM, изменения сразу в контейнере без пересборки 
+~/goinfre/inception/project/srcs/nginx                         | /etc/nginx/ssl                           |
+~/goinfre/inception/project/srcs/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
+,                                                              | **в контейнере wordpress:**              | 
+~/data/wordpress                                               | /var/www/                                | wp-volume, WORKDIR
+,                                                              | /etc/php8/php-fpm.d/www.conf             |
+,                                                              | /var/cache/apk/*                         |
+~/goinfre/inception/project/srcs/wordpress/wp-config-create.sh |                                          |
+,                                                              | /var/www/wp-config-create.sh             | tmp-file
+,                                                              | **в контейнере mariadb:**                | 
+~/data/maria                                                   | /var/lib/mysql      в контейнере mariadb  | db-volume, datadir
+,                                                              | /var/lib/mysql/mysql                     |
+,                                                              | /usr                                     | basedir
+,                                                              | /var/lib/mysql/wordpress                  | 
+,                                                              | /tmp/create_db.sql                       | tmp-file
 
 ### Проверка
 * `docker-compose config` проверить итоговую конфигурацию контейнеров`
