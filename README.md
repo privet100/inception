@@ -284,8 +284,9 @@ inception/project/srcs/wordpress/create_db.sh        |                          
 * `telnet akostrik.42.fr 443` открыт ли порт 443 на сервере
 * `nc -zv akostrik.42.fr 443` открыт ли порт 443 на сервере
 * `openssl s_client -connect akostrik.42.fr:443` проверить состояние SSL-сертификата
-* `dig akostrik.42.fr` корректно ли браузер разрешает DNS-запросы
-  + браузер и wget должны разрешить имя в один и тот же IP-адрес (хотя могут использовать разные DNS-серверы)
+* браузер и wget должны разрешить `akostrik.42.fr` в один и тот же IP-адрес
+  + хотя могут использовать разные DNS-серверы
+* `dig akostrik.42.fr` как браузер разрешает DNS-запросы
   + отвечает status: NXDOMAIN (Non-Existent Domain)
     - DNS-сервер не находит запись для домена akostrik.42.fr
     - `ping akostrik.42.fr`существует ли домен akostrik.42.fr  
@@ -296,6 +297,19 @@ inception/project/srcs/wordpress/create_db.sh        |                          
     - правильно ли работает встроенный Docker DNS (IP 127.0.0.11)
     - если домен akostrik.42.fr работает локально в контейнерах: akostrik.42.fr в `/etc/hosts` внутри контейнеров или на хосте
     - `cat /etc/resolv.conf` проверь, что `resolv.conf` внутри контейнера указывает на правильный DNS-сервер
+    - правильно ли поднимаются контейнеры
+    - позволяют ли четевые настройки контейнеров видеть друг друга (docker-compose ps, docker network ls)
+    - убедитесь, что nginx направляет запросы на правильные сервисы
+    - правильно ли настроены сети в Docker. В docker-compose.yml убедитесь, что контейнеры находятся в одной сети и могут разрешать имена друг друга
+    - `docker network inspect srcs_default` контейнеры подключены ли к сети srcs_default
+    - `docker exec -it <container_name> /bin/sh` зайти в контейнер и проверить возможность разрешения доменного имени или сетевого подключения
+       * ping akostrik.42.fr
+       * nslookup akostrik.42.fr
+    - проверить `/etc/hosts`
+    - Иногда помогает перезапустить Docker сеть `docker network rm srcs_default`, `docker-compose down
+docker-compose up --build
+    - в nginx правильно ли указаны домены и порты для перенаправления запросов на нужные контейнеры
+    - eсли у вас настроены брандмауэры (ufw, iptables, ...), разрешены ли все необходимые порты для связи между контейнерами и DNS
 
 ### Защита
 * **убрать .env, test.sh**
