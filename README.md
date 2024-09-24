@@ -253,7 +253,6 @@ inception/project/srcs/wordpress/create_db.sh        |                          
 ,                                                    | init.sql                                 |
 
 ### Инспектирование
-* `docker-compose logs`, `docker logs nginx` логи контейнеров  
 * `docker exec -it wordpress php -m` установленные модули php
 * `docker exec -it wordpress php -v` проверим работу php
 * `docker exec -it wordpress ps aux | grep 'php'` прослушать сокет php
@@ -288,9 +287,8 @@ inception/project/srcs/wordpress/create_db.sh        |                          
 * `telnet akostrik.42.fr 443` открыт ли порт 443 на сервере
 * `nc -zv akostrik.42.fr 443` открыт ли порт 443 на сервере
 * `openssl s_client -connect akostrik.42.fr:443` проверить состояние SSL-сертификата
-* `dig akostrik.42.fr` корректно ли ваш браузер разрешает DNS-запросы
-* браузер и wget должны корректно разрешить имя, разрешать один и тот же IP-адрес
-  + хотя могут использовать разные DNS-серверы для разрешения имени домена
+* `dig akostrik.42.fr` корректно ли браузер разрешает DNS-запросы
+  + браузер и wget должны разрешить имя, один и тот же IP-адрес (хотя могут использовать разные DNS-серверы для разрешения имени домена)
 
 ### Защита
 * **убрать .env, test.sh**
