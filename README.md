@@ -47,9 +47,15 @@
   ```
 + VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
   + le certificat SSL n’a pas été signé par Trusted Authority => Accept the risk and continue
-+ https://akostrik.42.fr/wp-admin/users.php: два пользователя, один админ, в его имени нет admin и тп
-+ Подключение VS Code хостовой машины к VM: расширение _Remote-SSH_
-+ пароли: VM root 2, VM akostrik 2, WP akostrik 2, mariadb akostrik 2 
++ при установке wordpress создать первого пользователя - это будет админ (в его имени не должно быть _admin_ и тп)
++ https://akostrik.42.fr/wp-admin/users.php добавитьвторого пользоваетля
++ пароли:
+  + VM: root 2
+  + VM akostrik 2
+  + WP admin: akostrik 2
+  + WP usre: akostrik2 2
+  + mariadb: akostrik 2 
++ Подключение VS Code хостовой машины к VM: установить расширение _Remote-SSH_
 
 ### Makefile 
 * all после остановки  
