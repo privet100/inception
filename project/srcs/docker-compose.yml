@@ -13,6 +13,10 @@ volumes:
       type: none
       device: ~/data/mariadb
 
+networks:
+  inception:
+    driver: bridge
+
 services:
   nginx:
     build:
@@ -23,6 +27,8 @@ services:
       - wordpress
     ports:
       - "443:443"
+    networks:
+     - inception
     volumes:
       - ./nginx/:/etc/nginx/http.d/
       - ./nginx/:/etc/nginx/ssl/
@@ -40,6 +46,8 @@ services:
         DB_PASS: ${DB_PASS}
         DB_ROOT: ${DB_ROOT}
     container_name: mariadb
+    networks:
+     - inception
     volumes:
       - db-volume:/var/lib/mysql
     env_file:
@@ -58,6 +66,8 @@ services:
     container_name: wordpress
     depends_on:
       - mariadb
+    networks:
+     - inception
     volumes:
       - wp-volume:/var/www/
     env_file:
