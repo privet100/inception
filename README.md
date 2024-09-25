@@ -327,15 +327,12 @@ docker-compose up --build
   + from the Administration dashboard, edit a page
   + verify on the website that the page has been updated
 * the database is not empty
-* explain
-  + how to login into the database
-  + How Docker and docker compose work
+* How Docker and docker compose work
   + The difference between a Docker image used with docker compose and without docker compose
-  + The benefit of Docker compared to VMs
-  + The pertinence of the directory structure required for this project
-  + an explanation of docker-network
-    - By default Compose sets up a single network for your app. Each container for a service joins the default network and is both reachable by other containers on that network, and discoverable by them at a hostname identical to the container name. `networks` позволяет задать имя для этой сети, но и без этого будет работать.
-  + Read about how daemons work and whether it’s a good idea to use them or not
+* The benefit of Docker compared to VMs
+* The pertinence of the directory structure required for this project
+* an explanation of docker-network
+* how daemons work and whether it’s a good idea to use them or not
 
 ### Discord
 + link ce volume au containeur nginx => simplifier votre config
