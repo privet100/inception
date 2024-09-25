@@ -137,17 +137,17 @@ DB_PASS=2
     - если файлы изменяются, их версионируют (например, style.css?v=2), чтобы заставить браузеры снова запросить их
   + Nous devons d'abord demander à NGINX de renvoyer n’importe quelle requête que nous ne connaissons pas sur un 404 error.
 * `location ~ \.php$ { ... }`
-  + où il renvoie le code php
+  + où renvoier le code php
   + `fastcgi_split_path_info ^(.+\.php)(/.+)$` разделяет путь к файлу и данные после (для работы некоторых PHP-приложений)
     - `$fastcgi_script_name` = имя исполняемого скрипта относительно корня сайта из URI 
     - например `https://example.com/index.php/some/path` => `$fastcgi_script_name` = `/index.php`
-  + не интерпретирует PHP, а передаёт на php-fpm, доступный по wordpress:9000:
+  + не интерпретирует PHP, а передаёт на php-fpm по wordpress:9000
     - путь к исполняемому php-файлу
     - `$document_root` = `/var/www` из директивы root (автоматически)
-    - доп инфо из пути после имени PHP-файла `$fastcgi_path_info`
+    - `$fastcgi_path_info` = доп инфо из пути после имени PHP-файла 
     - стандартные параметры для работы с php-fpm (переменные окружения, пути, ...) `include fastcgi_params` 
-  + php-fpm исполняет php-код
-  + php-fpm возвращает результат через Nginx в браузер клиента
+  + php-fpm исполняет php-код и возвращает результат nginx
+  + nginx возвращает результат в браузер клиента
 
 ### Контейнер wordpress avec php-fpm configuré
 * wordpress работает на php
@@ -157,13 +157,11 @@ DB_PASS=2
   + установка php и компонентов (расширения для работы с MySQL, JSON, ...)
     - `/etc/php8/php-fpm.d/` зависит от версии php   
     - версия php (https://www.php.net/) должна соответствовать установленной  
-    - `--no-cache` устанавливать пакеты без кэша, экономится место в образе
-    - ARG PHP_VERSION=8 DB_NAME DB_USER DB_PASS: аргументы сборки
-  + настройка WordPress для работы с бд
-    - файлы WordPress помещаются в `/var/www`
-    - CMS может скачивать темы, плагины, сохранять файлы  
+    - `--no-cache` устанавливать пакеты без кэша, экономитю место
+  + настройка wp для работы с бд
+    - файлы WordPress помещаются в `/var/www`, туда wp может скачивать темы, плагины, сохранять файлы  
   + настройка PHP-FPM для работы с nginx
-    - конфиг fastcgi в `www.conf`   
+    - `www.conf` = конфиг fastcgi   
     - запустить fastcgi через сокет php-fpm
     - fastcgi слушает на 9000
     - `sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf`:  только порт без привязки к IP позволяет использовать Docker-сеть => сервис становится доступен для других контейнеров (если PHP-FPM слушает только на 127.0.0.1, он принимает запросы только от того же контейнера)
