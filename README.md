@@ -381,6 +381,7 @@ docker-compose up --build
 ### Не понимаю
 * поменять ARG и args на ENV и environmaent
 * создать wp-config.php без скрипта
+* create_db.sql без скрипта
 * распределить действия 
   + docker-compose
     - координация контейнеров и их окружения
