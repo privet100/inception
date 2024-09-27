@@ -97,7 +97,7 @@ DB_USER=wpuser
 DB_PASS=2
 ```
 
-### Контейнер Nginx avec TLS v1.2
+### Контейнер nginx avec TLS v1.2
 * nginx веб-сервер, фронтенд-сервер
 * php-fpm сервер FastCGI, backend-сервис
 * Dockerfile
@@ -171,7 +171,9 @@ DB_PASS=2
     - fastcgi слушает на 9000
     - `sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf`:  только порт без привязки к IP позволяет использовать Docker-сеть => сервис становится доступен для других контейнеров (если PHP-FPM слушает только на 127.0.0.1, он принимает запросы только от того же контейнера)
     - `sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf` `sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf`: владелец сокета = nobody, владелец TCP-порта на котором слушает PHP-FPM = nobody, группа = nobody, т.к. PHP-FPM запускается для прослушивания сокетов и запросы обрабатываются от пользователя nobody  
-* **wp-config-create.sh** 
+  + PID 1 = PHP-FPM, управляет обработкой PHP-кода
+    - CMD ["php-fpm"] делает это
+ **wp-config-create.sh** 
   + экранируем \, чтобы в $table_prefix не записалась пустая строка, т.к. в bash нет такой переменной
 * **wp-config.php**
   + инициализация и настройка сайта
@@ -236,6 +238,8 @@ DB_PASS=2
     - процессы бд запускатися от имени этого пользователя
     - это повышает безопасность
     - user mysql создан при установке БД
+  + PID 1 = основной процесс контейнера = mysqld (MariaDB server, демон mariaDB, главный процесс бд, слушает запросы и выполняет операции
+    - CMD ["mysqld"] = запустить процесс MariaDB как основной
 * init.sql
   + роль в инициализации базы данных
   + содержит SQL-запросы, которые автоматически выполняются при создании и запуске контейнера базы данных
