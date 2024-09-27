@@ -330,6 +330,13 @@ docker-compose up --build
 * The pertinence of the directory structure required for this project
 * an explanation of docker-network
 * how daemons work and whether it’s a good idea to use them or not
+* демон
+  + фоновый процесс
+  + работает без прямого взаимодействия с пользователем
+  + запускается при старте системы
+  + автоматически реагирует на события
+  + могут быть перезапущены, если система завершает их работу (например, перезапуск NGINX в случае сбоя)
+  + Примеры: веб-серверы (Apache, NGINX), системные мониторы, службы резервного копирования
 
 ### Discord
 + link ce volume au containeur nginx => simplifier votre config
