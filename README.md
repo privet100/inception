@@ -10,6 +10,8 @@
     | ------- | -------- | ----------- | ------------ | ----------- | ------------ |
     | `ssh`   | `TCP`    | `127.0.0.1` | `4254`       | `10.0.2.15` | `22`         |
     | `https` | `TCP`    | `127.0.0.1` | `1443`       | `10.0.2.15` | `443`        |
+  - режим сети "Bridged" позволяет виртуальной машине иметь собственный IP-адрес в вашей локальной сети, доступный основной машине => VM и хостовая находится в одном сетевом пространстве
+  - если используется "NAT", то настроить проброс портов
   - ```
     su
     nano /etc/ssh/sshd_config: Port 22, PasswordAuthentication yes
@@ -47,8 +49,9 @@
   ```
 + VM в браузере `https://127.0.0.1`, `https://akostrik.42.fr`
   + le certificat SSL n’a pas été signé par Trusted Authority => Accept the risk and continue
++ На хостовой машине в браузере `https://127.0.0.1:1443`
 + при установке wordpress создать первого пользователя - это будет админ (в его имени не должно быть _admin_ и тп)
-+ https://akostrik.42.fr/wp-admin/users.php добавитьвторого пользоваетля
+  - потом в ttps://akostrik.42.fr/wp-admin/users.php добавить второго пользоваетля
 + пароли:
   + VM: root 2
   + VM akostrik 2
@@ -325,6 +328,8 @@ docker-compose up --build
 
 ### Защита
 * **убрать .env, test.sh**
+* PID 1
+* 2 пользователя
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
 * add a comment using the available WordPress user
 * WordPress database: 2 users, one of them being the administrator
@@ -387,7 +392,7 @@ docker-compose up --build
 
 ### Не понимаю
 * поменять ARG и args на ENV и environmaent
-* создать wp-config.php без скрипта
+* wp-config.php без скрипта
 * create_db.sql без скрипта
 * распределить действия 
   + docker-compose
