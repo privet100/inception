@@ -328,21 +328,19 @@ docker-compose up --build
 
 ### Защита
 * **убрать .env, test.sh**
-* PID 1
+* просмотр с хостовой
 * 2 пользователя
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
 * add a comment using the available WordPress user
-* WordPress database: 2 users, one of them being the administrator
-  + the Admin username must not include admin, administrator, Admin-login, admin-123, etc
 * sign in with the administrator account to access the Administration dashboard
   + from the Administration dashboard, edit a page
   + verify on the website that the page has been updated
 * the database is not empty
-* How Docker and docker compose work
+* how Docker and docker compose work
   + The difference between a Docker image used with docker compose and without docker compose
-* The benefit of Docker compared to VMs
-* The pertinence of the directory structure required for this project
 * an explanation of docker-network
+* the benefit of Docker compared to VMs
+* the pertinence of the directory structure required for this project
 * how daemons work and whether it’s a good idea to use them or not
   + [демон](https://github.com/privet100/general-culture/blob/main/threads.md#%D0%B4%D0%B5%D0%BC%D0%BE%D0%BD)
 
