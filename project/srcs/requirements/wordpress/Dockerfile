@@ -8,5 +8,6 @@ RUN apk update && apk upgrade && apk add --no-cache php8 php8-fpm php8-mysqli ph
     sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     rm -f /var/cache/apk/*
-COPY ./wordpress/wp-config-create.sh .
+COPY ./requirements/wordpress/wp-config-create.sh .
 RUN sh wp-config-create.sh && rm wp-config-create.sh
+CMD ["/usr/sbin/php-fpm8", "-F"]

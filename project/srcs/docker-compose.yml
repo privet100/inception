@@ -21,7 +21,7 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: nginx/Dockerfile
+      dockerfile: requirements/nginx/Dockerfile
     container_name: nginx
     depends_on:
       - wordpress
@@ -30,16 +30,15 @@ services:
     networks:
      - inception
     volumes:
-      - ./nginx/:/etc/nginx/http.d/
-      - ./nginx/:/etc/nginx/ssl/
+      - ./requirements/nginx/:/etc/nginx/http.d/
+      - ./requirements/nginx/:/etc/nginx/ssl/
       - wp-volume:/var/www/
-    command: ["nginx", "-g", "daemon off;"]
     restart: always
 
   mariadb:
     build:
       context: .
-      dockerfile: mariadb/Dockerfile
+      dockerfile: requirements/mariadb/Dockerfile
       args:
         DB_NAME: ${DB_NAME}
         DB_USER: ${DB_USER}
@@ -52,13 +51,12 @@ services:
       - db-volume:/var/lib/mysql
     env_file:
       - .env
-    command: ["/usr/bin/mysqld", "--skip-log-error"]
     restart: always
 
   wordpress:
     build:
       context: .
-      dockerfile: wordpress/Dockerfile
+      dockerfile: requirements/wordpress/Dockerfile
       args:
         DB_NAME: ${DB_NAME}
         DB_USER: ${DB_USER}
@@ -72,5 +70,4 @@ services:
       - wp-volume:/var/www/
     env_file:
       - .env
-    command: ["/usr/sbin/php-fpm8", "-F"]
     restart: always
