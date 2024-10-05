@@ -53,10 +53,8 @@
 + при установке wordpress создать первого пользователя - это будет админ (в его имени не должно быть _admin_ и тп)
   - потом в ttps://akostrik.42.fr/wp-admin/users.php добавить второго пользоваетля
 + пароли:
-  + VM: root 2
-  + VM akostrik 2
-  + WP admin: akostrik 2
-  + WP usre: akostrik2 2
+  + VM: root 2, akostrik 2
+  + WP: admin: akostrik 2, useR: akostrik2 2
   + mariadb: akostrik 2 
 + Подключение VS Code хостовой машины к VM: установить расширение _Remote-SSH_
 
