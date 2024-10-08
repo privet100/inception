@@ -326,14 +326,12 @@ docker-compose up --build
 
 ### Защита
 * **убрать .env, test.sh**
-* просмотр с хостовой
-* 2 пользователя
+* просмотр с хостовой через 443 (через 80 не должно работаь)
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
 * `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker ps -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null`
 * add a comment using the available WordPress user
 * sign in with the administrator account to access the Administration dashboard
-  + from the Administration dashboard, edit a page
-  + verify on the website that the page has been updated
+  + edit a page and verify on the website that the page has been updated
 * the database is not empty
 * explain
   + how Docker and docker compose work
