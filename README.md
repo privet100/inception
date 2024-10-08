@@ -248,6 +248,22 @@ DB_PASS=2
     - вставкиа начальных данных в таблицы (INSERT INTO users (username, password) VALUES ('admin', 'password123'))
     - создание пользователей базы данных и назначения им прав доступа (CREATE USER my_user WITH PASSWORD 'my_password'; GRANT ALL PRIVILEGES ON DATABASE my_database TO my_user;)
     - при первом запуске контейнера Docker автоматически запускает SQL-скрипты, находящиеся в /docker-entrypoint-initdb.d/ (init.sql, ...) для инициализации базы данных
+* подключиться к MariaDB, работающей в контейнере Docker, с хоста или другого контейнера
+  + убедитесь, что 3306 проброшен из контейнера на хост
+  + убедитесь, что у пользователя mariadb есть права на подключение с внешнего адреса
+    например
+    ```
+    CREATE USER 'user'@'%' IDENTIFIED BY 'password';
+    GRANT ALL PRIVILEGES ON *.* TO 'user'@'%';
+    FLUSH PRIVILEGES;
+    ```
+    //`%` = пользователь может подключаться с любого ip
+  + `docker exec -it mariadb bash`
+  + `mariadb -u akostrik -p`
+  + `mariadb -h 127.0.0.1 -P 3306 -u akostrik -p` если подключаетесь с локальной машины (если Docker настроен так, что бд доступна через локальный адрес)
+  + `mariadb -h mariadb -P 3306 -u akostrik -p` если подключаетесь из другого контейнера
+  + ввести пароль, указанный в переменной окружения или в конфигурационном файле Docker
+  + `SHOW DATABASE;` список бд
 
 ### Расположение файлов и папок
 на VM                                                | в контейнере                             | alias
