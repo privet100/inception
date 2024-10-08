@@ -332,15 +332,15 @@ docker-compose up --build
 * add a comment using the available WordPress user
 * sign in with the administrator account to access the Administration dashboard
   + edit a page and verify on the website that the page has been updated
+* how to ligin in my database
 * the database is not empty
-* explain
-  + how Docker and docker compose work
-    - The difference between a Docker image used with docker compose and without docker compose
-  + docker-network
-  + the benefit of Docker compared to VMs
-  + the pertinence of the directory structure required for this project
-  + how daemons work and whether it’s a good idea to use them or not
-    - [демон](https://github.com/privet100/general-culture/blob/main/threads.md#%D0%B4%D0%B5%D0%BC%D0%BE%D0%BD)
+* how Docker and docker compose work
+  + The difference between a Docker image used with docker compose and without docker compose
+* explain docker-network
+* the benefit of Docker compared to VMs
+* the pertinence of the directory structure required for this project
+* how daemons work and whether it’s a good idea to use them or not
+  + [демон](https://github.com/privet100/general-culture/blob/main/threads.md#%D0%B4%D0%B5%D0%BC%D0%BE%D0%BD)
 
 ### Discord
 + link ce volume au containeur nginx => simplifier votre config
