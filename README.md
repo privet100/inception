@@ -259,10 +259,12 @@ DB_PASS=2
     ```
     //`%` = пользователь может подключаться с любого ip
   + `docker exec -it mariadb bash`
-  + `mariadb -u akostrik -p`, `mariadb -h 127.0.0.1 -P 3306 -u akostrik -p` подключиться с локальной машины
+  + `mariadb -u akostrik -p` или `mariadb -h 127.0.0.1 -P 3306 -u akostrik -p` подключиться с хоста
     - `mariadb -h mariadb -P 3306 -u akostrik -p` из другого контейнера
   + пароль `2`
-  + `SHOW DATABASES;` список бд
+  + `SHOW DATABASES;`
+  + `USE wordpress; SHOW TABLES;`
+  + `SELECT * FROM myprefix_comments;`
 
 ### Расположение файлов и папок
 на VM                                                             | в контейнере                             | alias
