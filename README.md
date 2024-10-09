@@ -349,7 +349,6 @@ docker-compose up --build
 * add a comment using the available WordPress user
 * sign in with the administrator account to access the Administration dashboard
   + edit a page and verify on the website that the page has been updated
-* how to ligin in my database
 * the database is not empty
 * перезагрузить VM и всё проверить
 * how Docker and docker compose work
