@@ -269,7 +269,7 @@ DB_PASS=2
 ------------------------------------------------------------------|------------------------------------------|------- 
 ,                                                                 | **в контейнере nginx:**                  | 
 ~/data/wordpress                                                  | /var/www/                                | wp-volume, root
-inception/project/srcs/requirements/nginx/nginx.conf              | /etc/nginx/http.d/nginx.conf             | редактировать nginx.conf на VM, изменения сразу в контейнере без пересборки 
+inception/project/srcs/requirements/nginx/nginx.conf              | /etc/nginx/http.d/nginx.conf             | редактировать nginx.conf на VM без пересборки контейнера 
 inception/project/srcs/requirements/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
 ,                                                                 | **в контейнере wordpress:**              | 
 ~/data/wordpress                                                  | /var/www/                                | wp-volume, WORKDIR
@@ -280,7 +280,7 @@ inception/project/srcs/requirements/wordpress/wp-config-create.sh | /var/www/wp-
 ~/data/maria                                                      | /var/lib/mysql                           | db-volume, datadir, данные MySQL
 ~/data/maria/mysql                                                | /var/lib/mysql/mysql                     | 
 ~/data/maria/wordpress                                            | /var/lib/mysql/wordpress                 | 
-,                                                                 | /usr                                     | basedir, каталог для установки MySQL
+,                                                                 | /usr                                     | basedir, установка MySQL
 inception/project/srcs/requirements/wordpress/create_db.sh        |                                          | 
 ,                                                                 | /tmp/create_db.sql                       | 
 ,                                                                 | init.sql                                 |
