@@ -273,9 +273,9 @@ inception/project/srcs/requirements/nginx/nginx.conf              | /etc/nginx/h
 inception/project/srcs/requirements/nginx/akostrik.42.fr.crt      | /etc/nginx/ssl/akostrik.42.fr.crt        |
 ,                                                                 | **в контейнере wordpress:**              | 
 ~/data/wordpress                                                  | /var/www/                                | wp-volume, WORKDIR
+inception/project/srcs/requirements/wordpress/wp-config-create.sh | /var/www/wp-config-create.sh             | 
 ,                                                                 | /etc/php8/php-fpm.d/www.conf             |
 ,                                                                 | /var/cache/apk/*                         |
-inception/project/srcs/requirements/wordpress/wp-config-create.sh | /var/www/wp-config-create.sh             | 
 ,                                                                 | **в контейнере mariadb:**                | 
 ~/data/maria                                                      | /var/lib/mysql                           | db-volume, datadir, данные MySQL
 ~/data/maria/mysql                                                | /var/lib/mysql/mysql                     | 
