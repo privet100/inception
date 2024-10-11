@@ -233,7 +233,10 @@ DB_PASS=2
   + контент страниц (текст, изображения, ...) сохраняется в таблице `wp_posts`, каждая страница или пост = отдельная запись таблице
   + медиафайлы, которые вы добавляете на страницы, хранятся на сервере `/wp-content/uploads/`, но ссылки на них и метаданные также сохраняются в бд
   + настройки страниц и их шаблоны управляются через админ-панель и темы, которые хранятся в папке `/wp-content/themes/`
-* Étant donné que ton container nginx et WordPress tape sur le même volume, il faut que dans ta configuration nginx tu mettes le index.php avant le index.html
+* je veux que ca passe par wordpress et que ca affiche sa page template, pas la page nginx que j'avais set au debut au niveau du /html
+  + creer le wp-config.php qui interrompt tout le reste
+  + tu peux mettre ton WordPress dans /var/www/HTML, même si y a la page template de Nginx
+  + container nginx et WordPress tape sur le même volume => dans ta configuration nginx tu mettes `index.php` avant `index.html`
 
 ### Контейнер mariadb
 * **Dockerfile**
