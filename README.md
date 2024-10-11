@@ -233,6 +233,7 @@ DB_PASS=2
   + контент страниц (текст, изображения, ...) сохраняется в таблице `wp_posts`, каждая страница или пост = отдельная запись таблице
   + медиафайлы, которые вы добавляете на страницы, хранятся на сервере `/wp-content/uploads/`, но ссылки на них и метаданные также сохраняются в бд
   + настройки страниц и их шаблоны управляются через админ-панель и темы, которые хранятся в папке `/wp-content/themes/`
+* Étant donné que ton container nginx et WordPress tape sur le même volume, il faut que dans ta configuration nginx tu mettes le index.php avant le index.html
 
 ### Контейнер mariadb
 * **Dockerfile**
@@ -367,47 +368,25 @@ docker-compose up --build
   + [демон](https://github.com/privet100/general-culture/blob/main/threads.md#%D0%B4%D0%B5%D0%BC%D0%BE%D0%BD)
 
 ### Discord
-+ link ce volume au containeur nginx => simplifier votre config
 + pour installer wp je te conseille d'utiliser la cli, tu peux tout automatiser dans ton script, ça évitera de copier ton dossier wp https://developer.wordpress.org/cli/commands/
-+ automatiser le plus possible via tes containers
 + tu sais pas ce qui sera disponible sur la machine qui va le lancer (à part le fait que docker sera installé)
 + on va clone ton projet et le lancer si ça fonctionne c'est bien, sinon c'est 0
-+ https://sysdig.com/blog/dockerfile-best-practices/
-+ https://docs.docker.com/engine/reference/commandline/run/ (fait attention au PID 1)
-+ est-ce que c'est Ok de faire quelque chose du genre: CMD /bin/bash /tmp/script.sh && /usr/sbin/php-fpm7.3 --nodaemonize ?
-  - l'entrypoint peut bien être modifié au runtime, en cli ou via docker-compose (https://www.bmc.com/blogs/docker-cmd-vs-entrypoint) 
 + RUN / CMD / ENTRYPOINT
   - CMD = une commande par défaut que l'on peut override
     + une instruction qui permet de définir la commande de démarrage par défaut du container, à aucun moment durant le build la commande par défaut ne va être exécuté
   - ENTRYPOINT = un exécutable comme point d'entrée que l'on ne peut donc pas override, un process par défaut
   - faudrait que j’accède au bash du container pendant qu’il tourne et ça implique de demarrer le php-fpm et/ou le nginx soit même si je fait un CMD alors que si je fait un ENTRYPOINT je pense qu’il executera quand même et j’aurais pas à le faire enfin
-+ variables d'env, ca permet de faire docker run php --version par exemple, AKA la vraie commande mais avec juste docker run devant (si tu fais une image php) 
-+ Les images officielles de nginx, mariadb, etc, sont de très bonnes inspirations
-+ le flag init sur docker 
-+ ['sh', 'test.sh'] vs sh /opt/test.sh ? '
-+ повтор: les Shared Folders de la VM ou qu'un serveur SSH mal configuré sur la VM peuvent poser problème
-+ php est censé démarrer sur /run/php/php-fpm7.3.sock mais le dossier /run/php n'existe pas
-  - php-fpm c'est ce qui te permet d'executer le code php
-  - nginx doit pouvoir passer la requete qui lui est faite a php-fpm dans le container wordpress
-+ oublier nginx de base dans vos images
 + c’est au run le problème
   - le container nginx ne connai pas fastcgi_pass wordpress:9000
   - faudrait run (sans fastcgi_pass) ensuite le connecter au network que j’ai crée
   - et enfin faire une modification dans la conf default pour y mettre fastcgi_pass wordpress et restart nginx
   - et la ça fonctionne
-+ si tu vois service XXXX start dans un image docker c'est 0
 + c'est parce qu'on veut que le PID 1 soit directement, par exemple, "nginx", et pas une intermédiaire comme "service" ou "etc/init.d/[service]" 
   - faut pas utiliser ton container docker comme une VM
   - c'est pour pouvoir utiliser docker correctement
   - genre si tu fais du monitoring ou autre, si tu commences à utiliser des boucles infini, .. Ben le moment où tu aura un soucis je te souhaite bien du courage pour retrouver le problème
-+ c'est la base du projet d'apprendre à utiliser un network interne à ton infra. 
-  - --link est ultra deprecated
-+ le jour où tu vas utiliser une image distroless tu vas te dire que c'est trop bien docker en fait
-+ comment vous avez fait pr  créer un user, une DB sans avoir a utiliser un service mysql start
-  - Moi j’ai fait un mysqld &, puis je l’ai éteins et restart à la fin. Je me suis inspiré de l’image officielle en fait
-+ oublis pas qu’il faut faire tourner en foreground sinon ton container s’arrete
-+ -F, --nodaemonize : force to stay in foreground, and ignore daemonize option from config file. If you are running php-fpm in a docker container, there is a good chance you are running the process as root. php-fpm won't start as root without an extra flag:
-+ -R, --allow-to-run-as-root : Allow pool to run as root (disabled by default)
++ comment vous avez fait pr créer un user, une DB sans avoir a utiliser un service mysql start
+  - `mysqld &`, puis je l’ai éteins et restart à la fin. Je me suis inspiré de l’image officielle en fait
 + остановилась: mais si tu es subscribe tu peux tjrs le faire
 
 ### Не понимаю
