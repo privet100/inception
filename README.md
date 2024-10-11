@@ -237,6 +237,9 @@ DB_PASS=2
   + creer le wp-config.php qui interrompt tout le reste
   + tu peux mettre ton WordPress dans /var/www/HTML, même si y a la page template de Nginx
   + container nginx et WordPress tape sur le même volume => dans ta configuration nginx tu mettes `index.php` avant `index.html`
+* WP-CLI (WordPress Command Line Interface) permet de configurer automatiquement un wp
+  + официальный инструмент для управления WordPress через командную строку
+  + можно автоматически настроить WordPress, создать конфигурационный файл (wp-config.php), установить плагины, темы, ...
 
 ### Контейнер mariadb
 * **Dockerfile**
