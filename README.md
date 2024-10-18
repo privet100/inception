@@ -3,7 +3,7 @@
 + VM
   - папка в sgoinfre
     * на время работы перемещать в goinfre, будет быстрее работать
-  - RAM 2 GB, диск VDI или VHD динамический 15 GB, CPU 1C
+  - RAM 6 GB, диск VDI или VHD динамический 15 GB, CPU 2C
   - install [debian 12](https://www.debian.org) (software to install: ssh, user akostrik)
   - Virtualbox -> настройки -> сеть -> дополнительно -> проброс портов (22 занят ssh хостовой машины, 443 чтобы с хостовой заходить на сайт):
     | Name    | Protocol | Host IP     | Host Port    | Guest IP    | Guest Port   |
