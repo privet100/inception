@@ -383,8 +383,8 @@ docker-compose up --build
   + edit a page and verify on the website that the page has been updated
 * the database is not empty
 * `service nginx stop; service mariadb stop; service mysql stop; docker-compose down` (!)
-* `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker ps -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null`
 * перезагрузить VM и всё проверить
+* в начале проверки `docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker ps -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null`
 * how Docker and docker compose work
   + The difference between a Docker image used with docker compose and without docker compose
 * explain docker-network
