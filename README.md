@@ -57,7 +57,8 @@
   + WP: admin: akostrik 2, useR: akostrik2 2
   + mariadb: akostrik 2 
 + Подключение VS Code хостовой машины к VM: установить расширение _Remote-SSH_
-
++ https://akostrik.42.fr/wp-admin
++ https://akostrik.42.fr/wp-login.php
 ### Makefile 
 * all после остановки  
 * fclean перед сохранением в облако
