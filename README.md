@@ -104,18 +104,12 @@ DB_HOST=mariadb
 DB_NAME=wp
 DB_USER=akostrik
 DB_PASSWORD=2
-WP_TITLE=myTitle
+WP_USER=akostrik
+WP_USER_PASS=2
+WP_USER_EMAIL=c@d.com
 WP_ADMIN=akostrikAd
 WP_ADM_PASS=2
 WP_ADM_EMAIL=a@b.com
-WP_USER=akostrik2
-WP_USER_PASS=2
-WP_USER_EMAIL=c@d.com
-WP_REDIS_PASSWORD=2
-WP_CACHE_KEY_SALT=2
-FS_USER=akostrik
-FS_USER_PASS=2
-HF_TOKEN=2
 ```
 
 ### Контейнер nginx avec TLS v1.2
