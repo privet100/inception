@@ -99,17 +99,17 @@ DB_USER=wpuser
 DB_PASS=2
 ```
 ```
-DOMAIN=akostrik.42.fr
+DOMAIN_NAME=akostrik.42.fr
 DB_HOST=mariadb
 DB_NAME=wp
 DB_USER=akostrik
-DB_PASS=2
-WP_USER=akostrik
-WP_USER_PASS=2
-WP_USER_MAIL=c@d.com
+DB_PASSWORD=2
 WP_ADMIN=akostrikAd
 WP_ADM_PASS=2
-WP_ADM_MAIL=a@b.com
+WP_ADM_EMAIL=a@b.com
+WP_USER=akostrik
+WP_USER_PASS=2
+WP_USER_EMAIL=c@d.com
 ```
 
 ### Контейнер nginx avec TLS v1.2
